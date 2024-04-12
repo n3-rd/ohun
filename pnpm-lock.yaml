@@ -17,6 +17,9 @@ dependencies:
   lucide-svelte:
     specifier: ^0.367.0
     version: 0.367.0(svelte@4.2.13)
+  paroles:
+    specifier: ^2.3.0
+    version: 2.3.0
   tailwind-merge:
     specifier: ^2.2.2
     version: 2.2.2
@@ -1958,6 +1961,10 @@ packages:
     dependencies:
       callsites: 3.1.0
     dev: true
+
+  /paroles@2.3.0:
+    resolution: {integrity: sha512-2wsxIIF+f5Vsbj6PWHfbmMpzse0WkzrWK/B5Xy+h0ggccMwvdFU4VogssxyFYUQkA/b5QVIyaN5hCRVpCcJz9w==}
+    dev: false
 
   /path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}

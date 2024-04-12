@@ -42,6 +42,7 @@
 		"bits-ui": "^0.21.3",
 		"clsx": "^2.1.0",
 		"lucide-svelte": "^0.367.0",
+		"paroles": "^2.3.0",
 		"tailwind-merge": "^2.2.2",
 		"tailwind-variants": "^0.2.1"
 	}
