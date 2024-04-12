@@ -38,7 +38,7 @@
 </script>
 
 <div
-	class="absolute bottom-0 right-0 flex h-16 min-w-full select-none items-center justify-between px-2"
+	class="absolute bottom-0 right-0 flex h-16 min-w-full select-none items-center justify-between px-2 transition-colors duration-300 ease-in-out"
 	style="background-color: {$accentColor};"
 >
 	<div class="song-info flex items-center gap-3">

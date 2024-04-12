@@ -2,7 +2,8 @@
 	import { windowMaximized } from '$lib/stores/window-store';
 
 	import { appWindow } from '@tauri-apps/api/window';
-	import { Maximize2, Minimize2, Minus, X } from 'lucide-svelte';
+	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X } from 'lucide-svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
 	export let title = 'Stauri';
 
@@ -29,6 +30,38 @@
 	</div>
 
 	<ul class="flex items-center gap-3">
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
+				<button
+					class="mx-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+				>
+					<MenuIcon size="15" stroke-width="3" />
+				</button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content>
+				<DropdownMenu.Group>
+					<!-- <DropdownMenu.Label>My Account</DropdownMenu.Label>
+					<DropdownMenu.Separator /> -->
+					<DropdownMenu.Item class="cursor-pointer">
+						<a href="/preferences">Preferences</a>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item class="cursor-pointer">
+						<a href="/about">About</a>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item class="cursor-pointer">
+						<a
+							href="n3rd.vercel.app"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="flex w-full justify-between"
+						>
+							<div>Donate</div>
+							<ExternalLink size="15" />
+						</a>
+					</DropdownMenu.Item>
+				</DropdownMenu.Group>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
 			on:click={minimizeWindow}
