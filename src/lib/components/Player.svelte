@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { getAlbumArt } from '$lib/player';
 	import { accentColor, albumArt, currentPlayingSong } from '$lib/stores/player-store';
-	import { Play, SkipBack, SkipForward } from 'lucide-svelte';
+	import { Pause, Play, SkipBack, SkipForward } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { getTextColor } from '$lib/ui';
 
-	const hailMary = () => {
-		console.log('Hail Mary');
+	let playing = async () => {
+		return await invoke('is_playing');
 	};
+
+	$: {
+		console.log(playing);
+	}
 
 	let accent; // replace with your actual accent color
 	accentColor.subscribe((value) => {
@@ -28,8 +32,8 @@
 	};
 
 	const togglePlay = async () => {
-		const response = await invoke('toggle_play');
-		console.log(response);
+		await invoke('toggle_play');
+		playing = await invoke('is_playing');
 	};
 </script>
 
@@ -55,19 +59,23 @@
 			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
 			on:click={() => previous()}
 		>
-			<SkipBack size="15" stroke-width="3" />
+			<SkipBack size="15" />
 		</button>
 		<button
 			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
 			on:click={() => togglePlay()}
 		>
-			<Play size="15" stroke-width="3" />
+			{#if playing}
+				<Pause size="15" />
+			{:else}
+				<Play size="15" />
+			{/if}
 		</button>
 		<button
 			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
 			on:click={() => next()}
 		>
-			<SkipForward size="15" stroke-width="3" />
+			<SkipForward size="15" />
 		</button>
 	</div>
 </div>
