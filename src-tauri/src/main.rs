@@ -61,9 +61,30 @@ fn get_current_audio_time() -> f64 {
   }
 }
 
+#[tauri::command]
+fn next_song() {
+  command(&format!("playerctl next"));
+}
+
+#[tauri::command]
+fn previous_song() {
+  command(&format!("playerctl previous"));
+}
+
+#[tauri::command]
+fn toggle_play() {
+  command(&format!("playerctl play-pause"));
+}
+
+#[tauri::command]
+fn is_playing() -> bool {
+  let status = command(&format!("playerctl status"));
+  status.trim() == "Playing"
+}
+
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time])
+    .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time, next_song, previous_song, toggle_play, is_playing])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

@@ -1,4 +1,5 @@
 <script>
+	import Player from '$lib/components/Player.svelte';
 	import Titlebar from '$lib/components/Titlebar.svelte';
 	import '../app.pcss';
 	import { fly } from 'svelte/transition';
@@ -11,8 +12,9 @@
 	<div
 		in:fly={{ x: -200, duration: 300, delay: 300 }}
 		out:fly={{ x: 200, duration: 300 }}
-		class="px-2"
+		class="select-none px-2"
 	>
 		<slot />
 	</div>
 {/key}
+<Player />

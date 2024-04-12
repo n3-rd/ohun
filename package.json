@@ -41,6 +41,8 @@
 		"@tauri-apps/api": "^1.5.3",
 		"bits-ui": "^0.21.3",
 		"clsx": "^2.1.0",
+		"color.js": "^1.2.0",
+		"colorthief": "^2.4.0",
 		"lucide-svelte": "^0.367.0",
 		"paroles": "^2.3.0",
 		"tailwind-merge": "^2.2.2",

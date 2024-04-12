@@ -17,7 +17,7 @@ export const getLyrics = async (artist: string, title: string) => {
         const lyrics = data[0].syncedLyrics;
         syncedLyrics.set(lyrics);
         plainLyrics.set(data[0].plainLyrics);
-        console.log('Lyrics fetched:', lyrics);
+
         if (lyrics == null) {
             return 404;
         }

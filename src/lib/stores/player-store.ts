@@ -8,3 +8,5 @@ export const currentPlayingSong = writable<Song>({
 });
 
 export const playTime = writable<number>(0);
+export const albumArt = writable('');
+export const accentColor = writable('#ffffff');

@@ -22,7 +22,7 @@
 
 <div
 	data-tauri-drag-region
-	class="z-100 flex w-screen select-none justify-between rounded-t-xl bg-transparent px-2 text-gray-700"
+	class="z-100 fixed flex w-screen select-none justify-between rounded-t-xl bg-transparent px-2 text-gray-700"
 >
 	<div class="app-title cursor-default p-2 font-semibold" data-tauri-drag-region>
 		{title}
