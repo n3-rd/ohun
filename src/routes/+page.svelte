@@ -3,6 +3,7 @@
 	import { currentPlayingSong, playTime } from '$lib/stores/player-store';
 	import type { Song } from '$lib/types';
 	import { getCurrentPlaying } from '$lib/player';
+	import { currentLine } from '$lib/stores/lyricsStore';
 
 	let currentSong: Song = {
 		artist: null,
@@ -31,3 +32,5 @@
 <p>{currentSong.album}</p>
 
 <li>play time: {$playTime}</li>
+
+<li>{$currentLine.text}</li>
