@@ -13,7 +13,6 @@ export const getCurrentPlaying = async () => {
     getPlayTime();
     getAlbumArt(response.artist, response.title)
 
-
 }
 export const getPlayTime = async () => {
     let response: number = await invoke('get_current_audio_time')
@@ -44,7 +43,6 @@ const checkSongChange = async () => {
 };
 
 const updateLyrics = async (time: number) => {
-
     let lyrics;
     syncedLyrics.subscribe((value) => {
         lyrics = value
@@ -86,10 +84,22 @@ export const getAccentColor = async () => {
     accentColor.set(color)
 }
 
-checkSongChange();
-getCurrentPlaying();
-setInterval(getPlayTime, 1000);
+checkSongChange().then(() => {
+    getCurrentPlaying().then(() => {
 
-setInterval(async () => {
-    updateLyrics(await getPlayTime())
-}, 300)
+        setInterval(async () => {
+            let lyrics;
+            syncedLyrics.subscribe((value) => {
+                lyrics = value;
+            })
+            if (lyrics) {
+                updateLyrics(await getPlayTime())
+
+            }
+        }, 300)
+        setInterval(getPlayTime, 1000);
+    }
+
+    )
+})
+
