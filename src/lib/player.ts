@@ -38,6 +38,7 @@ const checkSongChange = async () => {
         if (previousSong && currentSong.title !== previousSong.title) {
 
             getCurrentPlaying();
+            previousSong = currentSong;
         }
     }, 1000); // Check every second
 };
