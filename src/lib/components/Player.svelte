@@ -4,22 +4,18 @@
 	import { Play, SkipBack, SkipForward } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
+	import { getTextColor } from '$lib/ui';
 
 	const hailMary = () => {
 		console.log('Hail Mary');
 	};
 
-	function isLight(color) {
-		const hex = color.replace('#', '');
-		const [r, g, b] = hex.match(/\w\w/g).map((c) => parseInt(c, 16));
-		return r * 0.299 + g * 0.587 + b * 0.114 > 186;
-	}
-
 	let accent; // replace with your actual accent color
 	accentColor.subscribe((value) => {
 		accent = value;
 	});
-	const textColor = isLight(accent) ? 'black' : 'white';
+
+	const textColor = getTextColor(accent);
 
 	const next = async () => {
 		const response = await invoke('next_song');
@@ -38,7 +34,7 @@
 </script>
 
 <div
-	class="absolute bottom-0 right-0 flex h-16 min-w-full items-center justify-between px-2"
+	class="absolute bottom-0 right-0 flex h-16 min-w-full select-none items-center justify-between px-2"
 	style="background-color: {$accentColor};"
 >
 	<div class="song-info flex items-center gap-3">
