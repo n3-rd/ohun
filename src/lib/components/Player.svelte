@@ -15,12 +15,11 @@
 	}
 
 	let accent; // replace with your actual accent color
+	let textColor: string;
 	accentColor.subscribe((value) => {
 		accent = value;
+		textColor = getTextColor(accent);
 	});
-
-	const textColor = getTextColor(accent);
-
 	const next = async () => {
 		const response = await invoke('next_song');
 		console.log(response);

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Player from '$lib/components/Player.svelte';
 	import Titlebar from '$lib/components/Titlebar.svelte';
 	import { onMount } from 'svelte';
@@ -15,11 +15,12 @@
 	onMount(() => {
 		getCurrentPlaying();
 	});
-	let accent;
+	let accent: string;
+	let textColor: string;
 	accentColor.subscribe((value) => {
 		accent = value;
+		textColor = getTextColor(accent);
 	});
-	let textColor = getTextColor(accent);
 </script>
 
 <Toaster />

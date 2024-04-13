@@ -49,6 +49,7 @@
 		"svelte-copy": "^1.4.1",
 		"svelte-sonner": "^0.3.22",
 		"tailwind-merge": "^2.2.2",
-		"tailwind-variants": "^0.2.1"
+		"tailwind-variants": "^0.2.1",
+		"textcolor": "^1.0.2"
 	}
 }
