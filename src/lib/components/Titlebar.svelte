@@ -4,6 +4,7 @@
 	import { appWindow } from '@tauri-apps/api/window';
 	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { textColor, accentColor } from '$lib/stores/player-store';
 
 	export let title = 'Stauri';
 
@@ -27,6 +28,7 @@
 >
 	<div
 		class="app-title cursor-default p-2 font-semibold uppercase dark:text-white"
+		style="color: {$textColor};"
 		data-tauri-drag-region
 	>
 		{title}
@@ -36,7 +38,8 @@
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				<button
-					class="mx-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+					class="mx-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+					style="background-color: {$accentColor}; color: {$textColor};"
 				>
 					<MenuIcon size="15" stroke-width="3" />
 				</button>
@@ -66,13 +69,15 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			style="background-color: {$accentColor}; color: {$textColor};"
 			on:click={minimizeWindow}
 		>
 			<Minus size="15" stroke-width="3" />
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			style="background-color: {$accentColor}; color: {$textColor};"
 			on:click={maximizeWindow}
 		>
 			{#if $windowMaximized}
@@ -82,7 +87,8 @@
 			{/if}
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			style="background-color: {$accentColor}; color: {$textColor};"
 			on:click={closeWindow}
 		>
 			<X size="15" stroke-width="3" />

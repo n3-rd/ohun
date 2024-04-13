@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getAlbumArt } from '$lib/player';
-	import { accentColor, albumArt, currentPlayingSong } from '$lib/stores/player-store';
+	import { accentColor, albumArt, currentPlayingSong, textColor } from '$lib/stores/player-store';
 	import { Pause, Play, SkipBack, SkipForward } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
@@ -14,12 +14,6 @@
 		console.log(playing);
 	}
 
-	let accent; // replace with your actual accent color
-	let textColor: string;
-	accentColor.subscribe((value) => {
-		accent = value;
-		textColor = getTextColor(accent);
-	});
 	const next = async () => {
 		const response = await invoke('next_song');
 		console.log(response);
@@ -34,6 +28,22 @@
 		await invoke('toggle_play');
 		playing = await invoke('is_playing');
 	};
+
+	let textColour;
+	let accent;
+
+	textColor.subscribe((value) => {
+		textColour = value;
+	});
+
+	accentColor.subscribe((value) => {
+		accent = value;
+	});
+
+	let controlsColour = {
+		background: accent,
+		color: textColour
+	};
 </script>
 
 <div
@@ -46,22 +56,24 @@
 			style="background-image: url('{$albumArt}');"
 		></div>
 		<div class="metadata flex flex-col gap-2">
-			<div class="song-title text-sm font-semibold" style="color: {textColor};">
+			<div class="song-title text-sm font-semibold" style="color: {$textColor};">
 				{$currentPlayingSong.title}
 			</div>
-			<div class="artist text-xs" style="color: {textColor};">{$currentPlayingSong.artist}</div>
+			<div class="artist text-xs" style="color: {$textColor};">{$currentPlayingSong.artist}</div>
 			<!-- <div class="artist text-xs">{$accentColor}</div> -->
 		</div>
 	</div>
 	<div class="controls flex items-center gap-3">
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			style="background-color: {$accentColor}; color: {$textColor};"
 			on:click={() => previous()}
 		>
 			<SkipBack size="15" />
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			style="background-color: {$accentColor}; color: {$textColor};"
 			on:click={() => togglePlay()}
 		>
 			{#if playing}
@@ -71,7 +83,8 @@
 			{/if}
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			style="background-color: {$accentColor}; color: {$textColor};"
 			on:click={() => next()}
 		>
 			<SkipForward size="15" />

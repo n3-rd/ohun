@@ -1,10 +1,11 @@
 import { invoke } from '@tauri-apps/api/tauri'
-import { accentColor, albumArt, currentPlayingSong, playTime } from './stores/player-store'
+import { accentColor, albumArt, currentPlayingSong, playTime, textColor } from './stores/player-store'
 import type { Song } from './types'
 import { getLyrics } from './lyrics'
 import { currentLine, nextLine, syncedLyrics } from './stores/lyricsStore'
 import { Lyrics } from 'paroles';
 import { prominent } from 'color.js'
+import { getTextColor } from './ui'
 
 export const getCurrentPlaying = async () => {
     const response: Song = await invoke('get_current_playing_song')
@@ -83,6 +84,9 @@ export const getAccentColor = async () => {
     console.log('url', url)
     let color = await prominent(url, { amount: 1, format: 'hex' });
     accentColor.set(color)
+    let fontColor = getTextColor(color);
+    textColor.set(fontColor)
+
 }
 
 checkSongChange().then(() => {
