@@ -7,8 +7,8 @@
 		"distDir": "../build"
 	},
 	"package": {
-		"productName": "stauri",
-		"version": "0.1.0"
+		"productName": "ohun",
+		"version": "0.2.0"
 	},
 	"tauri": {
 		"allowlist": {
@@ -19,16 +19,23 @@
 				"unmaximize": true,
 				"minimize": true,
 				"close": true
+			},
+			"shell": {
+				"all": false,
+				"execute": false,
+				"open": true,
+				"scope": [],
+				"sidecar": false
 			}
 		},
 		"bundle": {
 			"active": true,
-			"category": "DeveloperTool",
-			"copyright": "",
+			"category": "Music",
+			"copyright": "n3rd",
 			"deb": {
 				"depends": []
 			},
-			"externalBin": [],
+			"externalBin": ["binaries/playerctl"],
 			"icon": [
 				"icons/32x32.png",
 				"icons/128x128.png",
@@ -36,8 +43,8 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "com.tauri.dev",
-			"longDescription": "",
+			"identifier": "com.blop.ohun",
+			"longDescription": "Get synchronized song lyrics and sing along with your favorite songs.",
 			"macOS": {
 				"entitlements": null,
 				"exceptionDomain": "",
@@ -65,9 +72,12 @@
 				"fullscreen": false,
 				"height": 600,
 				"resizable": true,
-				"title": "stauri",
+				"title": "ohun",
 				"width": 800,
-				"decorations": false
+				"decorations": false,
+				"alwaysOnTop": true,
+				"minWidth": 500,
+				"minHeight": 400
 			}
 		]
 	}

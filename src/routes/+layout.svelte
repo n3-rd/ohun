@@ -19,7 +19,7 @@
 
 <Toaster />
 
-<Titlebar title="Stauri" />
+<Titlebar title="Ohun" />
 {#key data.url}
 	<div
 		in:fly={{ x: -200, duration: 300, delay: 300 }}

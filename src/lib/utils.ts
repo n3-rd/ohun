@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
+import { open } from '@tauri-apps/api/shell';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -60,3 +61,7 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export function openLink(url: string) {
+	open(url);
+}

@@ -5,6 +5,7 @@
 	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { textColor, accentColor } from '$lib/stores/player-store';
+	import { openLink } from '$lib/utils';
 
 	export let title = 'Stauri';
 
@@ -46,13 +47,14 @@
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
 				<DropdownMenu.Group>
-					<!-- <DropdownMenu.Label>My Account</DropdownMenu.Label>
-					<DropdownMenu.Separator /> -->
 					<DropdownMenu.Item class="cursor-pointer">
-						<a href="/preferences">Preferences</a>
-					</DropdownMenu.Item>
-					<DropdownMenu.Item class="cursor-pointer">
-						<a href="/about">About</a>
+						<button
+							on:click={() => openLink('https://github.com/n3-rd/ohun')}
+							class="flex w-full justify-between"
+						>
+							<div>Github</div>
+							<ExternalLink size="15" />
+						</button>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item class="cursor-pointer">
 						<a

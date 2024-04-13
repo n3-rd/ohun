@@ -19,7 +19,8 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<h1
-		class="cursor-copy text-center text-5xl font-extrabold leading-relaxed"
+		class="cursor-copy text-center text-2xl font-extrabold
+		leading-relaxed sm:text-3xl md:text-5xl xl:text-8xl"
 		on:click={() => copyText($currentLine.text)}
 	>
 		{#if $currentLine.text}
