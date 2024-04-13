@@ -7,12 +7,19 @@
 	import { getCurrent } from '@tauri-apps/api/window';
 	import { getCurrentPlaying } from '$lib/player';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import { accentColor } from '$lib/stores/player-store';
+	import { getTextColor } from '$lib/ui';
 
 	export let data;
 
 	onMount(() => {
 		getCurrentPlaying();
 	});
+	let accent;
+	accentColor.subscribe((value) => {
+		accent = value;
+	});
+	let textColor = getTextColor(accent);
 </script>
 
 <Toaster />
@@ -22,7 +29,9 @@
 	<div
 		in:fly={{ x: -200, duration: 300, delay: 300 }}
 		out:fly={{ x: 200, duration: 300 }}
-		class="select-none px-2 pt-10"
+		class="select-none px-2 pt-10
+		"
+		style="background-color: {accent}; color: {textColor};"
 	>
 		<slot />
 	</div>

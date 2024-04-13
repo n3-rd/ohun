@@ -56,13 +56,13 @@
 	</div>
 	<div class="controls flex items-center gap-3">
 		<button
-			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 			on:click={() => previous()}
 		>
 			<SkipBack size="15" />
 		</button>
 		<button
-			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 			on:click={() => togglePlay()}
 		>
 			{#if playing}
@@ -72,7 +72,7 @@
 			{/if}
 		</button>
 		<button
-			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 			on:click={() => next()}
 		>
 			<SkipForward size="15" />

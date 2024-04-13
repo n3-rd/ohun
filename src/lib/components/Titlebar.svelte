@@ -25,7 +25,10 @@
 	data-tauri-drag-region
 	class="z-100 fixed flex w-screen select-none justify-between rounded-t-xl bg-transparent px-2 text-gray-700"
 >
-	<div class="app-title cursor-default p-2 font-semibold" data-tauri-drag-region>
+	<div
+		class="app-title cursor-default p-2 font-semibold uppercase dark:text-white"
+		data-tauri-drag-region
+	>
 		{title}
 	</div>
 
@@ -33,7 +36,7 @@
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				<button
-					class="mx-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+					class="mx-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 				>
 					<MenuIcon size="15" stroke-width="3" />
 				</button>
@@ -63,13 +66,13 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 			on:click={minimizeWindow}
 		>
 			<Minus size="15" stroke-width="3" />
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 			on:click={maximizeWindow}
 		>
 			{#if $windowMaximized}
@@ -79,7 +82,7 @@
 			{/if}
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300"
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-[#ebebeb] hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
 			on:click={closeWindow}
 		>
 			<X size="15" stroke-width="3" />
