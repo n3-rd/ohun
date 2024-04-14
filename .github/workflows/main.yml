@@ -34,11 +34,20 @@ jobs:
         # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.23.6
+
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'yarn' # Set this to npm, yarn or pnpm.
+          cache: 'pnpm' # Set this to npm, yarn or pnpm.
+
+      - name: install frontend dependencies
+        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+        run: pnpm install # change this to npm or pnpm depending on which one you use.
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -53,7 +62,7 @@ jobs:
 
       - name: install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        run: yarn install # change this to npm or pnpm depending on which one you use.
+        run: pnpm install # change this to npm or pnpm depending on which one you use.
 
       - uses: tauri-apps/tauri-action@v0
         env:
