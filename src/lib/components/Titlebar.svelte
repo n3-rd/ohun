@@ -57,15 +57,13 @@
 						</button>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item class="cursor-pointer">
-						<a
-							href="n3rd.vercel.app"
-							target="_blank"
-							rel="noopener noreferrer"
+						<button
+							on:click={() => openLink('https://www.buymeacoffee.com/n3rdyn3rd')}
 							class="flex w-full justify-between"
 						>
 							<div>Donate</div>
 							<ExternalLink size="15" />
-						</a>
+						</button>
 					</DropdownMenu.Item>
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>

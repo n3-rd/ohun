@@ -43,7 +43,7 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "com.blop.ohun",
+			"identifier": "com.n3rd.ohun",
 			"longDescription": "Get synchronized song lyrics and sing along with your favorite songs.",
 			"macOS": {
 				"entitlements": null,
@@ -65,7 +65,10 @@
 			"csp": null
 		},
 		"updater": {
-			"active": false
+			"active": true,
+			"endpoints": ["https://releases.myapp.com/{{target}}/{{arch}}/{{current_version}}"],
+			"dialog": true,
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI0OTM3MzY4MUIyOUMxRkUKUldUK3dTa2JhSE9USlBBQnp0MTQwakpaeWM3VW9ld0FYajM4THFaMlFTQnEvTXc1QkxrcEwxT1cK"
 		},
 		"windows": [
 			{

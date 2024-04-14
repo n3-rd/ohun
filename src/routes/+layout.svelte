@@ -12,8 +12,18 @@
 
 	export let data;
 
+	const disableContextMenu = () => {
+		if (window.location.hostname !== 'localhost') {
+			document.addEventListener('contextmenu', (e) => {
+				e.preventDefault();
+			});
+		}
+	};
+
 	onMount(() => {
 		getCurrentPlaying();
+		disableContextMenu();
+		console.log(window.location);
 	});
 </script>
 
