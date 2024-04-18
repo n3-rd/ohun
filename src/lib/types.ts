@@ -3,3 +3,8 @@ export type Song = {
     title: string | null,
     album: string | null
 }
+
+export type Lyrics = {
+    time: number,
+    text: string
+}

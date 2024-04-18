@@ -51,12 +51,9 @@ const updateLyrics = async (time: number) => {
     })
 
     let sync = new Lyrics(lyrics);
-    // console.log('sync', sync)
     let current = sync.atTime(time);
-    // let next = sync.atTime(time + 1);
     currentLine.set(current)
-    // nextLine.set(next)
-    console.log('lyrics', current)
+    // console.log('lyrics', current)
 }
 
 export const getAlbumArt = async (artist: string, title: string): Promise<string | undefined> => {
