@@ -47,6 +47,7 @@
 		"mode-watcher": "^0.3.0",
 		"paroles": "^2.3.0",
 		"svelte-copy": "^1.4.1",
+		"svelte-scrolling": "^1.4.0",
 		"svelte-sonner": "^0.3.22",
 		"tailwind-merge": "^2.2.2",
 		"tailwind-variants": "^0.2.1",
