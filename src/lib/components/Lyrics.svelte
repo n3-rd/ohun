@@ -64,8 +64,8 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<ScrollArea
-		class="sm:text-1xl h-full cursor-copy whitespace-pre-wrap
-	  text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[6.25rem]"
+		class="sm:text-1xl mb-12 h-full cursor-copy
+	  whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[6.25rem]"
 	>
 		{#each lyrics as line, i (i)}
 			<p
