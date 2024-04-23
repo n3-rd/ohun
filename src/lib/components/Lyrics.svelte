@@ -1,9 +1,13 @@
 <script lang="ts">
+	// @ts-nocheck
 	import { currentLine, plainLyrics, syncedLyrics } from '$lib/stores/lyricsStore';
 	import { copyText } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { onMount } from 'svelte';
+	import { accentColor, textColor } from '$lib/stores/player-store';
+	import { lyricsMode } from '$lib/preferences';
+	import { appError } from '$lib/stores/error-store';
 
 	export const copy = (text: string) => {
 		copyText(text);
@@ -28,30 +32,31 @@
 	let lyrics;
 
 	$: {
-		lyrics = $syncedLyrics.split('\n').map((line) => {
-			let match = line.match(/\[(.*?)\](.*)/);
-			let time = match ? match[1].trim() : '';
-			let text = match ? match[2].trim() : '';
+		if ($syncedLyrics != null) {
+			lyrics = $syncedLyrics.split('\n').map((line) => {
+				let match = line.match(/\[(.*?)\](.*)/);
+				let time = match ? match[1].trim() : '';
+				let text = match ? match[2].trim() : '';
 
-			if (time) {
-				let [minutes, seconds] = time.split(':').map(Number);
-				time = minutes * 60 + seconds;
-			}
+				if (time) {
+					let [minutes, seconds] = time.split(':').map(Number);
+					time = minutes * 60 + seconds;
+				}
 
-			return {
-				time,
-				text
-			};
-		});
+				return {
+					time,
+					text
+				};
+			});
+		}
 	}
 
 	$: {
 		lyricWithIndex = $plainLyrics.split('\n').map((line, index) => ({ text: line, index }));
+		console.log('error', $appError);
 	}
 
 	setInterval(() => {
-		// const currentTime = Math.floor($currentLine.time);
-		console.log('scrolling to current line', $currentLine.time);
 		scrollTo($currentLine.time);
 	}, 1000);
 
@@ -60,21 +65,46 @@
 	});
 </script>
 
-<div class="flex h-[90vh] min-w-full items-center justify-center px-4">
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-	<ScrollArea
-		class="sm:text-1xl mb-12 h-full cursor-copy
-	  whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[6.25rem]"
-	>
-		{#each lyrics as line, i (i)}
-			<p
-				class="opacity-60 line-{i}"
-				style={line.time == $currentLine.time ? 'opacity: 1' : 'opacity: 0.6'}
-				id={line.time}
-			>
-				{line.text}
-			</p>
-		{/each}
-	</ScrollArea>
+<div class="h-screen min-w-full bg-[{$accentColor}]">
+	<div class="flex h-[90vh] min-w-full items-center justify-center px-4">
+		{#if $appError == null}
+			<!-- If appError is null, render the content -->
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			{#if $syncedLyrics == null}
+				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
+			{:else if $lyricsMode === 'multiple'}
+				<ScrollArea
+					class="sm:text-1xl mb-12  h-[80vh] w-full
+		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
+				>
+					{#each lyrics as line, i (i)}
+						<p
+							class="opacity-60 line-{i}"
+							style={line.time == $currentLine.time ? 'opacity: 1' : 'opacity: 0.6'}
+							id={line.time}
+						>
+							{line.text}
+						</p>
+					{/each}
+				</ScrollArea>
+			{:else}
+				<h1
+					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed"
+					on:click={() => copyText($currentLine.text)}
+				>
+					{#if $currentLine.text}
+						{$currentLine.text}
+					{:else if $currentLine.text === ''}
+						-
+					{:else}
+						No lyrics found
+					{/if}
+				</h1>
+			{/if}
+		{:else if $appError != null}
+			<!-- If appError is not null, render the error message -->
+			<h1 class="text-center text-5xl font-extrabold text-[{$textColor}]">{$appError}</h1>
+		{/if}
+	</div>
 </div>

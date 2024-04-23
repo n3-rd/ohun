@@ -9,6 +9,8 @@
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { accentColor, textColor } from '$lib/stores/player-store';
 	import { getTextColor } from '$lib/ui';
+	import { browser } from '$app/environment';
+	import { setMultiLineMode, setSingleLineMode } from '$lib/preferences';
 
 	export let data;
 
