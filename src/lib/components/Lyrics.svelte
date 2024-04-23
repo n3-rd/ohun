@@ -1,6 +1,6 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { currentLine, plainLyrics, syncedLyrics } from '$lib/stores/lyricsStore';
+	import { currentLine, parsedLyrics, plainLyrics, syncedLyrics } from '$lib/stores/lyricsStore';
 	import { copyText } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
@@ -50,6 +50,8 @@
 				};
 			});
 		}
+
+		// parsedLyrics.set(lyrics);
 	}
 
 	$: {

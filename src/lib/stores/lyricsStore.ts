@@ -6,3 +6,5 @@ export const plainLyrics = writable<string>('');
 
 export const currentLine = writable<Lyrics>({ time: 0, text: '' });
 export const nextLine = writable('');
+
+export const parsedLyrics = writable<string>('');
