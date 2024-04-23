@@ -23,6 +23,9 @@ dependencies:
   colorthief:
     specifier: ^2.4.0
     version: 2.4.0
+  lockr:
+    specifier: 0.9.0-beta.2
+    version: 0.9.0-beta.2
   lucide-svelte:
     specifier: ^0.367.0
     version: 0.367.0(svelte@4.2.13)
@@ -2016,6 +2019,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lockr@0.9.0-beta.2:
+    resolution: {integrity: sha512-kxlAUIdLZ6pClbhlFQBjSC7fdytyk2Y2O+htfgFwegHhKOqrJ7krK1QZOe5yHPBxvvqXpMRE4zLTHkjhB3Be8Q==}
+    dev: false
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}

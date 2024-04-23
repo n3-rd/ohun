@@ -44,6 +44,7 @@
 		"clsx": "^2.1.0",
 		"color.js": "^1.2.0",
 		"colorthief": "^2.4.0",
+		"lockr": "0.9.0-beta.2",
 		"lucide-svelte": "^0.367.0",
 		"mode-watcher": "^0.3.0",
 		"paroles": "^2.3.0",
