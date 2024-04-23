@@ -82,9 +82,14 @@ fn is_playing() -> bool {
   status.trim() == "Playing"
 }
 
+#[tauri::command]
+fn go_to_time(time: f64) {
+  command(&format!("playerctl position {}", time));
+}
+
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time, next_song, previous_song, toggle_play, is_playing])
+    .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time, next_song, previous_song, toggle_play, is_playing, go_to_time])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

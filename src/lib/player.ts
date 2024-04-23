@@ -86,6 +86,10 @@ export const getAccentColor = async () => {
 
 }
 
+export const goToTime = async (time: number) => {
+    await invoke('go_to_time', { time });
+}
+
 checkSongChange().then(() => {
     getCurrentPlaying().then(() => {
 

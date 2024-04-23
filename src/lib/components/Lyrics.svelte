@@ -8,6 +8,7 @@
 	import { accentColor, textColor } from '$lib/stores/player-store';
 	import { lyricsMode } from '$lib/preferences';
 	import { appError } from '$lib/stores/error-store';
+	import { goToTime } from '$lib/player';
 
 	export const copy = (text: string) => {
 		copyText(text);
@@ -56,8 +57,12 @@
 		console.log('error', $appError);
 	}
 
+	let mouseOverLyrics = false;
+
 	setInterval(() => {
-		scrollTo($currentLine.time);
+		if (!mouseOverLyrics) {
+			scrollTo($currentLine.time);
+		}
 	}, 1000);
 
 	onMount(() => {
@@ -66,7 +71,13 @@
 </script>
 
 <div class="h-screen min-w-full bg-[{$accentColor}]">
-	<div class="flex h-[90vh] min-w-full items-center justify-center px-4">
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+	<div
+		class="flex h-[90vh] min-w-[98vw] items-center justify-center px-4"
+		on:mouseenter={() => (mouseOverLyrics = true)}
+		on:mouseleave={() => (mouseOverLyrics = false)}
+	>
 		{#if $appError == null}
 			<!-- If appError is null, render the content -->
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -79,10 +90,12 @@
 		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
 				>
 					{#each lyrics as line, i (i)}
+						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
 							class="opacity-60 line-{i}"
 							style={line.time == $currentLine.time ? 'opacity: 1' : 'opacity: 0.6'}
 							id={line.time}
+							on:click={goToTime(line.time)}
 						>
 							{line.text}
 						</p>
