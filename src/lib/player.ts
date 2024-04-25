@@ -53,7 +53,6 @@ const updateLyrics = async (time: number) => {
     let sync = new Lyrics(lyrics);
     let current = sync.atTime(time);
     currentLine.set(current)
-    // console.log('lyrics', current)
 }
 
 export const getAlbumArt = async (artist: string, title: string): Promise<string | undefined> => {
@@ -77,8 +76,6 @@ export const getAccentColor = async () => {
     albumArt.subscribe((value) => {
         url = value;
     })
-
-    console.log('url', url)
     let color = await prominent(url, { amount: 1, format: 'hex' });
     accentColor.set(color)
     let fontColor = getTextColor(color);

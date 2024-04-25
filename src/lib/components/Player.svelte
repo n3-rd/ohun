@@ -5,23 +5,18 @@
 	import { onMount } from 'svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import PlayerActions from './PlayerActions.svelte';
+	import Tip from './Tip.svelte';
 
 	let playing = async () => {
 		return await invoke('is_playing');
 	};
 
-	$: {
-		console.log(playing);
-	}
-
 	const next = async () => {
 		const response = await invoke('next_song');
-		console.log(response);
 	};
 
 	const previous = async () => {
 		const response = await invoke('previous_song');
-		console.log(response);
 	};
 
 	const togglePlay = async () => {
@@ -51,18 +46,22 @@
 >
 	<div class="song-info flex w-[20%] items-center gap-3">
 		<div
-			class="album-art h-11 w-11 rounded-md bg-cover bg-center"
+			class="album-art min-h-11 min-w-11 rounded-md bg-cover bg-center"
 			style="background-image: url('{$albumArt}'); object-fit: cover;"
 		></div>
-		<div class="metadata flex flex-col gap-2">
-			<div class="song-title line-clamp-1 text-sm font-semibold" style="color: {$textColor};">
-				{$currentPlayingSong.title}
+		<Tip
+			text="{$currentPlayingSong.title} - {$currentPlayingSong.artist} - {$currentPlayingSong.album}"
+		>
+			<div class="metadata flex flex-col gap-2 text-left">
+				<div class="song-title line-clamp-1 font-bold text-sm" style="color: {$textColor};">
+					{$currentPlayingSong.title}
+				</div>
+				<div class="artist line-clamp-1 text-xs" style="color: {$textColor};">
+					{$currentPlayingSong.artist}
+				</div>
+				<!-- <div class="artist text-xs">{$accentColor}</div> -->
 			</div>
-			<div class="artist line-clamp-1 text-xs" style="color: {$textColor};">
-				{$currentPlayingSong.artist}
-			</div>
-			<!-- <div class="artist text-xs">{$accentColor}</div> -->
-		</div>
+		</Tip>
 	</div>
 
 	<PlayerActions />

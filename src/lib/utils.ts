@@ -3,6 +3,8 @@ import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
 import { open } from '@tauri-apps/api/shell';
+import { invoke } from '@tauri-apps/api/tauri';
+
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -64,4 +66,8 @@ export const flyAndScale = (
 
 export function openLink(url: string) {
 	open(url);
+}
+export const checkPlayerCtl = async () => {
+	const response = await invoke('check_if_playerctl_exists');
+	console.log(response);
 }

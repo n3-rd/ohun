@@ -50,13 +50,10 @@
 				};
 			});
 		}
-
-		// parsedLyrics.set(lyrics);
 	}
 
 	$: {
 		lyricWithIndex = $plainLyrics.split('\n').map((line, index) => ({ text: line, index }));
-		console.log('error', $appError);
 	}
 
 	let mouseOverLyrics = false;
@@ -81,7 +78,6 @@
 		on:mouseleave={() => (mouseOverLyrics = false)}
 	>
 		{#if $appError == null}
-			<!-- If appError is null, render the content -->
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			{#if $syncedLyrics == null}
@@ -94,7 +90,7 @@
 					{#each lyrics as line, i (i)}
 						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
-							class="opacity-60 line-{i}"
+							class="opacity-60 line-{i} hover:opacity-80"
 							style={line.time == $currentLine.time ? 'opacity: 1' : 'opacity: 0.6'}
 							id={line.time}
 							on:click={goToTime(line.time)}
@@ -118,7 +114,6 @@
 				</h1>
 			{/if}
 		{:else if $appError != null}
-			<!-- If appError is not null, render the error message -->
 			<h1 class="text-center text-5xl font-extrabold text-[{$textColor}]">{$appError}</h1>
 		{/if}
 	</div>

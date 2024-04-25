@@ -1,3 +1,9 @@
-// import { currLyricsMode } from "$lib/preferences";
+import { playerctlInstalled } from "$lib/stores/window-store";
+import { checkPlayerCtl } from "$lib/utils";
 
-// console.log('l', localStorage.getItem('lyricsMode'))
+async function init() {
+    checkPlayerCtl();
+    playerctlInstalled.set(true);
+}
+
+init();
