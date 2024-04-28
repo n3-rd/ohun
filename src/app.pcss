@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: 'switzer';
+	src:
+		url('/fonts/Switzer-Regular.woff2') format('woff2'),
+		url('/fonts/Switzer-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'switzer-bold';
+	src:
+		url('/fonts/Switzer-Bold.woff2') format('woff2'),
+		url('/fonts/Switzer-Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'switzer-black';
+	src:
+		url('/fonts/Switzer-Black.woff2') format('woff2'),
+		url('/fonts/Switzer-Black.woff') format('woff');
+	font-weight: 900;
+	font-style: normal;
+}
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -73,7 +99,7 @@
 		@apply border-border;
 	}
 	body {
-		@apply overflow-hidden bg-background text-foreground;
+		@apply overflow-hidden bg-background text-foreground subpixel-antialiased;
 	}
 	#app {
 		border-radius: 50px;

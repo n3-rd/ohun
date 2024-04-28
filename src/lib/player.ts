@@ -51,12 +51,8 @@ const updateLyrics = async (time: number) => {
     })
 
     let sync = new Lyrics(lyrics);
-    // console.log('sync', sync)
     let current = sync.atTime(time);
-    // let next = sync.atTime(time + 1);
     currentLine.set(current)
-    // nextLine.set(next)
-    console.log('lyrics', current)
 }
 
 export const getAlbumArt = async (artist: string, title: string): Promise<string | undefined> => {
@@ -80,8 +76,6 @@ export const getAccentColor = async () => {
     albumArt.subscribe((value) => {
         url = value;
     })
-
-    console.log('url', url)
     let color = await prominent(url, { amount: 1, format: 'hex' });
     accentColor.set(color)
     let fontColor = getTextColor(color);
@@ -89,6 +83,43 @@ export const getAccentColor = async () => {
 
 }
 
+export const goToTime = async (time: number) => {
+    await invoke('go_to_time', { time });
+}
+
+export const downloadLyrics = async () => {
+    // download lyrics to lrc file
+    let playInfo;
+    currentPlayingSong.subscribe((value) => {
+        playInfo = value;
+    })
+    const artist = playInfo.artist;
+    const title = playInfo.title;
+    try {
+        const response = await fetch(
+            `https://lrclib.net/api/search?artist_name=${artist}&track_name=${title}`
+        );
+        if (!response.ok) {
+            throw new Error('Failed to fetch lyrics');
+        }
+
+        let res = response.json();
+        res.then((data) => {
+            let lyrics = data[0].syncedLyrics;
+            const blob = new Blob([lyrics], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${artist} - ${title}.lrc`;
+            a.click();
+            URL.revokeObjectURL(url);
+            console.log('Lyrics downloaded');
+        }
+        )
+    } catch (error) {
+        console.error('Failed to download lyrics:', error);
+    }
+}
 checkSongChange().then(() => {
     getCurrentPlaying().then(() => {
 
