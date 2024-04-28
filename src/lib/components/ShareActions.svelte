@@ -20,7 +20,7 @@
 	<div class="flex items-center gap-2">
 		<Popover.Root>
 			<Popover.Trigger>
-				<Tip text="Change lyrics mode">
+				<Tip text="Export">
 					<Button class="bg-transparent hover:bg-white/30 hover:backdrop-blur-sm">
 						<Share size="22" color={$textColor} />
 					</Button>
