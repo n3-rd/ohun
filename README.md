@@ -58,6 +58,7 @@ Make a change in your file and instantaneously see your updates!
 1.  Clone this repository
 2.  Navigate to the folder and run `npm install` or `yarn install` or `pnpm install`
 3.  Run development server with `npm run tauri dev` or `yarn tauri dev` or `pnpm tauri dev`
+4.  Make changes and build with `npm run tauri build` or `yarn tauri build` or `pnpm tauri build`
 
 ## License
 
