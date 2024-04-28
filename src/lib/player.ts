@@ -6,6 +6,7 @@ import { currentLine, nextLine, syncedLyrics } from './stores/lyricsStore'
 import { Lyrics } from 'paroles';
 import { prominent } from 'color.js'
 import { getTextColor } from './ui'
+import { replaceSpecialChars } from './utils'
 
 export const getCurrentPlaying = async () => {
     const response: Song = await invoke('get_current_playing_song')
@@ -56,6 +57,8 @@ const updateLyrics = async (time: number) => {
 }
 
 export const getAlbumArt = async (artist: string, title: string): Promise<string | undefined> => {
+    artist = replaceSpecialChars(artist);
+    title = replaceSpecialChars(title)
     const url = `https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/search?q=artist:"${artist}" track:"${title}"`)}`;
 
     try {

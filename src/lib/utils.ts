@@ -71,3 +71,29 @@ export const checkPlayerCtl = async () => {
 	const response = await invoke('check_if_playerctl_exists');
 	console.log(response);
 }
+
+export const replaceSpecialChars = (str: string) => {
+	return str
+		.replace(/Ø/g, 'O')
+		.replace(/ø/g, 'o')
+		.replace(/Æ/g, 'AE')
+		.replace(/æ/g, 'ae')
+		.replace(/Å/g, 'A')
+		.replace(/å/g, 'a')
+		.replace(/Ü/g, 'U')
+		.replace(/ü/g, 'u')
+		.replace(/Ö/g, 'O')
+		.replace(/ö/g, 'o')
+		.replace(/Ä/g, 'A')
+		.replace(/ä/g, 'a')
+		.replace(/É/g, 'E')
+		.replace(/é/g, 'e')
+		.replace(/Í/g, 'I')
+		.replace(/í/g, 'i')
+		.replace(/Ó/g, 'O')
+		.replace(/ó/g, 'o')
+		.replace(/Ú/g, 'U')
+		.replace(/ú/g, 'u')
+		.replace(/Ñ/g, 'N')
+		.replace(/ñ/g, 'n');
+}
