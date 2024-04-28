@@ -2,10 +2,13 @@
 import { appError } from "./stores/error-store";
 import { plainLyrics, syncedLyrics } from "./stores/lyricsStore";
 import * as lockr from 'lockr'
+import { replaceSpecialChars } from "./utils";
 
 export const getLyrics = async (artist: string, title: string) => {
     // Reset appError at the start of the function
     appError.set(null);
+    // artist = replaceSpecialChars(artist);
+    // title = replaceSpecialChars(title);
 
     try {
         // Try to get lyrics from local storage first
