@@ -100,8 +100,9 @@
 					{#each lyrics as line, i (i)}
 						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
-							class="opacity-60 line-{i} hover:opacity-80"
-							style={line.time == $currentLine.time ? 'opacity: 1' : 'opacity: 0.6'}
+							class={`line-{i} leading-[4.25rem] hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
+							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
+							`}
 							id={line.time}
 							on:click={goToTime(line.time)}
 						>
