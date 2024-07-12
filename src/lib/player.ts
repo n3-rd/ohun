@@ -17,7 +17,6 @@ import { replaceSpecialChars } from './utils';
 export const getCurrentPlaying = async () => {
 	const response: Song = await invoke('get_current_playing_song');
 	currentPlayingSong.set(response);
-	console.log(response);
 	getLyrics(response.artist, response.title);
 	getPlayTime();
 	// if(response.album != null && response.album != "" && response.album != undefined){
@@ -72,21 +71,17 @@ export const getAlbumArt = async (
 	if (album == '' || album == undefined || album == null || album != title) {
 		artist = replaceSpecialChars(artist);
 		title = replaceSpecialChars(title);
-		console.log(`searching artist: "${artist}" track: "${title}`);
 		url = `https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/search?q=artist:"${artist}" track:"${title}"`)}`;
 	} else {
 		album = replaceSpecialChars(album);
 		artist = replaceSpecialChars(artist);
-		console.log(`searching album: "${album}" artist: "${artist}"`);
 		url = `https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/search?q=album:"${album}" artist:"${artist}"`)}`;
 	}
 	try {
-		console.log('Fetching album art:', url);
 		const response = await fetch(url);
 		const data = await response.json();
 
 		const art = data?.data?.[0]?.album?.cover_medium;
-		console.log('Album art:', art);
 		albumArt.set(art);
 		getAccentColor();
 		return art;
@@ -136,7 +131,6 @@ export const downloadLyrics = async () => {
 			a.download = `${artist} - ${title}.lrc`;
 			a.click();
 			URL.revokeObjectURL(url);
-			console.log('Lyrics downloaded');
 		});
 	} catch (error) {
 		console.error('Failed to download lyrics:', error);

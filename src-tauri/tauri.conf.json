@@ -8,7 +8,7 @@
 	},
 	"package": {
 		"productName": "Ohun",
-		"version": "1.0.0"
+		"version": "2.0.0"
 	},
 	"tauri": {
 		"allowlist": {
@@ -28,6 +28,7 @@
 				"sidecar": false
 			}
 		},
+
 		"bundle": {
 			"active": true,
 			"category": "Music",
@@ -43,6 +44,10 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
+			"appimage": {
+				"bundleMediaFramework": true
+			},
+
 			"identifier": "com.n3rd.ohun",
 			"longDescription": "Get synchronized song lyrics and sing along with your favorite songs.",
 			"macOS": {
@@ -65,7 +70,12 @@
 			"csp": null
 		},
 		"updater": {
-			"active": false
+			"active": true,
+			"endpoints": [
+				"https://cdn.crabnebula.app/update/n3rd/ohun/{{target}}-{{arch}}/{{current_version}}"
+			],
+			"dialog": true,
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE4MjJGOTM5QUREMkQ4NjgKUldSbzJOS3RPZmtpcUczQi94M1JsZVUranJyUGhmdlR2VC9hZEZwY3NuV2g0VDRjcVp6bjB5L2cK"
 		},
 		"windows": [
 			{
