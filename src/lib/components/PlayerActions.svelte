@@ -20,7 +20,7 @@
 		<Popover.Root>
 			<Popover.Trigger>
 				<Tip text="Change lyrics mode">
-					<Button class="bg-transparent hover:bg-white/30 hover:backdrop-blur-sm">
+					<Button class="bg-transparent hover:bg-white/30 hover:backdrop-blur-lg">
 						<SingleModeIndicator />
 					</Button>
 				</Tip>
@@ -28,40 +28,43 @@
 			<Popover.Content class="w-fit border-none  bg-white/30 shadow-none backdrop-blur-sm">
 				<div class="flex h-full items-center gap-6 px-4 py-2">
 					<Button
-						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4 
-						hover:bg-white/30 hover:backdrop-blur-sm
+						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4
+						hover:[&>*]:opacity-80
 						"
 						on:click={() => {
 							setSingleLineMode();
 						}}
 					>
-						<Skeleton
+						<div
 							class="h-[20px] w-[100px] rounded-full"
 							style="background-color: {$textColor};"
-						/>
+						></div>
+
 						<p class="text-md" style="color: {$textColor};">Single line</p>
 					</Button>
 					<Button
-						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4 
-						hover:bg-white/30 hover:backdrop-blur-sm
-						
+						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4
+						hover:[&>*]:opacity-80
+
 						"
 						on:click={() => {
 							setMultiLineMode();
 						}}
 					>
-						<Skeleton
+						<div
 							class="h-[20px] w-[100px] rounded-full"
 							style="background-color: {$textColor};"
-						/>
-						<Skeleton
+						></div>
+
+						<div
 							class="h-[20px] w-[100px] rounded-full"
 							style="background-color: {$textColor};"
-						/>
-						<Skeleton
+						></div>
+						<div
 							class="h-[20px] w-[100px] rounded-full"
 							style="background-color: {$textColor};"
-						/>
+						></div>
+
 						<p class="text-md" style="color: {$textColor};">Multi-line</p>
 					</Button>
 				</div>
