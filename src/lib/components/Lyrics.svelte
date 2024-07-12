@@ -94,7 +94,7 @@
 				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
 			{:else if $lyricsMode === 'multiple'}
 				<ScrollArea
-					class="sm:text-1xl mb-12 mx-12 h-[80vh] w-full
+					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
 		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
 				>
 					{#each lyrics as line, i (i)}
@@ -111,7 +111,7 @@
 				</ScrollArea>
 			{:else}
 				<h1
-					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed"
+					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl"
 					on:click={() => copyText($currentLine.text)}
 				>
 					{#if $currentLine.text}
