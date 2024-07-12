@@ -120,7 +120,7 @@ jobs:
         uses: Antikythera/build-rpm@latest
         with:
           spec_file: ${{ env.CN_APP_SLUG }}-bin/rpm.spec
-          sources: ${{ env.CN_APP_SLUG }}-bin/${{ env.CN_APP_SLUG }}-1.x86_64.deb
+          sources: ${{ env.CN_APP_SLUG }}-bin/${{ env.CN_APP_SLUG }}-${{ env.CN_APP_SLUG }}-1.x86_64.deb
 
       - name: upload assets
         uses: crabnebula-dev/cloud-release@v0.1.0
