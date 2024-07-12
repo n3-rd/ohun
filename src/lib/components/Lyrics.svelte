@@ -94,14 +94,15 @@
 				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
 			{:else if $lyricsMode === 'multiple'}
 				<ScrollArea
-					class="sm:text-1xl mb-12 mx-12 h-[80vh] w-full
+					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
 		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
 				>
 					{#each lyrics as line, i (i)}
 						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
-							class="opacity-60 line-{i} hover:opacity-80"
-							style={line.time == $currentLine.time ? 'opacity: 1' : 'opacity: 0.6'}
+							class={`line-{i} leading-[4.25rem] hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
+							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
+							`}
 							id={line.time}
 							on:click={goToTime(line.time)}
 						>
@@ -111,7 +112,7 @@
 				</ScrollArea>
 			{:else}
 				<h1
-					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed"
+					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl"
 					on:click={() => copyText($currentLine.text)}
 				>
 					{#if $currentLine.text}

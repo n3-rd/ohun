@@ -55,9 +55,9 @@ const config = {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: ['switzer-bold'],
-				bold: ['switzer-bold'],
-				black: ['switzer-black']
+				sans: ['br-cobane-bold'],
+				bold: ['br-cobane-bold'],
+				black: ['br-cobane-black']
 			}
 		}
 	}
