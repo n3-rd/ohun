@@ -129,12 +129,13 @@ jobs:
           api-key: ${{ secrets.CN_API_KEY }}
           path: ./src-tauri
 
-      - name: upload RPM package
+      - name: upload RPM package to Crab Nebula
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v3
+        uses: crabnebula-dev/cloud-release@v0.1.0
         with:
-          name: rpm-package
-          path: RPMS/*.rpm
+          command: release upload ${{ env.CN_APP_SLUG }} --framework tauri
+          api-key: ${{ secrets.CN_API_KEY }}
+          path: ./${{ env.CN_APP_SLUG }}-bin/*.rpm
 
   publish:
     needs: build
@@ -149,9 +150,3 @@ jobs:
         with:
           command: release publish ${{ env.CN_APP_SLUG }} --framework tauri
           api-key: ${{ secrets.CN_API_KEY }}
-
-      - name: upload RPM asset
-        uses: actions/upload-artifact@v3
-        with:
-          name: rpm-package
-          path: RPMS/*.rpm
