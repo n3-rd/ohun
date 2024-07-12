@@ -9,6 +9,9 @@
 	import { lyricsMode } from '$lib/preferences';
 	import { appError } from '$lib/stores/error-store';
 	import { goToTime } from '$lib/player';
+	import { createHover } from 'svelte-interactions';
+
+	const { hoverAction } = createHover();
 
 	export const copy = (text: string) => {
 		copyText(text);
@@ -74,8 +77,15 @@
 	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 	<div
 		class="flex h-[90vh] min-w-[98vw] items-center justify-center px-4"
-		on:mouseenter={() => (mouseOverLyrics = true)}
-		on:mouseleave={() => (mouseOverLyrics = false)}
+		use:hoverAction
+		on:hoverstart={(e) => {
+			mouseOverLyrics = true;
+			console.log('hover');
+		}}
+		on:hoverend={(e) => {
+			mouseOverLyrics = false;
+			console.log('hover end');
+		}}
 	>
 		{#if $appError == null}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -84,7 +94,7 @@
 				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
 			{:else if $lyricsMode === 'multiple'}
 				<ScrollArea
-					class="sm:text-1xl mb-12  h-[80vh] w-full
+					class="sm:text-1xl mb-12 mx-12 h-[80vh] w-full
 		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
 				>
 					{#each lyrics as line, i (i)}

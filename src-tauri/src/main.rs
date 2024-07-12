@@ -92,7 +92,10 @@ fn check_if_playerctl_exists() -> bool {
 }
 
 fn main() {
+    let devtools = devtools::init(); // initialize the plugin as early as possible
+
   tauri::Builder::default()
+       .plugin(devtools) // then register it with Tauri
     .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time, next_song, previous_song, toggle_play, is_playing, go_to_time, check_if_playerctl_exists])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
