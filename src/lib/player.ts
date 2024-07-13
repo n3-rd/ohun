@@ -99,6 +99,7 @@ export const getAccentColor = async () => {
 	accentColor.set(color);
 	let fontColor = getTextColor(color);
 	textColor.set(fontColor);
+	return color;
 };
 
 export const goToTime = async (time: number) => {
