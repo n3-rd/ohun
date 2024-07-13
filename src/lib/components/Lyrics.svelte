@@ -100,7 +100,7 @@
 					{#each lyrics as line, i (i)}
 						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
-							class={`line-{i} leading-[4.25rem] hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
+							class={`line-{i} leading-[4.25rem] hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem] transition-opacity duration-300
 							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
 							`}
 							id={line.time}
