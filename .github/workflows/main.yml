@@ -153,7 +153,7 @@ jobs:
       - name: upload Linux packages
         uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BUILD_TOKEN }}
           tag_name: ${{ needs.setup.outputs.tag_name }}
           files: |
             ${{ needs.setup.outputs.deb_pkg_path }}${{ needs.setup.outputs.deb_pkg_name }}
