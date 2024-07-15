@@ -5,7 +5,7 @@ on:
     inputs:
       app-slug:
         type: string
-        description: Slug of the application
+        description: ohun
         required: true
 
 concurrency:
@@ -14,6 +14,8 @@ concurrency:
 
 env:
   CN_APP_SLUG: ${{ github.event.inputs.app-slug }}
+  ARCH: x86_64
+  DEPENDENCIES_RPM: 'javascriptcoregtk4.0, webkit2gtk4.0, libxdo, libappindicator-gtk3, xdotool'
 
 jobs:
   draft:
@@ -56,13 +58,13 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y webkit2gtk-4.0
+          sudo apt-get install -y webkit2gtk-4.0 libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev libxcb-shape0-dev libxcb-xfixes0-dev libxdo-dev libssl1.1
 
       - name: Install x86_64-apple-darwin for mac and build Tauri binaries
         if: matrix.os == 'macos-latest'
         run: |
           rustup target add x86_64-apple-darwin
-          pnpm ci
+          pnpm install
           pnpm tauri build -- --target x86_64-apple-darwin
           pnpm tauri build -- --target aarch64-apple-darwin
         env:
@@ -72,11 +74,53 @@ jobs:
       - name: build Tauri app for Windows, Linux
         if: matrix.os != 'macos-latest'
         run: |
-          pnpm ci
+          pnpm install
           pnpm tauri build
         env:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+
+      - name: create RPM package
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          mkdir -p ./${{ env.CN_APP_SLUG }}-bin
+          cp -fr ./src-tauri/target/release/bundle/deb/${{ env.CN_APP_SLUG }}_*.deb ./${{ env.CN_APP_SLUG }}-bin/${{ env.CN_APP_SLUG }}-${{ env.CN_APP_SLUG }}-1.x86_64.deb
+          cat <<EOF > ./${{ env.CN_APP_SLUG }}-bin/rpm.spec
+          Name: ${{ env.CN_APP_SLUG }}
+          Version: $(node -p "require('./package.json').version")
+          BuildArch: x86_64
+          Release: 1
+          Summary: $(node -p "require('./package.json').description")
+          Requires: ${{ env.DEPENDENCIES_RPM }}
+          License: $(node -p "require('./package.json').license")
+          Source0: ${{ env.CN_APP_SLUG }}-${{ env.CN_APP_SLUG }}-1.x86_64.deb
+
+          %description
+          $(node -p "require('./package.json').description")
+
+          %prep
+          ar x %{SOURCE0}
+
+          %build
+          rm -rf control.tar.gz
+          tar xvf data.tar.gz
+
+          %install
+          cp -fr usr/ %{buildroot}
+
+          %files
+          %{_bindir}/${{ env.CN_APP_SLUG }}
+          /usr/share/applications/${{ env.CN_APP_SLUG }}.desktop
+          /usr/share/icons/hicolor/**/*
+          EOF
+          cat ./${{ env.CN_APP_SLUG }}-bin/rpm.spec
+
+      - name: create RPM package (ubuntu only)
+        if: matrix.os == 'ubuntu-latest'
+        uses: Antikythera/build-rpm@latest
+        with:
+          spec_file: ${{ env.CN_APP_SLUG }}-bin/rpm.spec
+          sources: ${{ env.CN_APP_SLUG }}-bin/${{ env.CN_APP_SLUG }}-${{ env.CN_APP_SLUG }}-1.x86_64.deb
 
       - name: upload assets
         uses: crabnebula-dev/cloud-release@v0.1.0
@@ -84,6 +128,14 @@ jobs:
           command: release upload ${{ env.CN_APP_SLUG }} --framework tauri
           api-key: ${{ secrets.CN_API_KEY }}
           path: ./src-tauri
+
+      - name: upload RPM package to Crab Nebula
+        if: matrix.os == 'ubuntu-latest'
+        uses: crabnebula-dev/cloud-release@v0.1.0
+        with:
+          command: release upload ${{ env.CN_APP_SLUG }} --framework tauri
+          api-key: ${{ secrets.CN_API_KEY }}
+          path: ./${{ env.CN_APP_SLUG }}-bin/*.rpm
 
   publish:
     needs: build
