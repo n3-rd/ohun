@@ -1,6 +1,5 @@
 <script lang="ts">
-	// @ts-nocheck
-	import { currentLine, parsedLyrics, plainLyrics, syncedLyrics } from '$lib/stores/lyricsStore';
+	import { currentLine, plainLyrics, syncedLyrics } from '$lib/stores/lyricsStore';
 	import { copyText } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
@@ -100,7 +99,7 @@
 					{#each lyrics as line, i (i)}
 						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
-							class={`line-{i} leading-[4.25rem] hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
+							class={`line-{i} leading-[4.25rem] transition-opacity duration-300 hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
 							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
 							`}
 							id={line.time}
