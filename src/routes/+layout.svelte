@@ -9,6 +9,11 @@
 	import { accentColor, textColor } from '$lib/stores/player-store';
 	import { playerctlInstalled } from '$lib/stores/window-store';
 	import { openLink } from '$lib/utils';
+	if (!import.meta.env.DEV) {
+            document.oncontextmenu = (event) => {
+                event.preventDefault()
+            }
+        }
 
 	export let data;
 

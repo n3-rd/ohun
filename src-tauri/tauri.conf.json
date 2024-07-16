@@ -7,8 +7,8 @@
 		"distDir": "../build"
 	},
 	"package": {
-		"productName": "Ohun",
-		"version": "2.0.0"
+		"productName": "ohun",
+		"version": "2.0.1"
 	},
 	"tauri": {
 		"allowlist": {
