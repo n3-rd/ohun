@@ -84,7 +84,6 @@
 				"title": "ohun",
 				"width": 800,
 				"decorations": false,
-				"alwaysOnTop": true,
 				"minWidth": 500,
 				"minHeight": 400
 			}
