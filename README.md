@@ -1,3 +1,4 @@
+
 # Ohun
 
 ![Ohun](https://i.postimg.cc/CLHcqxBZ/icon-192.png)
@@ -27,12 +28,12 @@ If you find it useful, you can [Donate](https://buymeacoffee.com/n3rdyn3rd) to t
 Ohun uses a number of open source projects to work properly:
 
 - [Playerctl](https://github.com/altdesktop/playerctl) - Playerctl is a command-line utility and library for controlling media players that implement the [MPRIS](http://specifications.freedesktop.org/mpris-spec/latest/) D-Bus Interface Specification.
-- [Tauri](https://tauri.app/) - Build an optimized, secure, and frontend-independent application for multi-platform deployment.
+- [Tauri](https://tauri.app/) - Build an optimised, secure, and frontend-independent application for multi-platform deployment.
 - [Sveltekit](https://kit.svelte.dev/) web development, streamlined
 - [Paroles](https://github.com/Clarkkkk/paroles) Library for parsing, making, modifying and "playing" LRC format lyrics
 - [Lockr](https://github.com/tsironis/lockr) A minimal API wrapper for localStorage. Simple as your high-school locker.
 
-And of course Ohub itself is open source with a [repository](https://github.com/n3-rd/ohun) on GitHub.
+And of course Ohun itself is open source with a [repository](https://github.com/n3-rd/ohun) on GitHub.
 
 ## Installation
 
@@ -46,13 +47,13 @@ sudo apt install playerctl
 
 or anyway your preference or distro dictates
 
-Download any release you want here [https://github.com/n3-rd/ohun/releases](https://github.com/n3-rd/ohun/releases)
+Download any release you want here [https://web.crabnebula.cloud/org/n3rd/ohun/releases](https://web.crabnebula.cloud/org/n3rd/ohun/releases/).
 
 ## Development
 
 Want to contribute? Great!
 
-Ohun uses NodeJS + Rust for fast developing.
+Ohun uses NodeJS + Rust for fast development.
 Make a change in your file and instantaneously see your updates!
 
 1.  Clone this repository
@@ -62,8 +63,7 @@ Make a change in your file and instantaneously see your updates!
 
 ## Roadmap for Ohun
 
-The main roadmap still prioritises cross-platform compatibility, especially with Windows. The biggest problem plaguing the compatibility is the fact that not many tools exist for getting media metadata from Windows and Mac. Ohun for Linux uses playerctl to get metadata for the currently playing media, but it only works on Linux, a few workarounds exist, some very crude and not healthy for this project.
-I currently do not have a lot of time to work on this project as I am on a tight schedule but will do my best to achieve cross-compatibility in the near future.
+*The main roadmap still prioritises cross-platform compatibility, especially with Windows. The biggest problem plaguing the compatibility is the fact that not many tools exist for getting media metadata from Windows and Mac. Ohun for Linux uses playerctl to get metadata for the currently playing media, but it only works on Linux, a few workarounds exist, some very crude and not healthy for this project. I currently do not have a lot of time to work on this project as I am on a tight schedule but will do my best to achieve cross-compatibility in the near future.*
 
 - **Cross compatibility**
 - Improvement in UI (some elements don't just behave...... right)
