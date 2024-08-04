@@ -3,6 +3,12 @@
 use std::process::Command;
 use std::str;
 use serde::Serialize;
+use std::sync::Mutex;
+use std::collections::HashMap;
+
+struct AppState {
+    previous_positions: Mutex<HashMap<usize, f64>>,
+}
 
 fn command(command: &str) -> String {
   let mut parts = command.split_whitespace().collect::<Vec<&str>>();
@@ -40,20 +46,48 @@ fn get_current_playing_song() -> Result<Metadata, String> {
 }
 
 #[tauri::command]
-fn get_current_audio_time() -> f64 {
-  let time = command(&format!("playerctl position"));
+fn get_current_audio_time(state: tauri::State<AppState>) -> f64 {
+    let output = command("playerctl position -a");
 
-  let trimmed_time = time.trim();
+    let trimmed_output = output.trim();
 
-  if trimmed_time.is_empty() {
-      return 0.00;
-  }
+    if trimmed_output.is_empty() {
+        return 0.00;
+    }
 
-  match trimmed_time.parse::<f64>() {
-      Ok(value) => value,
-      Err(_) => 0.00,
-  }
+    let mut current_positions: Vec<f64> = Vec::new();
+
+    for line in trimmed_output.lines() {
+        match line.parse::<f64>() {
+            Ok(value) => current_positions.push(value),
+            Err(_) => return 0.00,
+        }
+    }
+
+    if current_positions.is_empty() {
+        return 0.00;
+    }
+
+    let mut prev_positions = state.previous_positions.lock().unwrap();
+    let mut changed_positions: Vec<f64> = Vec::new();
+
+    for (index, &current_position) in current_positions.iter().enumerate() {
+        if let Some(&prev_position) = prev_positions.get(&index) {
+            if (current_position - prev_position).abs() > 0.000001 {
+                changed_positions.push(current_position);
+            }
+        }
+        prev_positions.insert(index, current_position);
+    }
+
+    // Return the first changing position found, or 0.0 if none are found
+    if let Some(&changing_position) = changed_positions.first() {
+        changing_position
+    } else {
+        0.00
+    }
 }
+
 
 #[tauri::command]
 fn next_song() {
@@ -93,6 +127,9 @@ fn check_if_playerctl_exists() -> bool {
 
 fn main() {
   tauri::Builder::default()
+      .manage(AppState {
+                previous_positions: Mutex::new(HashMap::new()),
+            })
     .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time, next_song, previous_song, toggle_play, is_playing, go_to_time, check_if_playerctl_exists])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
