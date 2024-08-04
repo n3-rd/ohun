@@ -1,92 +1,74 @@
 {
-	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
-	"build": {
-		"beforeBuildCommand": "pnpm build",
-		"beforeDevCommand": "pnpm dev",
-		"devPath": "http://localhost:5173",
-		"distDir": "../build"
-	},
-	"package": {
-		"productName": "ohun",
-		"version": "2.0.1"
-	},
-	"tauri": {
-		"allowlist": {
-			"all": false,
-			"window": {
-				"startDragging": true,
-				"maximize": true,
-				"unmaximize": true,
-				"minimize": true,
-				"close": true
-			},
-			"shell": {
-				"all": false,
-				"execute": false,
-				"open": true,
-				"scope": [],
-				"sidecar": false
-			}
-		},
-
-		"bundle": {
-			"active": true,
-			"category": "Music",
-			"copyright": "n3rd",
-			"deb": {
-				"depends": []
-			},
-			"icon": [
-				"icons/32x32.png",
-				"icons/128x128.png",
-				"icons/128x128@2x.png",
-				"icons/icon.icns",
-				"icons/icon.ico"
-			],
-			"appimage": {
-				"bundleMediaFramework": true
-			},
-
-			"identifier": "com.n3rd.ohun",
-			"longDescription": "Get synchronized song lyrics and sing along with your favorite songs.",
-			"macOS": {
-				"entitlements": null,
-				"exceptionDomain": "",
-				"frameworks": [],
-				"providerShortName": null,
-				"signingIdentity": null
-			},
-			"resources": [],
-			"shortDescription": "Get synchronized song lyrics.",
-			"targets": "all",
-			"windows": {
-				"certificateThumbprint": null,
-				"digestAlgorithm": "sha256",
-				"timestampUrl": ""
-			}
-		},
-		"security": {
-			"csp": null
-		},
-		"updater": {
-			"active": true,
-			"endpoints": [
-				"https://cdn.crabnebula.app/update/n3rd/ohun/{{target}}-{{arch}}/{{current_version}}"
-			],
-			"dialog": true,
-			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE4MjJGOTM5QUREMkQ4NjgKUldSbzJOS3RPZmtpcUczQi94M1JsZVUranJyUGhmdlR2VC9hZEZwY3NuV2g0VDRjcVp6bjB5L2cK"
-		},
-		"windows": [
-			{
-				"fullscreen": false,
-				"height": 600,
-				"resizable": true,
-				"title": "ohun",
-				"width": 800,
-				"decorations": false,
-				"minWidth": 500,
-				"minHeight": 400
-			}
-		]
-	}
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "pnpm dev",
+    "frontendDist": "../build",
+    "devUrl": "http://localhost:5173"
+  },
+  "bundle": {
+    "active": true,
+    "category": "Music",
+    "copyright": "n3rd",
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "deb": {
+        "depends": []
+      },
+      "appimage": {
+        "bundleMediaFramework": true
+      }
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    },
+    "longDescription": "Get synchronized song lyrics and sing along with your favorite songs.",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "shortDescription": "Get synchronized song lyrics.",
+    "createUpdaterArtifacts": "v1Compatible"
+  },
+  "productName": "ohun",
+  "version": "2.0.1",
+  "identifier": "com.n3rd.ohun",
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE4MjJGOTM5QUREMkQ4NjgKUldSbzJOS3RPZmtpcUczQi94M1JsZVUranJyUGhmdlR2VC9hZEZwY3NuV2g0VDRjcVp6bjB5L2cK",
+      "endpoints": [
+        "https://cdn.crabnebula.app/update/n3rd/ohun/{{target}}-{{arch}}/{{current_version}}"
+      ]
+    }
+  },
+  "app": {
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 600,
+        "resizable": true,
+        "title": "ohun",
+        "width": 800,
+        "decorations": false,
+        "minWidth": 500,
+        "minHeight": 400
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
 }

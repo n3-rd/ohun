@@ -1,12 +1,12 @@
 <script>
 	import { windowMaximized } from '$lib/stores/window-store';
 
-	import { appWindow } from '@tauri-apps/api/window';
+	import { getCurrentWindow } from '@tauri-apps/api/window';
 	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { textColor, accentColor } from '$lib/stores/player-store';
 	import { openLink } from '$lib/utils';
-
+	const appWindow = getCurrentWindow();
 	export let title = 'Stauri';
 
 	const minimizeWindow = async () => {
