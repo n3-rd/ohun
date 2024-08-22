@@ -172,6 +172,7 @@ fn check_if_playerctl_exists() -> bool {
 
 fn main() {
   tauri::Builder::default()
+      .plugin(tauri_plugin_updater::Builder::new().build())
       .manage(AppState {
                 previous_positions: Mutex::new(HashMap::new()),
             })
