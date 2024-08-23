@@ -3,7 +3,7 @@
 	import { copyText } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { accentColor, textColor } from '$lib/stores/player-store';
 	import { lyricsMode } from '$lib/preferences';
 	import { appError } from '$lib/stores/error-store';
@@ -33,6 +33,8 @@
 
 	let lyricWithIndex;
 	let lyrics;
+	let mouseOverLyrics = false;
+	let scrollInterval;
 
 	$: {
 		if ($syncedLyrics != null) {
@@ -58,22 +60,39 @@
 		lyricWithIndex = $plainLyrics.split('\n').map((line, index) => ({ text: line, index }));
 	}
 
-	let mouseOverLyrics = false;
+	// Debounce function to delay execution of the scroll action
+	const debounce = (func, delay) => {
+		let timer;
+		return (...args) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				func(...args);
+			}, delay);
+		};
+	};
 
-	setInterval(() => {
-		if (!mouseOverLyrics) {
-			scrollTo($currentLine.time);
-		}
-	}, 1000);
+	const debouncedScrollTo = debounce(scrollTo, 200);
+
+	const startScrollInterval = () => {
+		if (scrollInterval) clearInterval(scrollInterval);
+		scrollInterval = setInterval(() => {
+			if (!mouseOverLyrics) {
+				debouncedScrollTo($currentLine.time);
+			}
+		}, 1000);
+	};
 
 	onMount(() => {
 		scrollTo(0);
+		startScrollInterval();
+	});
+
+	onDestroy(() => {
+		clearInterval(scrollInterval);
 	});
 </script>
 
 <div class="h-screen min-w-full bg-[{$accentColor}]">
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 	<div
 		class="flex h-[90vh] min-w-[98vw] items-center justify-center px-4"
 		use:hoverAction
@@ -84,11 +103,10 @@
 		on:hoverend={(e) => {
 			mouseOverLyrics = false;
 			console.log('hover end');
+			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
 		}}
 	>
 		{#if $appError == null}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			{#if $syncedLyrics == null}
 				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
 			{:else if $lyricsMode === 'multiple'}
@@ -97,7 +115,6 @@
 		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
 				>
 					{#each lyrics as line, i (i)}
-						<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 						<p
 							class={`line-{i} leading-[4.25rem] transition-opacity duration-300 hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
 							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
