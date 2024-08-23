@@ -1,4 +1,4 @@
-import { invoke } from '@tauri-apps/api/tauri';
+import { invoke } from '@tauri-apps/api/core';
 import {
 	accentColor,
 	albumArt,
@@ -8,26 +8,31 @@ import {
 } from './stores/player-store';
 import type { Song } from './types';
 import { getLyrics } from './lyrics';
-import { currentLine, nextLine, syncedLyrics } from './stores/lyricsStore';
+import { currentLine, syncedLyrics } from './stores/lyricsStore';
 import { Lyrics } from 'paroles';
 import { prominent } from 'color.js';
 import { getTextColor } from './ui';
 import { replaceSpecialChars } from './utils';
+import { notify } from './nofity';
+
+let previousTime: number | null = null;
 
 export const getCurrentPlaying = async () => {
 	const response: Song = await invoke('get_current_playing_song');
 	currentPlayingSong.set(response);
 	getLyrics(response.artist, response.title);
 	getPlayTime();
-	// if(response.album != null && response.album != "" && response.album != undefined){
-	//  getAlbumArt(response.artist, response.title, response.album);
-	// }
 	getAlbumArt(response.artist, response.title, response.album);
 };
+
 export const getPlayTime = async () => {
 	let response: number = await invoke('get_current_audio_time');
 	response = Math.floor(response);
-	playTime.set(response);
+	if (previousTime !== response) {
+		playTime.set(response);
+		previousTime = response;
+		updateLyrics(response);
+	}
 	return response;
 };
 
@@ -45,21 +50,37 @@ const checkSongChange = async () => {
 		currentSong = song;
 
 		if (previousSong && currentSong.title !== previousSong.title) {
-			getCurrentPlaying();
+			// Song has changed
+			await getCurrentPlaying();
+
+			// Notify user about the new song
+			const artist = currentSong.artist;
+			const title = currentSong.title;
+
+			console.log('starting notifier for', `${title} by ${artist}`);
+			notify(`Lyrics fetched`, `${title} by ${artist}`);
+			console.log('ending notifier');
+
+			// Update previousSong after handling the song change
 			previousSong = currentSong;
 		}
 	}, 1000); // Check every second
 };
 
-const updateLyrics = async (time: number) => {
+// Call checkSongChange once at startup
+checkSongChange();
+
+const updateLyrics = (time: number) => {
 	let lyrics;
 	syncedLyrics.subscribe((value) => {
 		lyrics = value;
 	});
 
-	let sync = new Lyrics(lyrics);
-	let current = sync.atTime(time);
-	currentLine.set(current);
+	if (lyrics) {
+		let sync = new Lyrics(lyrics);
+		let current = sync.atTime(time);
+		currentLine.set(current);
+	}
 };
 
 export const getAlbumArt = async (
@@ -68,7 +89,7 @@ export const getAlbumArt = async (
 	album: string
 ): Promise<string | undefined> => {
 	let url;
-	if (album == '' || album == undefined || album == null || album != title) {
+	if (!album || album !== title) {
 		artist = replaceSpecialChars(artist);
 		title = replaceSpecialChars(title);
 		url = `https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/search?q=artist:"${artist}" track:"${title}"`)}`;
@@ -137,17 +158,20 @@ export const downloadLyrics = async () => {
 		console.error('Failed to download lyrics:', error);
 	}
 };
+
 checkSongChange().then(() => {
 	getCurrentPlaying().then(() => {
-		setInterval(async () => {
-			let lyrics;
-			syncedLyrics.subscribe((value) => {
-				lyrics = value;
-			});
-			if (lyrics) {
-				updateLyrics(await getPlayTime());
-			}
-		}, 300);
+		let playInfo;
+		currentPlayingSong.subscribe((value) => {
+			playInfo = value;
+		});
+		const artist = playInfo.artist;
+		const title = playInfo.title;
+
+		console.log('starting notifier for', `${title} by ${artist}`);
+		notify(`Lyrics fetched`, `${title} by ${artist}`);
+		console.log('ending notifier');
+
 		setInterval(getPlayTime, 1000);
 	});
 });

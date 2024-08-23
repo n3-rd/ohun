@@ -2,8 +2,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
-import { open } from '@tauri-apps/api/shell';
-import { invoke } from '@tauri-apps/api/tauri';
+import { open } from '@tauri-apps/plugin-shell';
+import { invoke } from '@tauri-apps/api/core';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -72,5 +72,7 @@ export const replaceSpecialChars = (str: string) => {
 			.replace(/[\u0300-\u036f]/g, '')
 			// remove brackets
 			.replace(/ *\([^)]*\) */g, '')
+			// make & url safe
+			.replace(/&/g, 'and')
 	);
 };

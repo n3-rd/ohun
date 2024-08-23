@@ -3,7 +3,7 @@
 	import { accentColor, albumArt, currentPlayingSong, textColor } from '$lib/stores/player-store';
 	import { Pause, Play, Redo, Share, SkipBack, SkipForward, Undo } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { invoke } from '@tauri-apps/api/tauri';
+	import { invoke } from '@tauri-apps/api/core';
 	import PlayerActions from './PlayerActions.svelte';
 	import Tip from './Tip.svelte';
 
