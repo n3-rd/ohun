@@ -50,11 +50,25 @@ const checkSongChange = async () => {
 		currentSong = song;
 
 		if (previousSong && currentSong.title !== previousSong.title) {
-			getCurrentPlaying();
+			// Song has changed
+			await getCurrentPlaying();
+
+			// Notify user about the new song
+			const artist = currentSong.artist;
+			const title = currentSong.title;
+
+			console.log('starting notifier for', `${title} by ${artist}`);
+			notify(`Lyrics fetched`, `${title} by ${artist}`);
+			console.log('ending notifier');
+
+			// Update previousSong after handling the song change
 			previousSong = currentSong;
 		}
 	}, 1000); // Check every second
 };
+
+// Call checkSongChange once at startup
+checkSongChange();
 
 const updateLyrics = (time: number) => {
 	let lyrics;

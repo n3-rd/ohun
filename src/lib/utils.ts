@@ -72,5 +72,7 @@ export const replaceSpecialChars = (str: string) => {
 			.replace(/[\u0300-\u036f]/g, '')
 			// remove brackets
 			.replace(/ *\([^)]*\) */g, '')
+			// make & url safe
+			.replace(/&/g, 'and')
 	);
 };

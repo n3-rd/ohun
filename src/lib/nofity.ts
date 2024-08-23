@@ -6,7 +6,7 @@ import {
 // when using `"withGlobalTauri": true`, you may use
 // const { isPermissionGranted, requestPermission, sendNotification, } = window.__TAURI_PLUGIN_NOTIFICATION__;
 
-export const notify = async (title: string, body: string) => {
+export const notify = async (title: string, body: string, icon: string) => {
 	// Do you have permission to send a notification?
 	let permissionGranted = await isPermissionGranted();
 	console.log('permissionGranted');
@@ -21,6 +21,6 @@ export const notify = async (title: string, body: string) => {
 	// Once permission has been granted we can send the notification
 	if (permissionGranted) {
 		console.log('sending notiication');
-		sendNotification({ title: title, body: body });
+		sendNotification({ title: title, body: body, icon: '/icon/app-icon.png' });
 	}
 };
