@@ -47,7 +47,9 @@
 	"version": "2.0.1",
 	"identifier": "com.n3rd.ohun",
 	"plugins": {
-		"updater": false
+		"updater": {
+			"active": false
+		}
 	},
 	"app": {
 		"windows": [

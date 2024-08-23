@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - release
+
 jobs:
   publish-tauri:
     permissions:
@@ -14,7 +15,7 @@ jobs:
       matrix:
         include:
           - platform: 'ubuntu-22.04'
-            args: ''
+            args: '-c "{\"tauri\": {\"updater\": {\"active\": false}}}"' # Add this line
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -47,15 +48,15 @@ jobs:
           workspaces: './src-tauri -> target'
 
       - name: install frontend dependencies
-        run: pnpm install # Change this from yarn to pnpm.
+        run: pnpm install
 
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          tagName: app-v__VERSION__
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
-          args: ${{ matrix.args }}
+          args: ${{ matrix.args }} # Make sure to include matrix.args here
