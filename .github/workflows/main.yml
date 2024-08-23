@@ -1,89 +1,173 @@
-name: Tauri Workflow Release Process
+name: 'publish'
 
 on:
   workflow_dispatch:
-    inputs:
-      app-slug:
-        type: string
-        description: ohun
-        required: true
-
+  push:
+    branches: [master]
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
-
 env:
-  CN_APP_SLUG: ${{ github.event.inputs.app-slug }}
   ARCH: x86_64
+  DEPENDENCIES_ARCH: "'libappindicator-gtk3' 'webkit2gtk' 'gtk3' 'xdotool'"
   DEPENDENCIES_RPM: 'javascriptcoregtk4.0, webkit2gtk4.0, libxdo, libappindicator-gtk3, xdotool'
-
 jobs:
-  draft:
+  setup:
     runs-on: ubuntu-latest
-
+    outputs:
+      name: ${{ steps.get-package.outputs.name }}
+      name_bin: ${{ steps.get-package.outputs.name }}-bin
+      version: ${{ steps.get-package.outputs.version }}
+      description: ${{ steps.get-package.outputs.description }}
+      license: ${{ steps.get-package.outputs.license }}
+      deb_pkg_name: ${{ steps.get-package.outputs.name }}_${{ steps.get-package.outputs.version }}_amd64.deb
+      deb_pkg_path: ./src-tauri/target/release/bundle/deb/
+      deb_pkg_renamed: ${{ steps.get-package.outputs.name }}-${{ steps.get-package.outputs.version }}-${{ env.ARCH }}.deb
+      arch_pkg_name: ${{ steps.get-package.outputs.name }}-bin-${{ steps.get-package.outputs.version }}-1-${{ env.ARCH }}.pkg.tar.zst
+      rpm_pkg_name: RPMS/${{ steps.get-package.outputs.name }}-${{ steps.get-package.outputs.version }}-1.${{ env.ARCH }}.rpm
+      tag_name: v${{ steps.get-package.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: create draft release
-        uses: crabnebula-dev/cloud-release@v0.1.0
+      - name: setup node
+        uses: actions/setup-node@v4
         with:
-          command: release draft ${{ env.CN_APP_SLUG }} --framework tauri
-          api-key: ${{ secrets.CN_API_KEY }}
+          node-version: 20
+      - name: get package info
+        id: get-package
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          echo "description=$(node -p "require('./package.json').description")" >> $GITHUB_OUTPUT
+          echo "license=$(node -p "require('./package.json').license")" >> $GITHUB_OUTPUT
 
-  build:
-    needs: draft
-
+  build-tauri:
+    needs: [setup]
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
-
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v3.0.0
         with:
           version: 8.15.7
 
-      - name: Install stable toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: setup node
+        uses: actions/setup-node@v4
         with:
-          toolchain: stable
-          cache: true
+          node-version: 20
 
-      - name: install Linux dependencies
+      - name: install rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y webkit2gtk-4.0 libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev libxcb-shape0-dev libxcb-xfixes0-dev libxdo-dev libssl1.1
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev libxcb-shape0-dev libxcb-xfixes0-dev libxdo-dev libssl1.1
 
-      - name: build Tauri app for Linux
-        run: |
-          pnpm install
-          pnpm tauri build
+      - name: install frontend dependencies
+        run: pnpm install
+
+      - uses: tauri-apps/tauri-action@v0
         env:
-          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-
-      - name: upload assets
-        uses: crabnebula-dev/cloud-release@v0.1.0
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NO_STRIP: true
         with:
-          command: release upload ${{ env.CN_APP_SLUG }} --framework tauri
-          api-key: ${{ secrets.CN_API_KEY }}
-          path: ./src-tauri
+          tagName: ${{ needs.setup.outputs.tag_name }}
+          releaseName: ${{ needs.setup.outputs.tag_name  }}
+          releaseDraft: false
+          prerelease: false
 
-  publish:
-    needs: build
+      - name: copy deb package && create PKGBUILD file (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          mkdir -p ${{ needs.setup.outputs.name_bin }}
+          cp -fr ${{ needs.setup.outputs.deb_pkg_path }}${{ needs.setup.outputs.deb_pkg_name }} ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }} 
+          cat <<EOF > ./${{ needs.setup.outputs.name_bin }}/PKGBUILD
+            pkgname=${{ needs.setup.outputs.name_bin }}
+            pkgver=${{ needs.setup.outputs.version }}
+            md5sums=('$(md5sum ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }}  | awk '{print $1}')')
+            pkgrel=1
+            depends=(${{ env.DEPENDENCIES_ARCH }})
+            pkgdesc='${{ needs.setup.outputs.description }}'
+            arch=('${{ env.ARCH }}')
+            url="https://github.com/${{ github.repository }}"
+            license=('${{ needs.setup.outputs.license }}')
+            source=("\$url/releases/download/${{ needs.setup.outputs.tag_name }}/${{ needs.setup.outputs.deb_pkg_renamed }}")
 
-    runs-on: ubuntu-latest
+            build() {
+                rm control.tar.gz
+                tar xvf data.tar.gz
+            }
 
-    steps:
-      - uses: actions/checkout@v4
+            package() {
+                cp -fr usr/ \${pkgdir}
+            }
+          EOF
+          cat ${{ needs.setup.outputs.name_bin }}/PKGBUILD
 
-      - name: publish release
-        uses: crabnebula-dev/cloud-release@v0.1.0
+      - name: create arch package (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        uses: 2m/arch-pkgbuild-builder@v1.17
         with:
-          command: release publish ${{ env.CN_APP_SLUG }} --framework tauri
-          api-key: ${{ secrets.CN_API_KEY }}
+          debug: true
+          target: pkgbuild
+          pkgname: ${{ needs.setup.outputs.name_bin }}/
+
+      - name: copy deb package && create rpm.spec file (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          mkdir -p ${{ needs.setup.outputs.name_bin }}
+          cp -fr ${{ needs.setup.outputs.deb_pkg_path }}/${{ needs.setup.outputs.deb_pkg_name }} ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }} 
+          cat <<EOF > ./${{ needs.setup.outputs.name_bin }}/rpm.spec
+          Name: ${{ needs.setup.outputs.name }}
+          Version: ${{ needs.setup.outputs.version }}
+          BuildArch: ${{ env.ARCH }}
+          Release: 1
+          Summary: ${{ needs.setup.outputs.description }}
+          Requires: ${{ env.DEPENDENCIES_RPM }}
+          License: ${{ needs.setup.outputs.license }}
+          Source0: ${{ needs.setup.outputs.deb_pkg_renamed }}
+
+          %description
+          ${{ needs.setup.outputs.description }}
+
+          %prep
+          ar x %{SOURCE0}
+
+          %build
+          rm -rf control.tar.gz
+          tar xvf data.tar.gz
+                      
+          %install
+          cp -fr usr/ %{buildroot}
+
+          %files
+          %{_bindir}/${{ needs.setup.outputs.name }}
+          /usr/share/applications/${{ needs.setup.outputs.name }}.desktop
+          /usr/share/icons/hicolor/**/*
+          EOF
+          cat ${{ needs.setup.outputs.name_bin }}/rpm.spec
+
+      - name: createa rpm package (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        uses: Antikythera/build-rpm@latest
+        with:
+          spec_file: ${{ needs.setup.outputs.name_bin }}/rpm.spec
+          sources: ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }}
+
+      - name: upload arch && rpm release (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ needs.setup.outputs.tag_name  }}
+          files: |
+            ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.arch_pkg_name }}
+            ${{ needs.setup.outputs.rpm_pkg_name }}
