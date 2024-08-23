@@ -46,6 +46,9 @@
 	"productName": "ohun",
 	"version": "2.0.1",
 	"identifier": "com.n3rd.ohun",
+	"plugins": {
+		"updater": false
+	},
 	"app": {
 		"windows": [
 			{
