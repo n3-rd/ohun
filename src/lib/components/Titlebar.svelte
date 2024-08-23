@@ -6,8 +6,14 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { textColor, accentColor } from '$lib/stores/player-store';
 	import { openLink } from '$lib/utils';
+	import { onMount } from 'svelte';
 	const appWindow = getCurrentWindow();
 	export let title = 'Stauri';
+
+	const startDragging = async()=>{
+	await getCurrentWindow().startDragging();
+	}
+	// console.log('window info', getCurrentWindow().setAlwaysOnTop(true));
 
 	const minimizeWindow = async () => {
 		await appWindow.minimize();
@@ -21,6 +27,10 @@
 	const closeWindow = async () => {
 		await appWindow.close();
 	};
+
+	onMount(()=>{
+	startDragging();
+	})
 </script>
 
 <div

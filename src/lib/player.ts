@@ -13,6 +13,7 @@ import { Lyrics } from 'paroles';
 import { prominent } from 'color.js';
 import { getTextColor } from './ui';
 import { replaceSpecialChars } from './utils';
+import { notify } from './nofity';
 
 let previousTime: number | null = null;
 
@@ -146,6 +147,17 @@ export const downloadLyrics = async () => {
 
 checkSongChange().then(() => {
 	getCurrentPlaying().then(() => {
+		let playInfo;
+		currentPlayingSong.subscribe((value) => {
+			playInfo = value;
+		});
+		const artist = playInfo.artist;
+		const title = playInfo.title;
+
+		console.log('starting notifier for', `${title} by ${artist}`);
+		notify(`Lyrics fetched`, `${title} by ${artist}`);
+		console.log('ending notifier');
+
 		setInterval(getPlayTime, 1000);
 	});
 });

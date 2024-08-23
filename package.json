@@ -41,6 +41,7 @@
 	"dependencies": {
 		"@babichjacob/svelte-localstorage": "^1.0.1",
 		"@tauri-apps/api": "2.0.0-rc.0",
+		"@tauri-apps/plugin-notification": "2.0.0-rc.0",
 		"@tauri-apps/plugin-shell": "2.0.0-rc.0",
 		"album-art": "^4.0.0",
 		"bits-ui": "^0.21.3",

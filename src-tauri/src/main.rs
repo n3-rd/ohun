@@ -5,6 +5,12 @@ use std::str;
 use serde::Serialize;
 use std::sync::Mutex;
 use std::collections::HashMap;
+#[cfg(target_os = "windows")]
+use windows::{
+    core::*,
+    Media::Control::*,
+    Foundation::IAsyncOperation,
+};
 
 struct AppState {
     previous_positions: Mutex<HashMap<usize, f64>>,
@@ -22,7 +28,6 @@ fn command(command: &str) -> String {
   String::from_utf8(stdout).expect("Stdout was not valid UTF-8")
 }
 
-
 #[derive(Serialize, Default)]
 struct Metadata {
   artist: String,
@@ -31,7 +36,20 @@ struct Metadata {
 }
 
 #[tauri::command]
-fn get_current_playing_song() -> Result<Metadata, String> {
+async fn get_current_playing_song() -> Result<Metadata, String> {
+  #[cfg(target_os = "linux")]
+  {
+      get_current_playing_song_linux()
+  }
+
+  #[cfg(target_os = "windows")]
+  {
+      get_current_playing_song_windows().await
+  }
+}
+
+#[cfg(target_os = "linux")]
+fn get_current_playing_song_linux() -> Result<Metadata, String> {
   let artist = command(&format!("playerctl metadata artist"));
   let title = command(&format!("playerctl metadata title"));
   let album = command(&format!("playerctl metadata album"));
@@ -41,8 +59,36 @@ fn get_current_playing_song() -> Result<Metadata, String> {
       title: title.trim().to_string(),
       album: album.trim().to_string(),
   })
+}
 
+#[cfg(target_os = "windows")]
+async fn get_current_playing_song_windows() -> Result<Metadata, String> {
+  let gsmtcsm = get_system_media_transport_controls_session_manager().await.map_err(|e| e.to_string())?;
+  if let Some(session) = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())? {
+      let media_properties = get_media_properties(&session).await.map_err(|e| e.to_string())?;
 
+      let artist = media_properties.Artist().map_err(|e| e.to_string())?;
+      let title = media_properties.Title().map_err(|e| e.to_string())?;
+      let album = media_properties.AlbumTitle().map_err(|e| e.to_string())?;
+
+      Ok(Metadata {
+          artist: artist.to_string(),
+          title: title.to_string(),
+          album: album.to_string(),
+      })
+  } else {
+      Err("No current media session found.".to_string())
+  }
+}
+
+#[cfg(target_os = "windows")]
+async fn get_system_media_transport_controls_session_manager() -> Result<GlobalSystemMediaTransportControlsSessionManager> {
+  GlobalSystemMediaTransportControlsSessionManager::RequestAsync()?.await
+}
+
+#[cfg(target_os = "windows")]
+async fn get_media_properties(session: &GlobalSystemMediaTransportControlsSession) -> Result<GlobalSystemMediaTransportControlsSessionMediaProperties> {
+  session.TryGetMediaPropertiesAsync()?.await
 }
 
 #[tauri::command]
@@ -88,7 +134,6 @@ fn get_current_audio_time(state: tauri::State<AppState>) -> f64 {
     }
 }
 
-
 #[tauri::command]
 fn next_song() {
   command(&format!("playerctl next"));
@@ -130,6 +175,7 @@ fn main() {
       .manage(AppState {
                 previous_positions: Mutex::new(HashMap::new()),
             })
+      .plugin(tauri_plugin_notification::init())
     .invoke_handler(tauri::generate_handler![get_current_playing_song, get_current_audio_time, next_song, previous_song, toggle_play, is_playing, go_to_time, check_if_playerctl_exists])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
