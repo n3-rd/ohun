@@ -15,7 +15,7 @@ jobs:
       matrix:
         include:
           - platform: 'ubuntu-22.04'
-            args: '-c ''{"tauri": {"updater": {"active": false}}}'''
+            args: '-c ''{"plugins": {"updater": {"active": false}}}'''
 
     runs-on: ${{ matrix.platform }}
     steps:
