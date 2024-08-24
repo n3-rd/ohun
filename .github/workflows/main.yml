@@ -15,7 +15,7 @@ jobs:
       matrix:
         include:
           - platform: 'ubuntu-22.04'
-            args: '-c "{\"tauri\": {\"updater\": {\"active\": false}}}"' # Add this line
+            args: '-c ''{"tauri": {"updater": {"active": false}}}'''
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -59,4 +59,4 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
-          args: ${{ matrix.args }} # Make sure to include matrix.args here
+          args: ${{ matrix.args }}
