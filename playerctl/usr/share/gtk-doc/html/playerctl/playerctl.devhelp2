@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<book xmlns="http://www.devhelp.net/book" title="Playerctl Reference Manual" link="index.html" author="" name="playerctl" version="2" language="c" online="http://dubstepdish.com/playerctl/index.html">
+  <chapters>
+    <sub name="Playerctl" link="ch01.html">
+      <sub name="PlayerctlPlayer" link="PlayerctlPlayer.html"/>
+      <sub name="PlayerctlPlayerManager" link="PlayerctlPlayerManager.html"/>
+      <sub name="playerctl-player-name" link="playerctl-playerctl-player-name.html"/>
+    </sub>
+    <sub name="Object Hierarchy" link="object-tree.html"/>
+    <sub name="API Index" link="api-index-full.html"/>
+    <sub name="Index of deprecated API" link="deprecated-api-index.html"/>
+    <sub name="Annotation Glossary" link="annotation-glossary.html"/>
+  </chapters>
+  <functions>
+    <keyword type="function" name="playerctl_player_new ()" link="PlayerctlPlayer.html#playerctl-player-new"/>
+    <keyword type="function" name="playerctl_player_new_for_source ()" link="PlayerctlPlayer.html#playerctl-player-new-for-source"/>
+    <keyword type="function" name="playerctl_player_new_from_name ()" link="PlayerctlPlayer.html#playerctl-player-new-from-name"/>
+    <keyword type="function" name="playerctl_list_players ()" link="PlayerctlPlayer.html#playerctl-list-players"/>
+    <keyword type="function" name="playerctl_player_on ()" link="PlayerctlPlayer.html#playerctl-player-on" deprecated="2.0.0: Use g_object_connect() to listen to events."/>
+    <keyword type="function" name="playerctl_player_open ()" link="PlayerctlPlayer.html#playerctl-player-open"/>
+    <keyword type="function" name="playerctl_player_play_pause ()" link="PlayerctlPlayer.html#playerctl-player-play-pause"/>
+    <keyword type="function" name="playerctl_player_play ()" link="PlayerctlPlayer.html#playerctl-player-play"/>
+    <keyword type="function" name="playerctl_player_stop ()" link="PlayerctlPlayer.html#playerctl-player-stop"/>
+    <keyword type="function" name="playerctl_player_seek ()" link="PlayerctlPlayer.html#playerctl-player-seek"/>
+    <keyword type="function" name="playerctl_player_pause ()" link="PlayerctlPlayer.html#playerctl-player-pause"/>
+    <keyword type="function" name="playerctl_player_next ()" link="PlayerctlPlayer.html#playerctl-player-next"/>
+    <keyword type="function" name="playerctl_player_previous ()" link="PlayerctlPlayer.html#playerctl-player-previous"/>
+    <keyword type="function" name="playerctl_player_print_metadata_prop ()" link="PlayerctlPlayer.html#playerctl-player-print-metadata-prop"/>
+    <keyword type="function" name="playerctl_player_get_artist ()" link="PlayerctlPlayer.html#playerctl-player-get-artist"/>
+    <keyword type="function" name="playerctl_player_get_title ()" link="PlayerctlPlayer.html#playerctl-player-get-title"/>
+    <keyword type="function" name="playerctl_player_get_album ()" link="PlayerctlPlayer.html#playerctl-player-get-album"/>
+    <keyword type="function" name="playerctl_player_set_volume ()" link="PlayerctlPlayer.html#playerctl-player-set-volume"/>
+    <keyword type="function" name="playerctl_player_get_position ()" link="PlayerctlPlayer.html#playerctl-player-get-position"/>
+    <keyword type="function" name="playerctl_player_set_position ()" link="PlayerctlPlayer.html#playerctl-player-set-position"/>
+    <keyword type="function" name="playerctl_player_set_loop_status ()" link="PlayerctlPlayer.html#playerctl-player-set-loop-status"/>
+    <keyword type="function" name="playerctl_player_set_shuffle ()" link="PlayerctlPlayer.html#playerctl-player-set-shuffle"/>
+    <keyword type="enum" name="enum PlayerctlPlaybackStatus" link="PlayerctlPlayer.html#PlayerctlPlaybackStatus"/>
+    <keyword type="enum" name="enum PlayerctlLoopStatus" link="PlayerctlPlayer.html#PlayerctlLoopStatus"/>
+    <keyword type="property" name="The “can-control” property" link="PlayerctlPlayer.html#PlayerctlPlayer--can-control"/>
+    <keyword type="property" name="The “can-go-next” property" link="PlayerctlPlayer.html#PlayerctlPlayer--can-go-next"/>
+    <keyword type="property" name="The “can-go-previous” property" link="PlayerctlPlayer.html#PlayerctlPlayer--can-go-previous"/>
+    <keyword type="property" name="The “can-pause” property" link="PlayerctlPlayer.html#PlayerctlPlayer--can-pause"/>
+    <keyword type="property" name="The “can-play” property" link="PlayerctlPlayer.html#PlayerctlPlayer--can-play"/>
+    <keyword type="property" name="The “can-seek” property" link="PlayerctlPlayer.html#PlayerctlPlayer--can-seek"/>
+    <keyword type="property" name="The “loop-status” property" link="PlayerctlPlayer.html#PlayerctlPlayer--loop-status"/>
+    <keyword type="property" name="The “metadata” property" link="PlayerctlPlayer.html#PlayerctlPlayer--metadata"/>
+    <keyword type="property" name="The “playback-status” property" link="PlayerctlPlayer.html#PlayerctlPlayer--playback-status"/>
+    <keyword type="property" name="The “player-instance” property" link="PlayerctlPlayer.html#PlayerctlPlayer--player-instance"/>
+    <keyword type="property" name="The “player-name” property" link="PlayerctlPlayer.html#PlayerctlPlayer--player-name"/>
+    <keyword type="property" name="The “position” property" link="PlayerctlPlayer.html#PlayerctlPlayer--position"/>
+    <keyword type="property" name="The “shuffle” property" link="PlayerctlPlayer.html#PlayerctlPlayer--shuffle"/>
+    <keyword type="property" name="The “source” property" link="PlayerctlPlayer.html#PlayerctlPlayer--source"/>
+    <keyword type="property" name="The “status” property" link="PlayerctlPlayer.html#PlayerctlPlayer--status"/>
+    <keyword type="property" name="The “volume” property" link="PlayerctlPlayer.html#PlayerctlPlayer--volume"/>
+    <keyword type="signal" name="The “exit” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-exit"/>
+    <keyword type="signal" name="The “loop-status” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-loop-status"/>
+    <keyword type="signal" name="The “metadata” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-metadata"/>
+    <keyword type="signal" name="The “pause” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-pause"/>
+    <keyword type="signal" name="The “play” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-play"/>
+    <keyword type="signal" name="The “playback-status” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-playback-status"/>
+    <keyword type="signal" name="The “seeked” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-seeked"/>
+    <keyword type="signal" name="The “shuffle” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-shuffle"/>
+    <keyword type="signal" name="The “stop” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-stop"/>
+    <keyword type="signal" name="The “volume” signal" link="PlayerctlPlayer.html#PlayerctlPlayer-volume"/>
+    <keyword type="function" name="playerctl_player_manager_new ()" link="PlayerctlPlayerManager.html#playerctl-player-manager-new"/>
+    <keyword type="function" name="playerctl_player_manager_manage_player ()" link="PlayerctlPlayerManager.html#playerctl-player-manager-manage-player"/>
+    <keyword type="function" name="playerctl_player_manager_set_sort_func ()" link="PlayerctlPlayerManager.html#playerctl-player-manager-set-sort-func"/>
+    <keyword type="function" name="playerctl_player_manager_move_player_to_top ()" link="PlayerctlPlayerManager.html#playerctl-player-manager-move-player-to-top"/>
+    <keyword type="property" name="The “player-names” property" link="PlayerctlPlayerManager.html#PlayerctlPlayerManager--player-names"/>
+    <keyword type="property" name="The “players” property" link="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players"/>
+    <keyword type="signal" name="The “name-appeared” signal" link="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-appeared"/>
+    <keyword type="signal" name="The “name-vanished” signal" link="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-vanished"/>
+    <keyword type="signal" name="The “player-appeared” signal" link="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-appeared"/>
+    <keyword type="signal" name="The “player-vanished” signal" link="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-vanished"/>
+    <keyword type="function" name="playerctl_player_name_free ()" link="playerctl-playerctl-player-name.html#playerctl-player-name-free"/>
+    <keyword type="function" name="playerctl_player_name_copy ()" link="playerctl-playerctl-player-name.html#playerctl-player-name-copy"/>
+    <keyword type="enum" name="enum PlayerctlSource" link="playerctl-playerctl-player-name.html#PlayerctlSource"/>
+    <keyword type="struct" name="struct PlayerctlPlayerName" link="playerctl-playerctl-player-name.html#PlayerctlPlayerName-struct"/>
+    <keyword type="constant" name="PLAYERCTL_PLAYBACK_STATUS_PLAYING" link="PlayerctlPlayer.html#PLAYERCTL-PLAYBACK-STATUS-PLAYING:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_PLAYBACK_STATUS_PAUSED" link="PlayerctlPlayer.html#PLAYERCTL-PLAYBACK-STATUS-PAUSED:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_PLAYBACK_STATUS_STOPPED" link="PlayerctlPlayer.html#PLAYERCTL-PLAYBACK-STATUS-STOPPED:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_LOOP_STATUS_NONE" link="PlayerctlPlayer.html#PLAYERCTL-LOOP-STATUS-NONE:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_LOOP_STATUS_TRACK" link="PlayerctlPlayer.html#PLAYERCTL-LOOP-STATUS-TRACK:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_LOOP_STATUS_PLAYLIST" link="PlayerctlPlayer.html#PLAYERCTL-LOOP-STATUS-PLAYLIST:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_SOURCE_NONE" link="playerctl-playerctl-player-name.html#PLAYERCTL-SOURCE-NONE:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_SOURCE_DBUS_SESSION" link="playerctl-playerctl-player-name.html#PLAYERCTL-SOURCE-DBUS-SESSION:CAPS"/>
+    <keyword type="constant" name="PLAYERCTL_SOURCE_DBUS_SYSTEM" link="playerctl-playerctl-player-name.html#PLAYERCTL-SOURCE-DBUS-SYSTEM:CAPS"/>
+    <keyword type="member" name="PlayerctlPlayerName-struct.name" link="playerctl-playerctl-player-name.html#PlayerctlPlayerName-struct.name"/>
+    <keyword type="member" name="PlayerctlPlayerName-struct.instance" link="playerctl-playerctl-player-name.html#PlayerctlPlayerName-struct.instance"/>
+    <keyword type="member" name="PlayerctlPlayerName-struct.source" link="playerctl-playerctl-player-name.html#PlayerctlPlayerName-struct.source"/>
+  </functions>
+</book>

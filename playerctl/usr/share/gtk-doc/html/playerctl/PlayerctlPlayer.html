@@ -1,0 +1,1805 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>PlayerctlPlayer: Playerctl Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="Playerctl Reference Manual">
+<link rel="up" href="ch01.html" title="Playerctl">
+<link rel="prev" href="ch01.html" title="Playerctl">
+<link rel="next" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayer.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayer.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayer.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayer.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ch01.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="PlayerctlPlayerManager.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="PlayerctlPlayer"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="PlayerctlPlayer.top_of_page"></a>PlayerctlPlayer</span></h2>
+<p>PlayerctlPlayer — A class to control a media player.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="returnvalue">PlayerctlPlayer</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-new" title="playerctl_player_new ()">playerctl_player_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="returnvalue">PlayerctlPlayer</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-new-for-source" title="playerctl_player_new_for_source ()">playerctl_player_new_for_source</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="returnvalue">PlayerctlPlayer</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-new-from-name" title="playerctl_player_new_from_name ()">playerctl_player_new_from_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GList</span> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-list-players" title="playerctl_list_players ()">playerctl_list_players</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-on" title="playerctl_player_on ()">playerctl_player_on</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-open" title="playerctl_player_open ()">playerctl_player_open</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-play-pause" title="playerctl_player_play_pause ()">playerctl_player_play_pause</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-play" title="playerctl_player_play ()">playerctl_player_play</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-stop" title="playerctl_player_stop ()">playerctl_player_stop</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-seek" title="playerctl_player_seek ()">playerctl_player_seek</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-pause" title="playerctl_player_pause ()">playerctl_player_pause</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-next" title="playerctl_player_next ()">playerctl_player_next</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-previous" title="playerctl_player_previous ()">playerctl_player_previous</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-print-metadata-prop" title="playerctl_player_print_metadata_prop ()">playerctl_player_print_metadata_prop</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-get-artist" title="playerctl_player_get_artist ()">playerctl_player_get_artist</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-get-title" title="playerctl_player_get_title ()">playerctl_player_get_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-get-album" title="playerctl_player_get_album ()">playerctl_player_get_album</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-set-volume" title="playerctl_player_set_volume ()">playerctl_player_set_volume</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint64</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-get-position" title="playerctl_player_get_position ()">playerctl_player_get_position</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-set-position" title="playerctl_player_set_position ()">playerctl_player_set_position</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-set-loop-status" title="playerctl_player_set_loop_status ()">playerctl_player_set_loop_status</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-set-shuffle" title="playerctl_player_set_shuffle ()">playerctl_player_set_shuffle</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--can-control" title="The “can-control” property">can-control</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--can-go-next" title="The “can-go-next” property">can-go-next</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--can-go-previous" title="The “can-go-previous” property">can-go-previous</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--can-pause" title="The “can-pause” property">can-pause</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--can-play" title="The “can-play” property">can-play</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--can-seek" title="The “can-seek” property">can-seek</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="PlayerctlPlayer.html#PlayerctlLoopStatus" title="enum PlayerctlLoopStatus"><span class="type">PlayerctlLoopStatus</span></a></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--loop-status" title="The “loop-status” property">loop-status</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">GVariant</span> *</td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--metadata" title="The “metadata” property">metadata</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlaybackStatus" title="enum PlayerctlPlaybackStatus"><span class="type">PlayerctlPlaybackStatus</span></a></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--playback-status" title="The “playback-status” property">playback-status</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--player-instance" title="The “player-instance” property">player-instance</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--player-name" title="The “player-name” property">player-name</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gint64</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--position" title="The “position” property">position</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--shuffle" title="The “shuffle” property">shuffle</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlSource" title="enum PlayerctlSource"><span class="type">PlayerctlSource</span></a></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--source" title="The “source” property">source</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--status" title="The “status” property">status</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">double</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer--volume" title="The “volume” property">volume</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-exit" title="The “exit” signal">exit</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-loop-status" title="The “loop-status” signal">loop-status</a></td>
+<td class="signal_flags">Has Details</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-metadata" title="The “metadata” signal">metadata</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-pause" title="The “pause” signal">pause</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-play" title="The “play” signal">play</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-playback-status" title="The “playback-status” signal">playback-status</a></td>
+<td class="signal_flags">Has Details</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-seeked" title="The “seeked” signal">seeked</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-shuffle" title="The “shuffle” signal">shuffle</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-stop" title="The “stop” signal">stop</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlayer-volume" title="The “volume” signal">volume</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlPlaybackStatus" title="enum PlayerctlPlaybackStatus">PlayerctlPlaybackStatus</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="PlayerctlPlayer.html#PlayerctlLoopStatus" title="enum PlayerctlLoopStatus">PlayerctlLoopStatus</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> PlayerctlPlayer
+</pre>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.description"></a><h2>Description</h2>
+<p>The <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> represents a proxy connection to a media player through
+an IPC interface that is capable of performing commands and executing
+queries on the player for properties and metadata.</p>
+<p>If you know the name of your player and that it is running, you can use
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-new" title="playerctl_player_new ()"><code class="function">playerctl_player_new()</code></a> giving the player name to connect to it. The player
+names given are the same as you can get with the binary <code class="literal">playerctl
+--list-all</code> command. Using this function will get you the first instance of
+ the player it can find, or the exact instance if you pass the instance as
+ the player name.</p>
+<p>If you would like to connect to a player dynamically, you can list players
+to be controlled with <a class="link" href="PlayerctlPlayer.html#playerctl-list-players" title="playerctl_list_players ()"><code class="function">playerctl_list_players()</code></a> or use the
+<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> class and read the list of player name containers in
+the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--player-names" title="The “player-names” property"><span class="type">“player-names”</span></a> property or listen to the
+<a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-appeared" title="The “name-appeared” signal"><span class="type">“name-appeared”</span></a> event. If you have a
+<a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a>, you can use the <a class="link" href="PlayerctlPlayer.html#playerctl-player-new-from-name" title="playerctl_player_new_from_name ()"><code class="function">playerctl_player_new_from_name()</code></a>
+function to create a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> from this name.</p>
+<p>Once you have a player, you can give it commands to play, pause, stop, open
+a file, etc with the provided functions listed below. You can also query for
+properties such as the playback status, position, and shuffle status. Each
+of these has an event that will be emitted when these properties change
+during a main loop.</p>
+<p>For examples on how to use the <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a>, see the <code class="literal">examples</code>
+directory in the git repository.</p>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="playerctl-player-new"></a><h3>playerctl_player_new ()</h3>
+<pre class="programlisting"><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="returnvalue">PlayerctlPlayer</span></a> *
+playerctl_player_new (<em class="parameter"><code>const <span class="type">gchar</span> *player_name</code></em>,
+                      <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Allocates a new <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> and tries to connect to an instance of the
+player with the given name.</p>
+<div class="refsect3">
+<a name="playerctl-player-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player_name</p></td>
+<td class="parameter_description"><p>The name to use to find the bus name of the player. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>The location of a GError or NULL</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-new.returns"></a><h4>Returns</h4>
+<p>A new <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> connected to an instance of
+the player or NULL if an error occurred. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-new-for-source"></a><h3>playerctl_player_new_for_source ()</h3>
+<pre class="programlisting"><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="returnvalue">PlayerctlPlayer</span></a> *
+playerctl_player_new_for_source (<em class="parameter"><code>const <span class="type">gchar</span> *player_name</code></em>,
+                                 <em class="parameter"><code><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlSource" title="enum PlayerctlSource"><span class="type">PlayerctlSource</span></a> source</code></em>,
+                                 <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Allocates a new <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> and tries to connect to an instance of the
+player with the given name from the given source.</p>
+<div class="refsect3">
+<a name="playerctl-player-new-for-source.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player_name</p></td>
+<td class="parameter_description"><p>The name to use to find the bus name of the player. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>source</p></td>
+<td class="parameter_description"><p>The source where the player name is.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>The location of a GError or NULL</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-new-for-source.returns"></a><h4>Returns</h4>
+<p>A new <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> connected to an instance of
+the player or NULL if an error occurred. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-new-from-name"></a><h3>playerctl_player_new_from_name ()</h3>
+<pre class="programlisting"><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="returnvalue">PlayerctlPlayer</span></a> *
+playerctl_player_new_from_name (<em class="parameter"><code><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a> *player_name</code></em>,
+                                <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Allocates a new <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> and tries to connect to the player
+identified by the <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a>.</p>
+<div class="refsect3">
+<a name="playerctl-player-new-from-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player_name</p></td>
+<td class="parameter_description"><p>The name type to use to find the player</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>The location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-new-from-name.returns"></a><h4>Returns</h4>
+<p>A new <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> connected to the player or
+NULL if an error occurred. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-list-players"></a><h3>playerctl_list_players ()</h3>
+<pre class="programlisting"><span class="returnvalue">GList</span> *
+playerctl_list_players (<em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Lists all the players that can be controlled by Playerctl.</p>
+<div class="refsect3">
+<a name="playerctl-list-players.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>The location of a GError or NULL</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-list-players.returns"></a><h4>Returns</h4>
+<p>A list of player names. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> PlayerctlPlayerName]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-on"></a><h3>playerctl_player_on ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_on (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                     <em class="parameter"><code>const <span class="type">gchar</span> *event</code></em>,
+                     <em class="parameter"><code><span class="type">GClosure</span> *callback</code></em>,
+                     <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">playerctl_player_on</code> has been deprecated since version 2.0.0 and should not be used in newly-written code.</p>
+<p>Use <code class="function">g_object_connect()</code> to listen to events.</p>
+</div>
+<p>A convenience function for bindings to subscribe to an event with a callback</p>
+<div class="refsect3">
+<a name="playerctl-player-on.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>event</p></td>
+<td class="parameter_description"><p>the event to subscribe to</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>callback</p></td>
+<td class="parameter_description"><p>the callback to run on the event</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-open"></a><h3>playerctl_player_open ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_open (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                       <em class="parameter"><code><span class="type">gchar</span> *uri</code></em>,
+                       <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to open given URI</p>
+<div class="refsect3">
+<a name="playerctl-player-open.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>uri</p></td>
+<td class="parameter_description"><p>the URI to open, either a file name or an external URL</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-play-pause"></a><h3>playerctl_player_play_pause ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_play_pause (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                             <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to play if it is paused or pause if it is playing</p>
+<div class="refsect3">
+<a name="playerctl-player-play-pause.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-play"></a><h3>playerctl_player_play ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_play (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                       <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to play</p>
+<div class="refsect3">
+<a name="playerctl-player-play.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-stop"></a><h3>playerctl_player_stop ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_stop (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                       <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to stop</p>
+<div class="refsect3">
+<a name="playerctl-player-stop.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-seek"></a><h3>playerctl_player_seek ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_seek (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                       <em class="parameter"><code><span class="type">gint64</span> offset</code></em>,
+                       <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to seek forward by offset given in microseconds.</p>
+<div class="refsect3">
+<a name="playerctl-player-seek.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>offset</p></td>
+<td class="parameter_description"><p>the offset to seek forward to in microseconds</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-pause"></a><h3>playerctl_player_pause ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_pause (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                        <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to pause</p>
+<div class="refsect3">
+<a name="playerctl-player-pause.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-next"></a><h3>playerctl_player_next ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_next (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                       <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to go to the next track</p>
+<div class="refsect3">
+<a name="playerctl-player-next.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-previous"></a><h3>playerctl_player_previous ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_previous (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                           <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Command the player to go to the previous track</p>
+<div class="refsect3">
+<a name="playerctl-player-previous.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-print-metadata-prop"></a><h3>playerctl_player_print_metadata_prop ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+playerctl_player_print_metadata_prop (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                                      <em class="parameter"><code>const <span class="type">gchar</span> *property</code></em>,
+                                      <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Gets the given property from the metadata of the current track. If property
+is null, prints all the metadata properties. Returns NULL if no track is
+playing.</p>
+<div class="refsect3">
+<a name="playerctl-player-print-metadata-prop.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>property</p></td>
+<td class="parameter_description"><p>the property from the metadata to print. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-print-metadata-prop.returns"></a><h4>Returns</h4>
+<p>The artist from the metadata of the current track. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-get-artist"></a><h3>playerctl_player_get_artist ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+playerctl_player_get_artist (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                             <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Gets the artist from the metadata of the current track, or NULL if no
+track is playing.</p>
+<div class="refsect3">
+<a name="playerctl-player-get-artist.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-get-artist.returns"></a><h4>Returns</h4>
+<p>The artist from the metadata of the current track. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-get-title"></a><h3>playerctl_player_get_title ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+playerctl_player_get_title (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                            <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Gets the title from the metadata of the current track, or NULL if
+no track is playing.</p>
+<div class="refsect3">
+<a name="playerctl-player-get-title.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-get-title.returns"></a><h4>Returns</h4>
+<p>The title from the metadata of the current track. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-get-album"></a><h3>playerctl_player_get_album ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+playerctl_player_get_album (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                            <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Gets the album from the metadata of the current track, or NULL if
+no track is playing.</p>
+<div class="refsect3">
+<a name="playerctl-player-get-album.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-get-album.returns"></a><h4>Returns</h4>
+<p>The album from the metadata of the current track. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-set-volume"></a><h3>playerctl_player_set_volume ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_set_volume (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                             <em class="parameter"><code><span class="type">gdouble</span> volume</code></em>,
+                             <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Sets the volume level for the player from 0.0 for no volume to 1.0 for
+maximum volume. Passing negative numbers should set the volume to 0.0.</p>
+<div class="refsect3">
+<a name="playerctl-player-set-volume.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>volume</p></td>
+<td class="parameter_description"><p>the volume level from 0.0 to 1.0</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-get-position"></a><h3>playerctl_player_get_position ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint64</span>
+playerctl_player_get_position (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                               <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Gets the position of the current track in microseconds ignoring the property
+cache.</p>
+<div class="refsect3">
+<a name="playerctl-player-get-position.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-set-position"></a><h3>playerctl_player_set_position ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_set_position (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                               <em class="parameter"><code><span class="type">gint64</span> position</code></em>,
+                               <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Sets the absolute position of the current track to the given position in microseconds.</p>
+<div class="refsect3">
+<a name="playerctl-player-set-position.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>position</p></td>
+<td class="parameter_description"><p>The absolute position in the track to set as the position</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-set-loop-status"></a><h3>playerctl_player_set_loop_status ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_set_loop_status (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                                  <em class="parameter"><code><a class="link" href="PlayerctlPlayer.html#PlayerctlLoopStatus" title="enum PlayerctlLoopStatus"><span class="type">PlayerctlLoopStatus</span></a> status</code></em>,
+                                  <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Set the loop status of the player. Can be set to either None, Track, or Playlist.</p>
+<div class="refsect3">
+<a name="playerctl-player-set-loop-status.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>status</p></td>
+<td class="parameter_description"><p>the requested <a class="link" href="PlayerctlPlayer.html#PlayerctlLoopStatus" title="enum PlayerctlLoopStatus"><span class="type">PlayerctlLoopStatus</span></a> to set the player to</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-set-shuffle"></a><h3>playerctl_player_set_shuffle ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_set_shuffle (<em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *self</code></em>,
+                              <em class="parameter"><code><span class="type">gboolean</span> shuffle</code></em>,
+                              <em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Request to set the shuffle state of the player, either on or off.</p>
+<div class="refsect3">
+<a name="playerctl-player-set-shuffle.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>shuffle</p></td>
+<td class="parameter_description"><p>whether to enable shuffle</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>the location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="PlayerctlPlaybackStatus"></a><h3>enum PlayerctlPlaybackStatus</h3>
+<p>Playback status enumeration for a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p>
+<div class="refsect3">
+<a name="PlayerctlPlaybackStatus.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-PLAYBACK-STATUS-PLAYING:CAPS"></a>PLAYERCTL_PLAYBACK_STATUS_PLAYING</p></td>
+<td class="enum_member_description">
+<p>A track is currently playing.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-PLAYBACK-STATUS-PAUSED:CAPS"></a>PLAYERCTL_PLAYBACK_STATUS_PAUSED</p></td>
+<td class="enum_member_description">
+<p>A track is currently paused.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-PLAYBACK-STATUS-STOPPED:CAPS"></a>PLAYERCTL_PLAYBACK_STATUS_STOPPED</p></td>
+<td class="enum_member_description">
+<p>There is no track currently playing.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlLoopStatus"></a><h3>enum PlayerctlLoopStatus</h3>
+<p>Loop status enumeration for a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a></p>
+<div class="refsect3">
+<a name="PlayerctlLoopStatus.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-LOOP-STATUS-NONE:CAPS"></a>PLAYERCTL_LOOP_STATUS_NONE</p></td>
+<td class="enum_member_description">
+<p>The playback will stop when there are no more tracks to play.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-LOOP-STATUS-TRACK:CAPS"></a>PLAYERCTL_LOOP_STATUS_TRACK</p></td>
+<td class="enum_member_description">
+<p>The current track will start again from the beginning once it has
+finished playing.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-LOOP-STATUS-PLAYLIST:CAPS"></a>PLAYERCTL_LOOP_STATUS_PLAYLIST</p></td>
+<td class="enum_member_description">
+<p>The playback loops through a list of tracks.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="PlayerctlPlayer--can-control"></a><h3>The <code class="literal">“can-control”</code> property</h3>
+<pre class="programlisting">  “can-control”              <span class="type">gboolean</span></pre>
+<p>Whether the player can be controlled by playerctl.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--can-go-next"></a><h3>The <code class="literal">“can-go-next”</code> property</h3>
+<pre class="programlisting">  “can-go-next”              <span class="type">gboolean</span></pre>
+<p>Whether the player can go to the next track.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--can-go-previous"></a><h3>The <code class="literal">“can-go-previous”</code> property</h3>
+<pre class="programlisting">  “can-go-previous”          <span class="type">gboolean</span></pre>
+<p>Whether the player can go to the previous track.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--can-pause"></a><h3>The <code class="literal">“can-pause”</code> property</h3>
+<pre class="programlisting">  “can-pause”                <span class="type">gboolean</span></pre>
+<p>Whether the player can pause.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--can-play"></a><h3>The <code class="literal">“can-play”</code> property</h3>
+<pre class="programlisting">  “can-play”                 <span class="type">gboolean</span></pre>
+<p>Whether the player can start playing and has a current track.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--can-seek"></a><h3>The <code class="literal">“can-seek”</code> property</h3>
+<pre class="programlisting">  “can-seek”                 <span class="type">gboolean</span></pre>
+<p>Whether the position of the player can be controlled.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--loop-status"></a><h3>The <code class="literal">“loop-status”</code> property</h3>
+<pre class="programlisting">  “loop-status”              <a class="link" href="PlayerctlPlayer.html#PlayerctlLoopStatus" title="enum PlayerctlLoopStatus"><span class="type">PlayerctlLoopStatus</span></a></pre>
+<p>The loop status of the player.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: PLAYERCTL_LOOP_STATUS_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--metadata"></a><h3>The <code class="literal">“metadata”</code> property</h3>
+<pre class="programlisting">  “metadata”                 <span class="type">GVariant</span> *</pre>
+<p>The metadata of the currently playing track as an array of key-value pairs. The metadata available depends on the track, but may include the artist, title, length, art url, and other metadata.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Allowed values: GVariant&lt;a{sv}&gt;</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--playback-status"></a><h3>The <code class="literal">“playback-status”</code> property</h3>
+<pre class="programlisting">  “playback-status”          <a class="link" href="PlayerctlPlayer.html#PlayerctlPlaybackStatus" title="enum PlayerctlPlaybackStatus"><span class="type">PlayerctlPlaybackStatus</span></a></pre>
+<p>Whether the player is playing, paused, or stopped.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: PLAYERCTL_PLAYBACK_STATUS_STOPPED</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--player-instance"></a><h3>The <code class="literal">“player-instance”</code> property</h3>
+<pre class="programlisting">  “player-instance”          <span class="type">char</span> *</pre>
+<p>An instance name that identifies this player on the source.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--player-name"></a><h3>The <code class="literal">“player-name”</code> property</h3>
+<pre class="programlisting">  “player-name”              <span class="type">char</span> *</pre>
+<p>The name of the type of player this is. The instance is fully qualified with the player-instance and the source.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--position"></a><h3>The <code class="literal">“position”</code> property</h3>
+<pre class="programlisting">  “position”                 <span class="type">gint64</span></pre>
+<p>The position in the current track of the player in microseconds.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--shuffle"></a><h3>The <code class="literal">“shuffle”</code> property</h3>
+<pre class="programlisting">  “shuffle”                  <span class="type">gboolean</span></pre>
+<p>A value of false indicates that playback is progressing linearly through a playlist, while true means playback is progressing through a playlist in some other order.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--source"></a><h3>The <code class="literal">“source”</code> property</h3>
+<pre class="programlisting">  “source”                   <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlSource" title="enum PlayerctlSource"><span class="type">PlayerctlSource</span></a></pre>
+<p>The source of this player. Currently supported sources are the DBus session bus and DBus system bus.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: PLAYERCTL_SOURCE_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--status"></a><h3>The <code class="literal">“status”</code> property</h3>
+<pre class="programlisting">  “status”                   <span class="type">char</span> *</pre>
+<p>The playback status of the player as a string</p>
+<div class="warning">
+<p><code class="literal">PlayerctlPlayer:status</code> has been deprecated since version 2.0.0 and should not be used in newly-written code.</p>
+<p>Use the "playback-status" signal instead.</p>
+</div>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer--volume"></a><h3>The <code class="literal">“volume”</code> property</h3>
+<pre class="programlisting">  “volume”                   <span class="type">double</span></pre>
+<p>The volume level of the player. Setting this property directly is deprecated and this property will become read only in a future version. Use playerctl_player_set_volume() to set the volume.</p>
+<p>Owner: PlayerctlPlayer</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,100]</p>
+<p>Default value: 0</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayer.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="PlayerctlPlayer-exit"></a><h3>The <code class="literal">“exit”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the player has disconnected and will no longer respond to
+queries and commands.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-exit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-loop-status"></a><h3>The <code class="literal">“loop-status”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a>    *player,
+               <a class="link" href="PlayerctlPlayer.html#PlayerctlLoopStatus" title="enum PlayerctlLoopStatus"><span class="type">PlayerctlLoopStatus</span></a> loop_status,
+               <span class="type">gpointer</span>            user_data)</pre>
+<p>Emitted when the loop status changes.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-loop-status.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>loop_status</p></td>
+<td class="parameter_description"><p>the loop status of the player</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Has Details</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-metadata"></a><h3>The <code class="literal">“metadata”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">GVariant</span>        *metadata,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the metadata for the currently playing track changes.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-metadata.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>metadata</p></td>
+<td class="parameter_description"><p>the metadata for the currently playing track.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-pause"></a><h3>The <code class="literal">“pause”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the player pauses.</p>
+<div class="warning">
+<p><code class="literal">PlayerctlPlayer::pause</code> has been deprecated since version 2.0.0 and should not be used in newly-written code.</p>
+<p>Use the "playback-status::paused" signal instead.</p>
+</div>
+<div class="refsect3">
+<a name="PlayerctlPlayer-pause.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-play"></a><h3>The <code class="literal">“play”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the player begins to play.</p>
+<div class="warning">
+<p><code class="literal">PlayerctlPlayer::play</code> has been deprecated since version 2.0.0 and should not be used in newly-written code.</p>
+<p>Use the "playback-status::playing" signal instead.</p>
+</div>
+<div class="refsect3">
+<a name="PlayerctlPlayer-play.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-playback-status"></a><h3>The <code class="literal">“playback-status”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a>        *player,
+               <a class="link" href="PlayerctlPlayer.html#PlayerctlPlaybackStatus" title="enum PlayerctlPlaybackStatus"><span class="type">PlayerctlPlaybackStatus</span></a> playback_status,
+               <span class="type">gpointer</span>                user_data)</pre>
+<p>Emitted when the playback status changes. Detail will be "playing",
+"paused", or "stopped" which you can listen to by connecting to the
+"playback-status::[STATUS]" signal.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-playback-status.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>playback_status</p></td>
+<td class="parameter_description"><p>the playback status of the player</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Has Details</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-seeked"></a><h3>The <code class="literal">“seeked”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">gint64</span>           position,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the track changes position unexpectedly or begins in a
+position other than the beginning. Otherwise, position is assumed to
+progress normally.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-seeked.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>position</p></td>
+<td class="parameter_description"><p>the new position in the track in microseconds.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-shuffle"></a><h3>The <code class="literal">“shuffle”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">gboolean</span>         shuffle_status,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the shuffle status changes.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-shuffle.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>shuffle_status</p></td>
+<td class="parameter_description"><p>the shuffle status of the player</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-stop"></a><h3>The <code class="literal">“stop”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the player stops.</p>
+<div class="warning">
+<p><code class="literal">PlayerctlPlayer::stop</code> has been deprecated since version 2.0.0 and should not be used in newly-written code.</p>
+<p>Use the "playback-status::stopped" signal instead.</p>
+</div>
+<div class="refsect3">
+<a name="PlayerctlPlayer-stop.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayer-volume"></a><h3>The <code class="literal">“volume”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player,
+               <span class="type">double</span>           volume,
+               <span class="type">gpointer</span>         user_data)</pre>
+<p>Emitted when the volume of the player changes.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayer-volume.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>the player this event was emitted on</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>volume</p></td>
+<td class="parameter_description"><p>the volume of the player from 0 to 100.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.33.1</div>
+</body>
+</html>
