@@ -1,36 +1,64 @@
-<script>
+<script lang="ts">
 	import { windowMaximized } from '$lib/stores/window-store';
-
-	import { getCurrentWindow } from '@tauri-apps/api/window';
+	import { Window } from '@tauri-apps/api/window';
 	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { textColor, accentColor } from '$lib/stores/player-store';
 	import { openLink } from '$lib/utils';
-	import { onMount } from 'svelte';
-	const appWindow = getCurrentWindow();
+	import { onMount, onDestroy } from 'svelte';
+	
 	export let title = 'Stauri';
+	
+	const window = Window.getCurrent();
+	let unlistenResize: (() => void) | undefined;
 
-	const startDragging = async()=>{
-	await getCurrentWindow().startDragging();
-	}
-	// console.log('window info', getCurrentWindow().setAlwaysOnTop(true));
+	const startDragging = async () => {
+		await window.startDragging();
+	};
 
 	const minimizeWindow = async () => {
-		await appWindow.minimize();
+		await window.minimize();
 	};
 
 	const maximizeWindow = async () => {
-		await appWindow.toggleMaximize();
-		windowMaximized.update((value) => !value);
+		try {
+			const isMaximized = await window.isMaximized();
+			if (isMaximized) {
+				await window.unmaximize();
+				windowMaximized.set(false);
+			} else {
+				await window.maximize();
+				windowMaximized.set(true);
+			}
+		} catch (error) {
+			console.error('Window operation failed:', error);
+		}
 	};
 
 	const closeWindow = async () => {
-		await appWindow.close();
+		await window.close();
 	};
 
-	onMount(()=>{
-	startDragging();
-	})
+	const setupResizeListener = async () => {
+		unlistenResize = await window.onResized(() => {
+			window.isMaximized().then(isMaximized => {
+				windowMaximized.set(isMaximized);
+			});
+		});
+	};
+
+	onMount(async () => {
+		startDragging();
+		const isMaximized = await window.isMaximized();
+		windowMaximized.set(isMaximized);
+		await setupResizeListener();
+	});
+
+	onDestroy(() => {
+		if (unlistenResize) {
+			unlistenResize();
+		}
+	});
 </script>
 
 <div
