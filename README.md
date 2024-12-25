@@ -37,17 +37,7 @@ And of course Ohun itself is open source with a [repository](https://github.com/
 
 ## Installation
 
-Ohun requires [Playerctl](https://github.com/altdesktop/playerctl) to run.
-
-You can install Playerctl with
-
-```
-sudo apt install playerctl
-```
-
-or anyway your preference or distro dictates
-
-Download any release you want here [https://web.crabnebula.cloud/org/n3rd/ohun/releases](https://web.crabnebula.cloud/org/n3rd/ohun/releases/).
+Download any release you want [here](https://github.com/n3-rd/ohun/releases/).
 
 ## Development
 
@@ -66,11 +56,11 @@ Make a change in your file and instantaneously see your updates!
 *The main roadmap still prioritises cross-platform compatibility, especially with Windows. The biggest problem plaguing the compatibility is the fact that not many tools exist for getting media metadata from Windows and Mac. Ohun for Linux uses playerctl to get metadata for the currently playing media, but it only works on Linux, a few workarounds exist, some very crude and not healthy for this project. I currently do not have a lot of time to work on this project as I am on a tight schedule but will do my best to achieve cross-compatibility in the near future.*
 
 - **Cross compatibility**
-- Improvement in UI (some elements don't just behave...... right)
+✅ Improvement in UI (some elements don't just behave...... right)
 - Better offline support (caching images for offline use)
 - Better error handling
 - Fix "Always on top" (Minor Tauri Bug)
-- Embed playerctl in the Linux binary as a sidecar so the user does not need to install it manually.
+✅ Embed playerctl in the Linux binary as a sidecar so the user does not need to install it manually.
 
 ## License
 
