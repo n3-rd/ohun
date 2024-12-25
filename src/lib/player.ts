@@ -14,15 +14,33 @@ import { prominent } from 'color.js';
 import { getTextColor } from './ui';
 import { replaceSpecialChars } from './utils';
 import { notify } from './nofity';
+import { isLoading } from './stores/player-store';
+import { appError } from './stores/error-store';
 
 let previousTime: number | null = null;
 
 export const getCurrentPlaying = async () => {
-	const response: Song = await invoke('get_current_playing_song');
-	currentPlayingSong.set(response);
-	getLyrics(response.artist, response.title);
-	getPlayTime();
-	getAlbumArt(response.artist, response.title, response.album);
+	try {
+		isLoading.set(true);
+		const response: Song = await invoke('get_current_playing_song');
+		currentPlayingSong.set(response);
+		
+		if (!response.artist || !response.title) {
+			throw new Error('Missing song metadata');
+		}
+		
+		await Promise.all([
+			getLyrics(response.artist, response.title),
+			getPlayTime(),
+			getAlbumArt(response.artist, response.title, response.album)
+		]);
+		
+	} catch (error) {
+		console.error('Error getting current song:', error);
+		appError.set(error.message);
+	} finally {
+		isLoading.set(false);
+	}
 };
 
 export const getPlayTime = async () => {
