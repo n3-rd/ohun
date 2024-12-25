@@ -40,7 +40,10 @@
 			"signingIdentity": null
 		},
 		"resources": [],
-		"shortDescription": "Get synchronized song lyrics."
+		"shortDescription": "Get synchronized song lyrics.",
+		"externalBin": [
+			"binaries/playerctl"
+		]
 	},
 	"productName": "ohun",
 	"version": "2.0.1",

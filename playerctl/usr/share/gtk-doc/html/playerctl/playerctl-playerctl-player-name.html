@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>playerctl-player-name: Playerctl Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="Playerctl Reference Manual">
+<link rel="up" href="ch01.html" title="Playerctl">
+<link rel="prev" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager">
+<link rel="next" href="object-tree.html" title="Object Hierarchy">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#playerctl-playerctl-player-name.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#playerctl-playerctl-player-name.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="PlayerctlPlayerManager.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="object-tree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="playerctl-playerctl-player-name"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="playerctl-playerctl-player-name.top_of_page"></a>playerctl-player-name</span></h2>
+<p>playerctl-player-name — Contains connection information that fully qualifies a
+potential connection to a player.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="playerctl-playerctl-player-name.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="playerctl-playerctl-player-name.html#playerctl-player-name-free" title="playerctl_player_name_free ()">playerctl_player_name_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="returnvalue">PlayerctlPlayerName</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="playerctl-playerctl-player-name.html#playerctl-player-name-copy" title="playerctl_player_name_copy ()">playerctl_player_name_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="PlayerctlPlayerName"></a><div class="refsect1">
+<a name="playerctl-playerctl-player-name.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlSource" title="enum PlayerctlSource">PlayerctlSource</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName-struct" title="struct PlayerctlPlayerName">PlayerctlPlayerName</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="playerctl-playerctl-player-name.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> PlayerctlPlayerName
+</pre>
+</div>
+<div class="refsect1">
+<a name="playerctl-playerctl-player-name.description"></a><h2>Description</h2>
+<p>Contains connection information that fully qualifies a potential connection
+to a player. You should not have to construct one of these directly. You can
+list the names that are available to control from the
+<a class="link" href="PlayerctlPlayer.html#playerctl-list-players" title="playerctl_list_players ()"><code class="function">playerctl_list_players()</code></a> function or use the
+<a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--player-names" title="The “player-names” property"><span class="type">“player-names”</span></a> property from a
+<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a>.</p>
+<p>Once you have gotten a player name like this, you can check the type of
+player with the "name" property to see if you are interested in connecting
+to it. If you are, you can pass it directly to the
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-new-from-name" title="playerctl_player_new_from_name ()"><code class="function">playerctl_player_new_from_name()</code></a> function to get a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> that is
+connected to this name and ready to command and query.</p>
+</div>
+<div class="refsect1">
+<a name="playerctl-playerctl-player-name.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="playerctl-player-name-free"></a><h3>playerctl_player_name_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_name_free (<em class="parameter"><code><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a> *name</code></em>);</pre>
+<p>Frees <em class="parameter"><code>name</code></em>
+. If <em class="parameter"><code>name</code></em>
+ is <code class="literal">NULL</code>, it simply returns.</p>
+<div class="refsect3">
+<a name="playerctl-player-name-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-name-copy"></a><h3>playerctl_player_name_copy ()</h3>
+<pre class="programlisting"><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="returnvalue">PlayerctlPlayerName</span></a> *
+playerctl_player_name_copy (<em class="parameter"><code><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a> *name</code></em>);</pre>
+<p>Creates a dynamically allocated name name container as a copy of
+<em class="parameter"><code>name</code></em>
+.</p>
+<div class="refsect3">
+<a name="playerctl-player-name-copy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-name-copy.returns"></a><h4>Returns</h4>
+<p>a newly-allocated copy of <em class="parameter"><code>name</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="playerctl-playerctl-player-name.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="PlayerctlSource"></a><h3>enum PlayerctlSource</h3>
+<p>The source of the name used to control the player.</p>
+<div class="refsect3">
+<a name="PlayerctlSource.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-SOURCE-NONE:CAPS"></a>PLAYERCTL_SOURCE_NONE</p></td>
+<td class="enum_member_description">
+<p>Only for unitialized players. Source will be chosen automatically.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-SOURCE-DBUS-SESSION:CAPS"></a>PLAYERCTL_SOURCE_DBUS_SESSION</p></td>
+<td class="enum_member_description">
+<p>The player is on the DBus session bus.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="PLAYERCTL-SOURCE-DBUS-SYSTEM:CAPS"></a>PLAYERCTL_SOURCE_DBUS_SYSTEM</p></td>
+<td class="enum_member_description">
+<p>The player is on the DBus system bus.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayerName-struct"></a><h3>struct PlayerctlPlayerName</h3>
+<pre class="programlisting">struct PlayerctlPlayerName {
+    gchar *name;
+    gchar *instance;
+    PlayerctlSource source;
+};
+</pre>
+<p>Event container for when names of players appear or disapear as the
+controllable media player applications open and close.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayerName.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="PlayerctlPlayerName-struct.name"></a>name</code></em>;</p></td>
+<td class="struct_member_description"><p>the name of the type of player.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="PlayerctlPlayerName-struct.instance"></a>instance</code></em>;</p></td>
+<td class="struct_member_description"><p>the complete name and instance of the player.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><a class="link" href="playerctl-playerctl-player-name.html#PlayerctlSource" title="enum PlayerctlSource"><span class="type">PlayerctlSource</span></a> <em class="structfield"><code><a name="PlayerctlPlayerName-struct.source"></a>source</code></em>;</p></td>
+<td class="struct_member_description"><p>the source of the player name.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.33.1</div>
+</body>
+</html>

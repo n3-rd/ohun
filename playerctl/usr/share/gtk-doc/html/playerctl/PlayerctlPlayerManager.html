@@ -1,0 +1,500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>PlayerctlPlayerManager: Playerctl Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="Playerctl Reference Manual">
+<link rel="up" href="ch01.html" title="Playerctl">
+<link rel="prev" href="PlayerctlPlayer.html" title="PlayerctlPlayer">
+<link rel="next" href="playerctl-playerctl-player-name.html" title="playerctl-player-name">
+<meta name="generator" content="GTK-Doc V1.33.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayerManager.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayerManager.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayerManager.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#PlayerctlPlayerManager.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="PlayerctlPlayer.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="playerctl-playerctl-player-name.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="PlayerctlPlayerManager"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="PlayerctlPlayerManager.top_of_page"></a>PlayerctlPlayerManager</span></h2>
+<p>PlayerctlPlayerManager — A class to watch for players appearing and vanishing.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="returnvalue">PlayerctlPlayerManager</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-new" title="playerctl_player_manager_new ()">playerctl_player_manager_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-manage-player" title="playerctl_player_manager_manage_player ()">playerctl_player_manager_manage_player</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-set-sort-func" title="playerctl_player_manager_set_sort_func ()">playerctl_player_manager_set_sort_func</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-move-player-to-top" title="playerctl_player_manager_move_player_to_top ()">playerctl_player_manager_move_player_to_top</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><span class="type">gpointer</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--player-names" title="The “player-names” property">player-names</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gpointer</span></td>
+<td class="property_name"><a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property">players</a></td>
+<td class="property_flags">Read</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-appeared" title="The “name-appeared” signal">name-appeared</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-vanished" title="The “name-vanished” signal">name-vanished</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-appeared" title="The “player-appeared” signal">player-appeared</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-vanished" title="The “player-vanished” signal">player-vanished</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> PlayerctlPlayerManager
+</pre>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.description"></a><h2>Description</h2>
+<p>The <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> is a class to watch for players appearing and
+vanishing. When a player opens and is available to control by <code class="literal">playerctl</code>,
+the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-appeared" title="The “name-appeared” signal"><span class="type">“name-appeared”</span></a> event will be emitted on the
+manager during the main loop. You can inspect this <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a> to
+see if you want to manage it. If you do, create a <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> from it
+with the <a class="link" href="PlayerctlPlayer.html#playerctl-player-new-from-name" title="playerctl_player_new_from_name ()"><code class="function">playerctl_player_new_from_name()</code></a> function. The manager is also
+capable of keeping an up-to-date list of players you want it to manage in
+the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property"><span class="type">“players”</span></a> list. These players are connected and
+should be able to be controlled. Managing players is optional, and you can
+do so manually if you like.</p>
+<p>When the player disconnects, the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-name-vanished" title="The “name-vanished” signal"><span class="type">“name-vanished”</span></a>
+event will be emitted. If the player is managed and is going to be removed
+from the list, the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-vanished" title="The “player-vanished” signal"><span class="type">“player-vanished”</span></a> event will also
+be emitted. After this event, the player will be cleaned up and removed from
+the manager.</p>
+<p>The manager has other features such as being able to keep the players in a
+sorted order and moving a player to the top of the list. The
+<a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--player-names" title="The “player-names” property"><span class="type">“player-names”</span></a> will always be in the order that they
+were known to appear after the manager was created.</p>
+<p>For examples on how to use the manager, see the <code class="literal">examples</code> folder in the git
+repository.</p>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="playerctl-player-manager-new"></a><h3>playerctl_player_manager_new ()</h3>
+<pre class="programlisting"><a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="returnvalue">PlayerctlPlayerManager</span></a> *
+playerctl_player_manager_new (<em class="parameter"><code><span class="type">GError</span> **err</code></em>);</pre>
+<p>Create a new player manager that contains a list of player names available
+in the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--player-names" title="The “player-names” property"><span class="type">“player-names”</span></a> property. You can create new
+players from the names with the <a class="link" href="PlayerctlPlayer.html#playerctl-player-new-from-name" title="playerctl_player_new_from_name ()"><code class="function">playerctl_player_new_from_name()</code></a> function
+and then start managing them with the
+<a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-manage-player" title="playerctl_player_manager_manage_player ()"><code class="function">playerctl_player_manager_manage_player()</code></a> function.</p>
+<div class="refsect3">
+<a name="playerctl-player-manager-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>err</p></td>
+<td class="parameter_description"><p>The location of a GError or NULL. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="playerctl-player-manager-new.returns"></a><h4>Returns</h4>
+<p>A new <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a>. </p>
+<p><span class="annotation">[<acronym title="The caller owns the data, and is responsible for free it."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-manager-manage-player"></a><h3>playerctl_player_manager_manage_player ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_manager_manage_player
+                               (<em class="parameter"><code><a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *manager</code></em>,
+                                <em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player</code></em>);</pre>
+<p>Add the given player to the list of managed players. Takes a reference to
+the player (so you can unref it after you call this function). The player
+will automatically be unreffed and removed from the list of
+<a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property"><span class="type">“players”</span></a> when
+it disconnects and the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-vanished" title="The “player-vanished” signal"><span class="type">“player-vanished”</span></a> signal will
+be emitted on the manager.</p>
+<div class="refsect3">
+<a name="playerctl-player-manager-manage-player.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>manager</p></td>
+<td class="parameter_description"><p>A <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>A <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> to manage</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-manager-set-sort-func"></a><h3>playerctl_player_manager_set_sort_func ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_manager_set_sort_func
+                               (<em class="parameter"><code><a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *manager</code></em>,
+                                <em class="parameter"><code><span class="type">GCompareDataFunc</span> sort_func</code></em>,
+                                <em class="parameter"><code><span class="type">gpointer</span> sort_data</code></em>,
+                                <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
+<p>Keeps the <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property"><span class="type">“players”</span></a> list of this manager in sorted order which is useful
+for using this list as a priority queue.</p>
+<div class="refsect3">
+<a name="playerctl-player-manager-set-sort-func.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>manager</p></td>
+<td class="parameter_description"><p>A <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sort_func</p></td>
+<td class="parameter_description"><p>The compare function to be used to sort the
+<a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property"><span class="type">“players”</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sort_data</p></td>
+<td class="parameter_description"><p>User data for the sort function. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>notify</p></td>
+<td class="parameter_description"><p>A function to notify when the sort function will no
+longer be used. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="playerctl-player-manager-move-player-to-top"></a><h3>playerctl_player_manager_move_player_to_top ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+playerctl_player_manager_move_player_to_top
+                               (<em class="parameter"><code><a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *manager</code></em>,
+                                <em class="parameter"><code><a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> *player</code></em>);</pre>
+<p>Moves the player to the top of the list of <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property"><span class="type">“players”</span></a>. If this manager has a
+sort function set with <a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-set-sort-func" title="playerctl_player_manager_set_sort_func ()"><code class="function">playerctl_player_manager_set_sort_func()</code></a>, the list of
+players will be sorted afterward, but will be on top of equal players in the
+sorted order.</p>
+<div class="refsect3">
+<a name="playerctl-player-manager-move-player-to-top.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>manager</p></td>
+<td class="parameter_description"><p>A <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>A <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> in the list of <a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager--players" title="The “players” property"><span class="type">“players”</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="PlayerctlPlayerManager--player-names"></a><h3>The <code class="literal">“player-names”</code> property</h3>
+<pre class="programlisting">  “player-names”             <span class="type">gpointer</span></pre>
+<p>A list of fully qualified player names that are currently available to control.</p>
+<p><span class="annotation">[<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> GList(PlayerctlPlayerName)]</span></p>
+<p>Owner: PlayerctlPlayerManager</p>
+<p>Flags: Read</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayerManager--players"></a><h3>The <code class="literal">“players”</code> property</h3>
+<pre class="programlisting">  “players”                  <span class="type">gpointer</span></pre>
+<p>A list of players that are currently connected and managed by this class.</p>
+<p><span class="annotation">[<acronym title="Override the parsed C type with given type."><span class="acronym">type</span></acronym> GList(PlayerctlPlayer)]</span></p>
+<p>Owner: PlayerctlPlayerManager</p>
+<p>Flags: Read</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="PlayerctlPlayerManager.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="PlayerctlPlayerManager-name-appeared"></a><h3>The <code class="literal">“name-appeared”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *self,
+               <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a>    *name,
+               <span class="type">gpointer</span>                user_data)</pre>
+<p>Emitted when a new name has appeared and is available to connect to. Use
+<a class="link" href="PlayerctlPlayer.html#playerctl-player-new-from-name" title="playerctl_player_new_from_name ()"><code class="function">playerctl_player_new_from_name()</code></a> to connect to the player and
+<a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-manage-player" title="playerctl_player_manager_manage_player ()"><code class="function">playerctl_player_manager_manage_player()</code></a> to add it to the managed list of
+players.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayerManager-name-appeared.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>the <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> on which the signal was emitted</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>A <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a> containing information about the name that
+has appeared.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayerManager-name-vanished"></a><h3>The <code class="literal">“name-vanished”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *self,
+               <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a>    *name,
+               <span class="type">gpointer</span>                user_data)</pre>
+<p>Emitted when the name has vanished and is no longer available to be
+controlled by playerctl. If the player is managed, it will automatically
+be removed from the list of players and the
+<a class="link" href="PlayerctlPlayerManager.html#PlayerctlPlayerManager-player-vanished" title="The “player-vanished” signal"><span class="type">“player-vanished”</span></a> signal will be emitted
+automatically.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayerManager-name-vanished.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>the <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> on which this signal was emitted.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>The <a class="link" href="playerctl-playerctl-player-name.html#PlayerctlPlayerName"><span class="type">PlayerctlPlayerName</span></a> containing connection information about
+the name that is going away.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayerManager-player-appeared"></a><h3>The <code class="literal">“player-appeared”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *self,
+               <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a>        *player,
+               <span class="type">gpointer</span>                user_data)</pre>
+<p>Emitted when a new player will be managed by this manager through a call
+to <a class="link" href="PlayerctlPlayerManager.html#playerctl-player-manager-manage-player" title="playerctl_player_manager_manage_player ()"><code class="function">playerctl_player_manager_manage_player()</code></a>.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayerManager-player-appeared.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>The <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> on which this event was emitted.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>The <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> that will be managed by this manager</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="PlayerctlPlayerManager-player-vanished"></a><h3>The <code class="literal">“player-vanished”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> *self,
+               <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a>        *player,
+               <span class="type">gpointer</span>                user_data)</pre>
+<p>Emitted when a player has disconnected and will no longer be managed by
+this manager. The player is removed from the list of players
+automatically.</p>
+<div class="refsect3">
+<a name="PlayerctlPlayerManager-player-vanished.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>self</p></td>
+<td class="parameter_description"><p>The <a class="link" href="PlayerctlPlayerManager.html" title="PlayerctlPlayerManager"><span class="type">PlayerctlPlayerManager</span></a> on which this event was emitted.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>player</p></td>
+<td class="parameter_description"><p>The <a class="link" href="PlayerctlPlayer.html" title="PlayerctlPlayer"><span class="type">PlayerctlPlayer</span></a> that will no longer be managed by this
+manager</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run First</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.33.1</div>
+</body>
+</html>
