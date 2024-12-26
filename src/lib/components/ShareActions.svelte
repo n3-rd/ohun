@@ -1,63 +1,52 @@
 <script lang="ts">
-	import { accentColor, albumArt, currentPlayingSong, textColor } from '$lib/stores/player-store';
-
-	import SingleModeIndicator from './SingleModeIndicator.svelte';
-	import { Separator } from '$lib/components/ui/separator';
-	import { Button } from '$lib/components/ui/button';
-	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { currentPlayingSong, textColor } from '$lib/stores/player-store';
+	import { Copy, Download } from 'lucide-svelte';
 	import Tip from './Tip.svelte';
 	import * as Popover from '$lib/components/ui/popover';
-	import { Skeleton } from '$lib/components/ui/skeleton';
-	import { Copy, Download, Redo, Share, Undo } from 'lucide-svelte';
-	import { setMultiLineMode, setSingleLineMode } from '$lib/preferences';
 	import { copyText } from 'svelte-copy';
-	import { parsedLyrics, plainLyrics } from '$lib/stores/lyricsStore';
+	import { plainLyrics } from '$lib/stores/lyricsStore';
 	import { downloadLyrics } from '$lib/player';
+	import { toast } from 'svelte-sonner';
 </script>
 
-<div class="flex justify-between gap-4 self-center rounded-xl" style="color: {$textColor}">
-	<Separator orientation="vertical" />
-	<div class="flex items-center gap-2">
-		<Popover.Root>
-			<Popover.Trigger>
-				<Tip text="Export">
-					<Button class="bg-transparent hover:bg-white/30 hover:backdrop-blur-sm">
-						<Share size="22" color={$textColor} />
-					</Button>
-				</Tip>
-			</Popover.Trigger>
-			<Popover.Content class="w-fit border-none  bg-white/30 shadow-none backdrop-blur-sm">
-				<div class="flex h-full items-center gap-6 px-4 py-2">
-					<Button
-						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4 
-						hover:bg-white/30 hover:backdrop-blur-sm
-						"
-						on:click={() => {
-							copyText($plainLyrics);
-						}}
-					>
-						<Tip text="Download LRC file">
-							<Copy size="22" color={$textColor} />
-						</Tip>
-						<p class="text-md" style="color: {$textColor};">Copy lyrics</p>
-					</Button>
-					<Button
-						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4 
-						hover:bg-white/30 hover:backdrop-blur-sm
-						
-						"
-						on:click={() => {
-							downloadLyrics();
-						}}
-					>
-						<Tip text="Download LRC file">
-							<Download size="22" color={$textColor} />
-						</Tip>
-						<p class="text-md" style="color: {$textColor};">Download LRC File</p>
-					</Button>
-				</div>
-			</Popover.Content>
-		</Popover.Root>
-	</div>
-	<Separator orientation="vertical" />
-</div>
+<Popover.Root>
+	<Popover.Trigger>
+		<Tip text="Share">
+			<button
+				class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70 transition-transform duration-200 hover:scale-110"
+				style="color: {$textColor};"
+			>
+				<Copy size="15" />
+			</button>
+		</Tip>
+	</Popover.Trigger>
+	<Popover.Content
+		class="border-none bg-white/30 shadow-none backdrop-blur-sm rounded-xl p-2"
+	>
+		<div class="flex flex-col gap-2">
+			<button
+				class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/20 transition-all duration-200 w-full"
+				style="color: {$textColor};"
+				on:click={() => {
+					copyText($plainLyrics);
+					toast.success('Lyrics copied to clipboard');
+				}}
+			>
+				<Copy size="15" />
+				<span class="text-sm">Copy lyrics</span>
+			</button>
+
+			<button
+				class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/20 transition-all duration-200 w-full"
+				style="color: {$textColor};"
+				on:click={() => {
+					downloadLyrics($currentPlayingSong.artist, $currentPlayingSong.title);
+					toast.success('Lyrics downloaded');
+				}}
+			>
+				<Download size="15" />
+				<span class="text-sm">Download lyrics</span>
+			</button>
+		</div>
+	</Popover.Content>
+</Popover.Root>
