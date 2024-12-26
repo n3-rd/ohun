@@ -14,7 +14,7 @@ jobs:
       matrix:
         include:
           - platform: 'ubuntu-22.04'
-            args: ''
+            args: '--target x86_64-unknown-linux-gnu'
           - platform: 'windows-latest'
             args: '--target x86_64-pc-windows-msvc'
 
@@ -47,7 +47,7 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform == 'windows-latest' && 'x86_64-pc-windows-msvc' || '' }}
+          targets: ${{ matrix.platform == 'windows-latest' && 'x86_64-pc-windows-msvc' || 'x86_64-unknown-linux-gnu' }}
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
@@ -56,6 +56,14 @@ jobs:
 
       - name: install frontend dependencies
         run: pnpm install
+
+      - name: Download playerctl binary
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          wget https://github.com/altdesktop/playerctl/releases/download/v2.4.1/playerctl-2.4.1_amd64.deb
+          dpkg -x playerctl-2.4.1_amd64.deb playerctl
+          mkdir -p src-tauri/binaries
+          cp playerctl/usr/bin/playerctl src-tauri/binaries/playerctl-x86_64-unknown-linux-gnu
 
       - uses: tauri-apps/tauri-action@v0
         env:
@@ -67,11 +75,3 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
-
-      - name: Download playerctl binary
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          wget https://github.com/altdesktop/playerctl/releases/download/v2.4.1/playerctl-2.4.1_amd64.deb
-          dpkg -x playerctl-2.4.1_amd64.deb playerctl
-          mkdir -p src-tauri/binaries
-          cp playerctl/usr/bin/playerctl src-tauri/binaries/playerctl-x86_64-unknown-linux-gnu

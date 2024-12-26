@@ -53,7 +53,7 @@
 		"resources": [],
 		"shortDescription": "Get synchronized song lyrics.",
 		"externalBin": [
-			"binaries/playerctl"
+			"binaries/playerctl-x86_64-unknown-linux-gnu"
 		]
 	},
 	"productName": "ohun",
