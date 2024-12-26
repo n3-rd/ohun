@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { windowMaximized } from '$lib/stores/window-store';
+	import { windowMaximized, windowAlwaysOnTop, windowFullscreen } from '$lib/stores/window-store';
 	import { Window } from '@tauri-apps/api/window';
-	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X } from 'lucide-svelte';
+	import { ExternalLink, Maximize2, MenuIcon, Minimize2, Minus, X, Pin, Fullscreen } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { textColor, accentColor } from '$lib/stores/player-store';
 	import { openLink } from '$lib/utils';
@@ -47,11 +47,34 @@
 		});
 	};
 
+	const toggleAlwaysOnTop = async () => {
+		try {
+			const isAlwaysOnTop = $windowAlwaysOnTop;
+			await window.setAlwaysOnTop(!isAlwaysOnTop);
+			windowAlwaysOnTop.set(!isAlwaysOnTop);
+		} catch (error) {
+			console.error('Failed to toggle always on top:', error);
+		}
+	};
+
+	const toggleFullscreen = async () => {
+		try {
+			const isFullscreen = await window.isFullscreen();
+			await window.setFullscreen(!isFullscreen);
+			windowFullscreen.set(!isFullscreen);
+		} catch (error) {
+			console.error('Failed to toggle fullscreen:', error);
+		}
+	};
+
 	onMount(async () => {
 		startDragging();
 		const isMaximized = await window.isMaximized();
 		windowMaximized.set(isMaximized);
 		await setupResizeListener();
+		windowAlwaysOnTop.set(false);
+		const isFullscreen = await window.isFullscreen();
+		windowFullscreen.set(isFullscreen);
 	});
 
 	onDestroy(() => {
@@ -106,30 +129,39 @@
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
+
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 			style="background-color: {$accentColor}; color: {$textColor};"
-			on:click={minimizeWindow}
+			on:click={toggleAlwaysOnTop}
+			title="Always on top"
 		>
-			<Minus size="15" stroke-width="3" />
+			<Pin size="15" stroke-width="3" class={$windowAlwaysOnTop ? 'rotate-45' : ''} />
 		</button>
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			style="background-color: {$accentColor}; color: {$textColor};"
-			on:click={maximizeWindow}
-		>
-			{#if $windowMaximized}
-				<Minimize2 size="15" stroke-width="3" />
-			{:else}
-				<Maximize2 size="15" stroke-width="3" />
-			{/if}
-		</button>
-		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			style="background-color: {$accentColor}; color: {$textColor};"
-			on:click={closeWindow}
-		>
-			<X size="15" stroke-width="3" />
-		</button>
+		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+		style="background-color: {$accentColor}; color: {$textColor};"
+		on:click={minimizeWindow}
+	>
+		<Minus size="15" stroke-width="3" />
+	</button>
+	<button
+		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+		style="background-color: {$accentColor}; color: {$textColor};"
+		on:click={maximizeWindow}
+	>
+		{#if $windowMaximized}
+			<Minimize2 size="15" stroke-width="3" />
+		{:else}
+			<Maximize2 size="15" stroke-width="3" />
+		{/if}
+	</button>
+	<button
+		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+		style="background-color: {$accentColor}; color: {$textColor};"
+		on:click={closeWindow}
+	>
+		<X size="15" stroke-width="3" />
+	</button>
 	</ul>
 </div>

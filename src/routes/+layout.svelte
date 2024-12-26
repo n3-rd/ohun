@@ -39,8 +39,7 @@
 		<div
 			in:fly={{ x: -200, duration: 300, delay: 300 }}
 			out:fly={{ x: 200, duration: 300 }}
-			class="select-none px-2 pt-10
-		"
+			class="select-none px-2 pt-10 pb-16"
 			style="background-color: {$accentColor}; color: {$textColor};"
 		>
 			<slot />

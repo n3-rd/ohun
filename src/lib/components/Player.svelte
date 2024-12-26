@@ -42,7 +42,7 @@
 </script>
 
 <div
-	class="absolute bottom-0 right-0 flex h-16 w-full select-none items-center justify-between bg-white/30 px-2 backdrop-blur-sm transition-colors duration-300 ease-in-out"
+	class="fixed bottom-0 right-0 flex h-16 w-full select-none items-center justify-between bg-white/30 px-2 backdrop-blur-sm transition-colors duration-300 ease-in-out"
 >
 	<div class="song-info flex w-[20%] items-center gap-3">
 		<div
