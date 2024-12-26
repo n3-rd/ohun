@@ -32,7 +32,13 @@
 		"windows": {
 			"certificateThumbprint": null,
 			"digestAlgorithm": "sha256",
-			"timestampUrl": ""
+			"timestampUrl": "",
+			"webviewInstallMode": {
+				"type": "downloadBootstrapper"
+			},
+			"wix": {
+				"language": "en-US"
+			}
 		},
 		"longDescription": "Get synchronized song lyrics and sing along with your favorite songs.",
 		"macOS": {
