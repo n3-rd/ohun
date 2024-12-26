@@ -12,7 +12,9 @@
 		"copyright": "n3rd",
 		"targets": [
 			"deb",
-			"rpm"
+			"rpm",
+			"msi",
+			"nsis"
 		],
 		"icon": [
 			"icons/32x32.png",
