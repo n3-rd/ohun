@@ -69,7 +69,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         run: |
-          mkdir -p src-tauri/binaries
+          New-Item -ItemType Directory -Force -Path src-tauri/binaries
           echo "@echo off" > src-tauri/binaries/playerctl.cmd
           echo "exit 0" >> src-tauri/binaries/playerctl.cmd
 
