@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - release
-
 jobs:
   publish-tauri:
     permissions:
@@ -58,20 +57,21 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install
 
-      - name: Download playerctl binary (Linux only)
+      - name: Download playerctl binary
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           wget https://github.com/altdesktop/playerctl/releases/download/v2.4.1/playerctl-2.4.1_amd64.deb
           dpkg -x playerctl-2.4.1_amd64.deb playerctl
           mkdir -p src-tauri/binaries
-          cp playerctl/usr/bin/playerctl "src-tauri/binaries/playerctl-${{ matrix.target }}"
+          cp playerctl/usr/bin/playerctl "src-tauri/binaries/playerctl"
 
-      - name: Remove unused binaries for Windows
+      - name: Create dummy playerctl for Windows
         if: matrix.platform == 'windows-latest'
+        shell: pwsh
         run: |
-          if (Test-Path "src-tauri/binaries") {
-            Remove-Item -Recurse -Force "src-tauri/binaries"
-          }
+          mkdir -p src-tauri/binaries
+          echo "@echo off" > src-tauri/binaries/playerctl.cmd
+          echo "exit 0" >> src-tauri/binaries/playerctl.cmd
 
       - uses: tauri-apps/tauri-action@v0
         env:
