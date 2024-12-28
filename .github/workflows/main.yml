@@ -70,8 +70,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path src-tauri/binaries
-          echo "@echo off" > src-tauri/binaries/playerctl.cmd
-          echo "exit 0" >> src-tauri/binaries/playerctl.cmd
+          echo "@echo off" > "src-tauri/binaries/playerctl-${{ matrix.target }}.exe"
+          echo "exit 0" >> "src-tauri/binaries/playerctl-${{ matrix.target }}.exe"
 
       - uses: tauri-apps/tauri-action@v0
         env:
