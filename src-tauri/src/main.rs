@@ -6,6 +6,15 @@ use std::process::Command;
 use std::str;
 use std::sync::Mutex;
 use tauri_plugin_shell::ShellExt;
+#[cfg(target_os = "windows")]
+use windows::{
+    Media::Control::{
+        GlobalSystemMediaTransportControlsSession,
+        GlobalSystemMediaTransportControlsSessionManager,
+        GlobalSystemMediaTransportControlsSessionMediaProperties,
+    },
+    core::Result as WindowsResult,
+};
 
 struct AppState {
     previous_positions: Mutex<HashMap<usize, f64>>,
@@ -92,14 +101,14 @@ async fn get_current_playing_song_windows() -> Result<Metadata, String> {
 
 #[cfg(target_os = "windows")]
 async fn get_system_media_transport_controls_session_manager(
-) -> Result<GlobalSystemMediaTransportControlsSessionManager> {
+) -> WindowsResult<GlobalSystemMediaTransportControlsSessionManager> {
     GlobalSystemMediaTransportControlsSessionManager::RequestAsync()?.await
 }
 
 #[cfg(target_os = "windows")]
 async fn get_media_properties(
     session: &GlobalSystemMediaTransportControlsSession,
-) -> Result<GlobalSystemMediaTransportControlsSessionMediaProperties> {
+) -> WindowsResult<GlobalSystemMediaTransportControlsSessionMediaProperties> {
     session.TryGetMediaPropertiesAsync()?.await
 }
 
