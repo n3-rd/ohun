@@ -4,6 +4,7 @@ import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
 import { open } from '@tauri-apps/plugin-shell';
 import { invoke } from '@tauri-apps/api/core';
+import { platform } from '@tauri-apps/plugin-os';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -87,4 +88,19 @@ export function debounce<T extends (...args: any[]) => any>(
 		clearTimeout(timeout);
 		timeout = setTimeout(() => func(...args), wait);
 	};
+}
+
+export async function isWindows(): Promise<boolean> {
+	return await platform() === 'win32';
+}
+
+export async function checkMediaControl() {
+	const isWin = await isWindows();
+	if (isWin) {
+		// Windows uses built-in Media Session API
+		return true;
+	} else {
+		// Linux uses playerctl
+		return await checkPlayerCtl();
+	}
 }

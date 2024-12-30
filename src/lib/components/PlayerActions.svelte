@@ -1,75 +1,71 @@
 <script lang="ts">
-	import { accentColor, albumArt, currentPlayingSong, textColor } from '$lib/stores/player-store';
-
-	import SingleModeIndicator from './SingleModeIndicator.svelte';
-	import { Separator } from '$lib/components/ui/separator';
-	import { Button } from '$lib/components/ui/button';
-	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { textColor } from '$lib/stores/player-store';
+	import { AlignCenter, AlignJustify, Copy, Download } from 'lucide-svelte';
 	import Tip from './Tip.svelte';
-	import * as Popover from '$lib/components/ui/popover';
-	import { Skeleton } from '$lib/components/ui/skeleton';
-	import { Redo, Share, Undo } from 'lucide-svelte';
 	import { setMultiLineMode, setSingleLineMode } from '$lib/preferences';
-	import ShareActions from './ShareActions.svelte';
+	import { copyText } from 'svelte-copy';
+	import { plainLyrics } from '$lib/stores/lyricsStore';
+	import { downloadLyrics } from '$lib/player';
+	import { toast } from 'svelte-sonner';
+	import { currentPlayingSong } from '$lib/stores/player-store';
 </script>
 
-<div class="flex justify-between gap-4 self-center rounded-xl" style="color: {$textColor}">
-	<Separator orientation="vertical" />
-	<div class="flex items-center gap-2">
-		<ShareActions />
-		<Popover.Root>
-			<Popover.Trigger>
-				<Tip text="Change lyrics mode">
-					<Button class="bg-transparent hover:bg-white/30 hover:backdrop-blur-lg">
-						<SingleModeIndicator />
-					</Button>
-				</Tip>
-			</Popover.Trigger>
-			<Popover.Content class="w-fit border-none  bg-white/30 shadow-none backdrop-blur-sm">
-				<div class="flex h-full items-center gap-6 px-4 py-2">
-					<Button
-						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4
-						hover:[&>*]:opacity-80
-						"
-						on:click={() => {
-							setSingleLineMode();
-						}}
-					>
-						<div
-							class="h-[20px] w-[100px] rounded-full"
-							style="background-color: {$textColor};"
-						></div>
+<div class="flex items-center gap-3" style="color: {$textColor};">
+	<Tip text="Copy lyrics">
+		<button
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			on:click={() => {
+				copyText($plainLyrics);
+				toast.success('Lyrics copied');
+			}}
+		>
+			<Copy size="15" />
+		</button>
+	</Tip>
 
-						<p class="text-md" style="color: {$textColor};">Single line</p>
-					</Button>
-					<Button
-						class="flex h-full w-28 flex-col items-center gap-3 bg-transparent px-4
-						hover:[&>*]:opacity-80
+	<Tip text="Download lyrics">
+		<button
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			on:click={() => {
+				downloadLyrics($currentPlayingSong.artist, $currentPlayingSong.title);
+				toast.success('Lyrics downloaded');
+			}}
+		>
+			<Download size="15" />
+		</button>
+	</Tip>
 
-						"
-						on:click={() => {
-							setMultiLineMode();
-						}}
-					>
-						<div
-							class="h-[20px] w-[100px] rounded-full"
-							style="background-color: {$textColor};"
-						></div>
+	<div class="h-4 w-[1px] bg-current opacity-20" />
 
-						<div
-							class="h-[20px] w-[100px] rounded-full"
-							style="background-color: {$textColor};"
-						></div>
-						<div
-							class="h-[20px] w-[100px] rounded-full"
-							style="background-color: {$textColor};"
-						></div>
+	<Tip text="Single line mode">
+		<button
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			on:click={setSingleLineMode}
+		>
+			<AlignCenter size="15" />
+		</button>
+	</Tip>
 
-						<p class="text-md" style="color: {$textColor};">Multi-line</p>
-					</Button>
-				</div>
-			</Popover.Content>
-		</Popover.Root>
-	</div>
-	<Separator orientation="vertical" />
+	<Tip text="Multi line mode">
+		<button
+			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			on:click={setMultiLineMode}
+		>
+			<AlignJustify size="15" />
+		</button>
+	</Tip>
 </div>
+
+<style>
+	button {
+		transition: transform 0.2s ease;
+	}
+	
+	button:hover {
+		transform: scale(1.1);
+	}
+	
+	button:active {
+		transform: scale(0.95);
+	}
+</style>
