@@ -205,7 +205,8 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
             .TryTogglePlayPauseAsync()
             .map_err(|e| e.to_string())?
             .await
-            .map_err(|e| e.to_string())
+            .map_err(|e| e.to_string())?;
+        Ok(())
     }
 }
 
