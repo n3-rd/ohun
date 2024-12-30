@@ -6,16 +6,6 @@ use std::process::Command;
 use std::str;
 use std::sync::Mutex;
 use tauri_plugin_shell::ShellExt;
-#[cfg(target_os = "windows")]
-use windows::{
-    core::HSTRING,
-    core::*,
-    Foundation::IAsyncOperation,
-    Media::Control::*,
-    Media::Control::{
-        GlobalSystemMediaTransportControlsSession, GlobalSystemMediaTransportControlsSessionManager,
-    },
-};
 
 struct AppState {
     previous_positions: Mutex<HashMap<usize, f64>>,
@@ -84,24 +74,16 @@ async fn get_current_playing_song_windows() -> Result<Metadata, String> {
         .await
         .map_err(|e| e.to_string())?;
 
-    if let Some(session) = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())? {
-        let media_properties = get_media_properties(&session)
-            .await
-            .map_err(|e| e.to_string())?;
+    let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+    
+    if let Some(session) = session {
+        let timeline = session.GetTimelineProperties().map_err(|e| e.to_string())?;
+        let props = session.TryGetMediaPropertiesAsync().map_err(|e| e.to_string())?;
 
         Ok(Metadata {
-            artist: media_properties
-                .Artist()
-                .map(|s| s.to_string())
-                .unwrap_or_default(),
-            title: media_properties
-                .Title()
-                .map(|s| s.to_string())
-                .unwrap_or_default(),
-            album: media_properties
-                .AlbumTitle()
-                .map(|s| s.to_string())
-                .unwrap_or_default(),
+            artist: props.Artist().map(|s| s.to_string()).unwrap_or_default(),
+            title: props.Title().map(|s| s.to_string()).unwrap_or_default(),
+            album: props.AlbumTitle().map(|s| s.to_string()).unwrap_or_default(),
         })
     } else {
         Ok(Metadata::default())
@@ -125,9 +107,7 @@ async fn get_media_properties(
 async fn toggle_play_windows(
     session: &GlobalSystemMediaTransportControlsSession,
 ) -> Result<(), String> {
-    session
-        .TryTogglePlayPauseAsync()
-        .map_err(|e| e.to_string())?;
+    session.TryTogglePlayPauseAsync().map_err(|e| e.to_string())?;
     Ok(())
 }
 
