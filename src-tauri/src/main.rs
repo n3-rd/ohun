@@ -85,18 +85,17 @@ async fn get_current_playing_song_windows() -> Result<Metadata, String> {
 
     let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
     
-    if let Some(session) = session {
-        let timeline = session.GetTimelineProperties().map_err(|e| e.to_string())?;
-        let props = session.TryGetMediaPropertiesAsync().map_err(|e| e.to_string())?;
+    let props = session
+        .TryGetMediaPropertiesAsync()
+        .map_err(|e| e.to_string())?
+        .await
+        .map_err(|e| e.to_string())?;
 
-        Ok(Metadata {
-            artist: props.Artist().map(|s| s.to_string()).unwrap_or_default(),
-            title: props.Title().map(|s| s.to_string()).unwrap_or_default(),
-            album: props.AlbumTitle().map(|s| s.to_string()).unwrap_or_default(),
-        })
-    } else {
-        Ok(Metadata::default())
-    }
+    Ok(Metadata {
+        artist: props.Artist().map(|s| s.to_string()).unwrap_or_default(),
+        title: props.Title().map(|s| s.to_string()).unwrap_or_default(),
+        album: props.AlbumTitle().map(|s| s.to_string()).unwrap_or_default(),
+    })
 }
 
 #[cfg(target_os = "windows")]
@@ -198,12 +197,15 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
 
     #[cfg(target_os = "windows")]
     {
-        let gsmtcsm = get_system_media_transport_controls_session_manager().await?;
-        if let Some(session) = gsmtcsm.GetCurrentSession()? {
-            toggle_play_windows(&session).await
-        } else {
-            Ok(())
-        }
+        let gsmtcsm = get_system_media_transport_controls_session_manager()
+            .await
+            .map_err(|e| e.to_string())?;
+        let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+        session
+            .TryTogglePlayPauseAsync()
+            .map_err(|e| e.to_string())?
+            .await
+            .map_err(|e| e.to_string())
     }
 }
 
