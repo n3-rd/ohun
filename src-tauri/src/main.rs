@@ -268,7 +268,8 @@ async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
             .map_err(|e| e.to_string())?;
         let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
         let playback_info = session.GetPlaybackInfo().map_err(|e| e.to_string())?;
-        Ok(playback_info.PlaybackStatus().map_err(|e| e.to_string())? == 4) // 4 is PLAYING status
+        let status = playback_info.PlaybackStatus().map_err(|e| e.to_string())?;
+        Ok(status == GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing)
     }
 }
 
