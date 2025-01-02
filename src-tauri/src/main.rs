@@ -12,6 +12,7 @@ use windows::{
         GlobalSystemMediaTransportControlsSession,
         GlobalSystemMediaTransportControlsSessionManager,
         GlobalSystemMediaTransportControlsSessionMediaProperties,
+        GlobalSystemMediaTransportControlsSessionPlaybackStatus,
     },
     core::Result as WindowsResult,
 };
@@ -140,51 +141,93 @@ async fn get_current_audio_time(
     app_handle: tauri::AppHandle,
     state: tauri::State<'_, AppState>,
 ) -> Result<f64, String> {
-    let output = command(&app_handle, "playerctl position -a").await?;
-    let trimmed_output = output.trim();
+    #[cfg(target_os = "linux")]
+    {
+        let output = command(&app_handle, "playerctl position -a").await?;
+        let trimmed_output = output.trim();
 
-    if trimmed_output.is_empty() {
-        return Ok(0.00);
-    }
-
-    let mut current_positions: Vec<f64> = Vec::new();
-
-    for line in trimmed_output.lines() {
-        match line.parse::<f64>() {
-            Ok(value) => current_positions.push(value),
-            Err(_) => return Ok(0.00),
+        if trimmed_output.is_empty() {
+            return Ok(0.00);
         }
-    }
 
-    if current_positions.is_empty() {
-        return Ok(0.00);
-    }
+        let mut current_positions: Vec<f64> = Vec::new();
 
-    let mut prev_positions = state.previous_positions.lock().unwrap();
-    let mut changed_positions: Vec<f64> = Vec::new();
-
-    for (index, &current_position) in current_positions.iter().enumerate() {
-        if let Some(&prev_position) = prev_positions.get(&index) {
-            if (current_position - prev_position).abs() > 0.000001 {
-                changed_positions.push(current_position);
+        for line in trimmed_output.lines() {
+            match line.parse::<f64>() {
+                Ok(value) => current_positions.push(value),
+                Err(_) => return Ok(0.00),
             }
         }
-        prev_positions.insert(index, current_position);
+
+        if current_positions.is_empty() {
+            return Ok(0.00);
+        }
+
+        let mut prev_positions = state.previous_positions.lock().unwrap();
+        let mut changed_positions: Vec<f64> = Vec::new();
+
+        for (index, &current_position) in current_positions.iter().enumerate() {
+            if let Some(&prev_position) = prev_positions.get(&index) {
+                if (current_position - prev_position).abs() > 0.000001 {
+                    changed_positions.push(current_position);
+                }
+            }
+            prev_positions.insert(index, current_position);
+        }
+
+        Ok(changed_positions.first().copied().unwrap_or(0.00))
     }
 
-    Ok(changed_positions.first().copied().unwrap_or(0.00))
+    #[cfg(target_os = "windows")]
+    {
+        let gsmtcsm = get_system_media_transport_controls_session_manager()
+            .await
+            .map_err(|e| e.to_string())?;
+        let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+        let timeline = session.GetTimelineProperties().map_err(|e| e.to_string())?;
+        let position = timeline.Position().map_err(|e| e.to_string())?;
+        
+        // Convert Windows time (in 100-nanosecond units) to seconds
+        Ok(position.Duration as f64 / 10_000_000.0)
+    }
 }
 
 #[tauri::command]
 async fn next_song(app_handle: tauri::AppHandle) -> Result<(), String> {
-    command(&app_handle, "playerctl next").await?;
-    Ok(())
+    #[cfg(target_os = "linux")]
+    {
+        command(&app_handle, "playerctl next").await?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        let gsmtcsm = get_system_media_transport_controls_session_manager()
+            .await
+            .map_err(|e| e.to_string())?;
+        let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+        session.TrySkipNextAsync().map_err(|e| e.to_string())?.await.map_err(|e| e.to_string())?;
+        Ok(())
+    }
 }
 
 #[tauri::command]
 async fn previous_song(app_handle: tauri::AppHandle) -> Result<(), String> {
-    command(&app_handle, "playerctl previous").await?;
-    Ok(())
+    #[cfg(target_os = "linux")]
+    {
+        command(&app_handle, "playerctl previous").await?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        let gsmtcsm = get_system_media_transport_controls_session_manager()
+            .await
+            .map_err(|e| e.to_string())?;
+        let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+        session.TrySkipPreviousAsync().map_err(|e| e.to_string())?.await.map_err(|e| e.to_string())?;
+        Ok(())
+    }
 }
 
 #[tauri::command]
@@ -212,8 +255,21 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
 
 #[tauri::command]
 async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
-    let status = command(&app_handle, "playerctl status").await?;
-    Ok(status.trim() == "Playing")
+    #[cfg(target_os = "linux")]
+    {
+        let status = command(&app_handle, "playerctl status").await?;
+        Ok(status.trim() == "Playing")
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        let gsmtcsm = get_system_media_transport_controls_session_manager()
+            .await
+            .map_err(|e| e.to_string())?;
+        let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+        let playback_info = session.GetPlaybackInfo().map_err(|e| e.to_string())?;
+        Ok(playback_info.PlaybackStatus().map_err(|e| e.to_string())? == 4) // 4 is PLAYING status
+    }
 }
 
 #[tauri::command]
