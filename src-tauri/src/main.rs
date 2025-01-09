@@ -82,20 +82,28 @@ async fn get_current_playing_song_linux(app_handle: &tauri::AppHandle) -> Result
 async fn get_current_playing_song_windows() -> Result<Metadata, String> {
     let gsmtcsm = get_system_media_transport_controls_session_manager()
         .await
-        .map_err(|e| e.to_string())?;
+        .map_err(|_| "Play a song to see the lyrics".to_string())?;
 
-    let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
+    let session = gsmtcsm.GetCurrentSession().map_err(|_| "Play a song to see the lyrics".to_string())?;
     
     let props = session
         .TryGetMediaPropertiesAsync()
-        .map_err(|e| e.to_string())?
+        .map_err(|_| "Play a song to see the lyrics".to_string())?
         .await
-        .map_err(|e| e.to_string())?;
+        .map_err(|_| "Play a song to see the lyrics".to_string())?;
+
+    let artist = props.Artist().map(|s| s.to_string()).unwrap_or_default();
+    let title = props.Title().map(|s| s.to_string()).unwrap_or_default();
+    let album = props.AlbumTitle().map(|s| s.to_string()).unwrap_or_default();
+
+    if artist.is_empty() && title.is_empty() {
+        return Err("Play a song to see the lyrics".to_string());
+    }
 
     Ok(Metadata {
-        artist: props.Artist().map(|s| s.to_string()).unwrap_or_default(),
-        title: props.Title().map(|s| s.to_string()).unwrap_or_default(),
-        album: props.AlbumTitle().map(|s| s.to_string()).unwrap_or_default(),
+        artist,
+        title,
+        album,
     })
 }
 
