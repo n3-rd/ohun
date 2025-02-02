@@ -25,6 +25,7 @@ windows = { version = "0.48", features = [
     "Media_Control",
     "Foundation_Collections",
     "Storage_Streams",
+    "Foundation",
 ] }
 tauri-plugin-os = "2.0.0-alpha.2"
 

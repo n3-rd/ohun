@@ -65,13 +65,32 @@ jobs:
           mkdir -p src-tauri/binaries
           cp playerctl/usr/bin/playerctl "src-tauri/binaries/playerctl"
 
+      # Add Visual C++ build tools to the path first
+      - name: Setup MSVC
+        if: matrix.platform == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Create dummy playerctl for Windows
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         run: |
+          # Create a directory for the binary
           New-Item -ItemType Directory -Force -Path src-tauri/binaries
-          echo "@echo off" > "src-tauri/binaries/playerctl-${{ matrix.target }}.exe"
-          echo "exit 0" >> "src-tauri/binaries/playerctl-${{ matrix.target }}.exe"
+          
+          # Create a simple C source file for a dummy executable
+          @'
+          #include <stdio.h>
+          int main() {
+              return 0;
+          }
+          '@ | Out-File -Encoding ASCII src-tauri/binaries/dummy.c
+          
+          # Compile the C file into a 64-bit Windows executable
+          cl.exe /nologo /O1 /MD /Fe:"src-tauri/binaries/playerctl-${{ matrix.target }}.exe" src-tauri/binaries/dummy.c
+          
+          # Clean up the temporary files
+          Remove-Item src-tauri/binaries/dummy.c
+          Remove-Item src-tauri/binaries/dummy.obj -ErrorAction SilentlyContinue
 
       - uses: tauri-apps/tauri-action@v0
         env:

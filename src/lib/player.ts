@@ -71,13 +71,11 @@ const checkSongChange = async () => {
 			// Song has changed
 			await getCurrentPlaying();
 
-			// Notify user about the new song
-			const artist = currentSong.artist;
-			const title = currentSong.title;
+			// Removed notify for now
+			// const artist = currentSong.artist;
+			// const title = currentSong.title;
 
-			console.log('starting notifier for', `${title} by ${artist}`);
-			notify(`Lyrics fetched`, `${title} by ${artist}`);
-			console.log('ending notifier');
+			// notify(`Lyrics fetched`, `${title} by ${artist}`);
 
 			// Update previousSong after handling the song change
 			previousSong = currentSong;
@@ -186,9 +184,9 @@ checkSongChange().then(() => {
 		const artist = playInfo.artist;
 		const title = playInfo.title;
 
-		console.log('starting notifier for', `${title} by ${artist}`);
-		notify(`Lyrics fetched`, `${title} by ${artist}`);
-		console.log('ending notifier');
+		// console.log('starting notifier for', `${title} by ${artist}`);
+		// notify(`Lyrics fetched`, `${title} by ${artist}`);
+		// console.log('ending notifier');
 
 		setInterval(getPlayTime, 1000);
 	});
