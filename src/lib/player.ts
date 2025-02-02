@@ -4,7 +4,8 @@ import {
 	albumArt,
 	currentPlayingSong,
 	playTime,
-	textColor
+	textColor,
+	cachedAlbumArt
 } from './stores/player-store';
 import type { Song } from './types';
 import { getLyrics } from './lyrics';
@@ -16,6 +17,7 @@ import { replaceSpecialChars } from './utils';
 import { notify } from './nofity';
 import { isLoading } from './stores/player-store';
 import { appError } from './stores/error-store';
+import { get } from 'svelte/store';
 
 let previousTime: number | null = null;
 
@@ -104,26 +106,72 @@ export const getAlbumArt = async (
 	title: string,
 	album: string
 ): Promise<string | undefined> => {
-	let url;
-	if (!album || album !== title) {
-		artist = replaceSpecialChars(artist);
-		title = replaceSpecialChars(title);
-		url = `https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/search?q=artist:"${artist}" track:"${title}"`)}`;
-	} else {
-		album = replaceSpecialChars(album);
-		artist = replaceSpecialChars(artist);
-		url = `https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/search?q=album:"${album}" artist:"${artist}"`)}`;
+	// Create cache key
+	const cacheKey = `${artist}-${title}-${album}`.toLowerCase();
+	
+	// Check cache first
+	const cache = get(cachedAlbumArt);
+	const cached = cache[cacheKey];
+	
+	if (cached) {
+		albumArt.set(cached);
+		await getAccentColor();
+		return cached;
 	}
+
+	// If not in cache, fetch from API
 	try {
+		let url;
+		if (!album || album !== title) {
+			artist = replaceSpecialChars(artist);
+			title = replaceSpecialChars(title);
+			url = `https://corsproxy.io/?${encodeURIComponent(
+				`https://api.deezer.com/search?q=artist:"${artist}" track:"${title}"`
+			)}`;
+		} else {
+			album = replaceSpecialChars(album);
+			artist = replaceSpecialChars(artist);
+			url = `https://corsproxy.io/?${encodeURIComponent(
+				`https://api.deezer.com/search?q=album:"${album}" artist:"${artist}"`
+			)}`;
+		}
+
 		const response = await fetch(url);
 		const data = await response.json();
-
 		const art = data?.data?.[0]?.album?.cover_medium;
-		albumArt.set(art);
-		getAccentColor();
+
+		if (art) {
+			// Cache the image data as base64
+			try {
+				const imgResponse = await fetch(art);
+				const blob = await imgResponse.blob();
+				const reader = new FileReader();
+				
+				const base64Promise = new Promise<string>((resolve) => {
+					reader.onloadend = () => resolve(reader.result as string);
+				});
+				
+				reader.readAsDataURL(blob);
+				const base64Data = await base64Promise;
+
+				// Update cache
+				cachedAlbumArt.update(cache => ({
+					...cache,
+					[cacheKey]: base64Data
+				}));
+
+				albumArt.set(base64Data);
+			} catch (error) {
+				console.error('Failed to cache album art:', error);
+				albumArt.set(art); // Fallback to URL if caching fails
+			}
+		}
+
+		await getAccentColor();
 		return art;
 	} catch (error) {
 		console.error('Failed to fetch album art:', error);
+		return undefined;
 	}
 };
 
