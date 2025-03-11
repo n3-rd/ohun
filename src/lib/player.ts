@@ -23,6 +23,8 @@ let previousTime: number | null = null;
 export const getCurrentPlaying = async () => {
 	try {
 		isLoading.set(true);
+		appError.set(null); // Clear any previous errors
+		
 		const response: Song = await invoke('get_current_playing_song');
 		currentPlayingSong.set(response);
 		
@@ -42,6 +44,11 @@ export const getCurrentPlaying = async () => {
 		
 	} catch (error) {
 		console.error('Error getting current song:', error);
+		// Set a default accent color if none exists to prevent white screen
+		if (!get(accentColor)) {
+			accentColor.set('#121212');
+			textColor.set('#ffffff');
+		}
 		appError.set(error instanceof Error ? error.message : "🎼 Oops! The music spirits are being mischievous. Let's try that again! 🎹");
 	} finally {
 		isLoading.set(false);
@@ -49,20 +56,28 @@ export const getCurrentPlaying = async () => {
 };
 
 export const getPlayTime = async () => {
-	let response: number = await invoke('get_current_audio_time');
-	response = Math.floor(response);
-	if (previousTime !== response) {
-		playTime.set(response);
-		previousTime = response;
-		updateLyrics(response);
+	try {
+		let response: number = await invoke('get_current_audio_time');
+		response = Math.floor(response);
+		if (previousTime !== response) {
+			playTime.set(response);
+			previousTime = response;
+			updateLyrics(response);
+		}
+		return response;
+	} catch (error) {
+		console.error('Error getting play time:', error);
+		// Don't set appError here to avoid disrupting the UI for minor errors
+		return previousTime || 0;
 	}
-	return response;
 };
 
 const checkSongChange = async () => {
 	let currentSong: Song | null = null;
 	let previousSong: Song | null = null;
 	let activePlayer: string | null = null;
+	let retryCount = 0;
+	const MAX_RETRIES = 3;
 
 	// Get the active player initially
 	try {
@@ -71,6 +86,10 @@ const checkSongChange = async () => {
 		console.log('Active player detected:', activePlayer);
 	} catch (error) {
 		console.error('Failed to get active player:', error);
+		// Set a fallback error message but don't stop execution
+		if (retryCount >= MAX_RETRIES) {
+			appError.set('No media player detected. Please start playing music in your favorite player.');
+		}
 	}
 
 	setInterval(async () => {
@@ -80,6 +99,8 @@ const checkSongChange = async () => {
 			if (newActivePlayer !== activePlayer) {
 				console.log('Active player changed from', activePlayer, 'to', newActivePlayer);
 				activePlayer = newActivePlayer;
+				// Reset error state if we successfully found a player
+				appError.set(null);
 			}
 			
 			const song = await invoke<Song>('get_current_playing_song');
@@ -97,14 +118,61 @@ const checkSongChange = async () => {
 				// Update previousSong after handling the song change
 				previousSong = currentSong;
 			}
+			
+			// Reset retry count on success
+			retryCount = 0;
 		} catch (error) {
 			console.error('Error in checkSongChange:', error);
+			retryCount++;
+			
+			// Only set error after multiple failures to avoid flickering
+			if (retryCount >= MAX_RETRIES) {
+				// Set a default accent color if none exists
+				if (!get(accentColor)) {
+					accentColor.set('#121212');
+					textColor.set('#ffffff');
+				}
+				
+				appError.set('Unable to detect music. Is your media player running?');
+			}
 		}
 	}, 1000); // Check every second
 };
 
-// Call checkSongChange once at startup
-checkSongChange();
+// Add a function to initialize the app with retries
+const initializeApp = async (retries = 3, delay = 1000) => {
+	// Set default colors immediately to prevent white screen
+	if (!get(accentColor)) {
+		accentColor.set('#121212');
+		textColor.set('#ffffff');
+	}
+	
+	for (let attempt = 0; attempt < retries; attempt++) {
+		try {
+			await getCurrentPlaying();
+			// If successful, break out of the retry loop
+			console.log('App initialized successfully');
+			return;
+		} catch (error) {
+			console.error(`Initialization attempt ${attempt + 1} failed:`, error);
+			
+			if (attempt < retries - 1) {
+				// Wait before trying again
+				await new Promise(resolve => setTimeout(resolve, delay));
+			} else {
+				// Last attempt failed, set a friendly error message
+				appError.set('Unable to connect to your music player. Please make sure music is playing and try again.');
+			}
+		}
+	}
+};
+
+// Replace the existing initialization code with our new retry mechanism
+checkSongChange().then(() => {
+	initializeApp().then(() => {
+		setInterval(getPlayTime, 1000);
+	});
+});
 
 const updateLyrics = (time: number) => {
 	try {
@@ -144,6 +212,7 @@ const updateLyrics = (time: number) => {
 		}
 	} catch (error) {
 		console.error('Error updating lyrics:', error);
+		// Don't set appError here to avoid disrupting the UI for minor errors
 	}
 };
 
@@ -152,6 +221,13 @@ export const getAlbumArt = async (
 	title: string,
 	album: string
 ): Promise<string | undefined> => {
+	// Set a default album art if we don't have one yet
+	if (!get(albumArt)) {
+		const defaultArt = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMxMjEyMTIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjUwIiBmaWxsPSIjMzMzIi8+PHBhdGggZD0iTTgwIDEyNVYxMDBMMTMwIDExMlY4NyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz48L3N2Zz4=';
+		albumArt.set(defaultArt);
+		await getAccentColor();
+	}
+
 	// Create cache key
 	const cacheKey = `${artist}-${title}-${album}`.toLowerCase();
 	
@@ -217,29 +293,47 @@ export const getAlbumArt = async (
 		return art;
 	} catch (error) {
 		console.error('Failed to fetch album art:', error);
-		return undefined;
+		// Don't set appError here to avoid disrupting the UI for minor errors
+		return get(albumArt); // Return current album art
 	}
 };
 
 export const getAccentColor = async () => {
-	let url;
-	albumArt.subscribe((value) => {
-		url = value;
-	});
-	
-	if (!url) {
-		return '#000000'; // Default color if no album art
-	}
-	
-	const color = await prominent(url, { amount: 1, format: 'hex' });
-	if (color && typeof color[0] === 'string') {
-		accentColor.set(color[0]);
-		const fontColor = getTextColor(color[0]);
+	try {
+		const url = get(albumArt);
+		console.log('url', url);
+		
+		if (!url) {
+			// Default dark theme
+			accentColor.set('#121212');
+			textColor.set('#ffffff');
+			return '#121212';
+		}
+		
+		const color = await prominent(url, { amount: 1, format: 'hex' }).catch((error) => {
+			console.error('Failed to get accent color:', error);
+			return '#121212';
+		});
+
+		// convert color to hex
+		const hexColor = color.toString();
+
+		
+		
+		
+		
+		accentColor.set(hexColor);
+		const fontColor = getTextColor(hexColor);
 		textColor.set(fontColor);
-		return color[0];
+		
+		return hexColor;
+	} catch (error) {
+		console.error('Error getting accent color:', error);
+		// Set default values
+		accentColor.set('#121212');
+		textColor.set('#ffffff');
+		return '#121212';
 	}
-	
-	return '#000000'; // Default color if prominent fails
 };
 
 export const goToTime = async (time: number) => {
@@ -281,9 +375,3 @@ export const downloadLyrics = async () => {
 		console.error('Failed to download lyrics:', error);
 	}
 };
-
-checkSongChange().then(() => {
-	getCurrentPlaying().then(() => {
-		setInterval(getPlayTime, 1000);
-	});
-});
