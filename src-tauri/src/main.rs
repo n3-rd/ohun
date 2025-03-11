@@ -67,9 +67,13 @@ async fn get_current_playing_song(app_handle: tauri::AppHandle) -> Result<Metada
 
 #[cfg(target_os = "linux")]
 async fn get_current_playing_song_linux(app_handle: &tauri::AppHandle) -> Result<Metadata, String> {
-    let artist = command(app_handle, "playerctl metadata artist").await?;
-    let title = command(app_handle, "playerctl metadata title").await?;
-    let album = command(app_handle, "playerctl metadata album").await?;
+    // Get the active player first
+    let active_player = get_active_player(app_handle.clone()).await?;
+    
+    // Use the active player for all metadata commands
+    let artist = command(app_handle, &format!("playerctl -p {} metadata artist", active_player)).await?;
+    let title = command(app_handle, &format!("playerctl -p {} metadata title", active_player)).await?;
+    let album = command(app_handle, &format!("playerctl -p {} metadata album", active_player)).await?;
 
     Ok(Metadata {
         artist: artist.trim().to_string(),
@@ -151,39 +155,21 @@ async fn get_current_audio_time(
 ) -> Result<f64, String> {
     #[cfg(target_os = "linux")]
     {
-        let output = command(&app_handle, "playerctl position -a").await?;
+        // Get the active player
+        let active_player = get_active_player(app_handle.clone()).await?;
+        
+        // Get position only for the active player
+        let output = command(&app_handle, &format!("playerctl -p {} position", active_player)).await?;
         let trimmed_output = output.trim();
 
         if trimmed_output.is_empty() {
             return Ok(0.00);
         }
 
-        let mut current_positions: Vec<f64> = Vec::new();
-
-        for line in trimmed_output.lines() {
-            match line.parse::<f64>() {
-                Ok(value) => current_positions.push(value),
-                Err(_) => return Ok(0.00),
-            }
+        match trimmed_output.parse::<f64>() {
+            Ok(position) => Ok(position),
+            Err(_) => Ok(0.00),
         }
-
-        if current_positions.is_empty() {
-            return Ok(0.00);
-        }
-
-        let mut prev_positions = state.previous_positions.lock().unwrap();
-        let mut changed_positions: Vec<f64> = Vec::new();
-
-        for (index, &current_position) in current_positions.iter().enumerate() {
-            if let Some(&prev_position) = prev_positions.get(&index) {
-                if (current_position - prev_position).abs() > 0.000001 {
-                    changed_positions.push(current_position);
-                }
-            }
-            prev_positions.insert(index, current_position);
-        }
-
-        Ok(changed_positions.first().copied().unwrap_or(0.00))
     }
 
     #[cfg(target_os = "windows")]
@@ -204,7 +190,9 @@ async fn get_current_audio_time(
 async fn next_song(app_handle: tauri::AppHandle) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
-        command(&app_handle, "playerctl next").await?;
+        // Get the active player
+        let active_player = get_active_player(app_handle.clone()).await?;
+        command(&app_handle, &format!("playerctl -p {} next", active_player)).await?;
         Ok(())
     }
 
@@ -223,7 +211,9 @@ async fn next_song(app_handle: tauri::AppHandle) -> Result<(), String> {
 async fn previous_song(app_handle: tauri::AppHandle) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
-        command(&app_handle, "playerctl previous").await?;
+        // Get the active player
+        let active_player = get_active_player(app_handle.clone()).await?;
+        command(&app_handle, &format!("playerctl -p {} previous", active_player)).await?;
         Ok(())
     }
 
@@ -242,7 +232,9 @@ async fn previous_song(app_handle: tauri::AppHandle) -> Result<(), String> {
 async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
-        command(&app_handle, "playerctl play-pause").await?;
+        // Get the active player
+        let active_player = get_active_player(app_handle.clone()).await?;
+        command(&app_handle, &format!("playerctl -p {} play-pause", active_player)).await?;
         Ok(())
     }
 
@@ -252,11 +244,7 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
             .await
             .map_err(|e| e.to_string())?;
         let session = gsmtcsm.GetCurrentSession().map_err(|e| e.to_string())?;
-        session
-            .TryTogglePlayPauseAsync()
-            .map_err(|e| e.to_string())?
-            .await
-            .map_err(|e| e.to_string())?;
+        session.TryTogglePlayPauseAsync().map_err(|e| e.to_string())?.await.map_err(|e| e.to_string())?;
         Ok(())
     }
 }
@@ -265,7 +253,9 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
 async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
     #[cfg(target_os = "linux")]
     {
-        let status = command(&app_handle, "playerctl status").await?;
+        // Get the active player
+        let active_player = get_active_player(app_handle.clone()).await?;
+        let status = command(&app_handle, &format!("playerctl -p {} status", active_player)).await?;
         Ok(status.trim() == "Playing")
     }
 
@@ -283,8 +273,19 @@ async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
 
 #[tauri::command]
 async fn go_to_time(app_handle: tauri::AppHandle, time: f64) -> Result<(), String> {
-    command(&app_handle, &format!("playerctl position {}", time)).await?;
-    Ok(())
+    #[cfg(target_os = "linux")]
+    {
+        // Get the active player
+        let active_player = get_active_player(app_handle.clone()).await?;
+        command(&app_handle, &format!("playerctl -p {} position {}", active_player, time)).await?;
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        // Windows implementation would go here
+        Err("Not implemented for Windows yet".to_string())
+    }
 }
 
 #[tauri::command]
@@ -295,6 +296,41 @@ async fn check_if_playerctl_exists() -> Result<bool, String> {
         .map_err(|e| e.to_string())?;
 
     Ok(output.status.success())
+}
+
+#[tauri::command]
+async fn get_active_player(app_handle: tauri::AppHandle) -> Result<String, String> {
+    #[cfg(target_os = "linux")]
+    {
+        // First try to get the player that's currently playing
+        let status_output = command(&app_handle, "playerctl -l").await?;
+        let players = status_output.trim().lines().collect::<Vec<&str>>();
+        
+        // If no players are available, return an error
+        if players.is_empty() {
+            return Err("No media players detected".to_string());
+        }
+        
+        // Try to find a player that's currently playing
+        for player in &players {
+            let status = command(&app_handle, &format!("playerctl -p {} status", player)).await;
+            
+            if let Ok(status) = status {
+                if status.trim() == "Playing" {
+                    return Ok(player.to_string());
+                }
+            }
+        }
+        
+        // If no player is playing, return the first available player
+        Ok(players[0].to_string())
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        // On Windows, we don't need to specify a player as the system handles it
+        Ok("windows_media_player".to_string())
+    }
 }
 
 fn main() {
@@ -313,7 +349,8 @@ fn main() {
             toggle_play,
             is_playing,
             go_to_time,
-            check_if_playerctl_exists
+            check_if_playerctl_exists,
+            get_active_player
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

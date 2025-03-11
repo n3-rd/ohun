@@ -4,7 +4,7 @@
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { onMount, onDestroy } from 'svelte';
-	import { accentColor, textColor } from '$lib/stores/player-store';
+	import { accentColor, textColor, playTime } from '$lib/stores/player-store';
 	import { lyricsMode } from '$lib/preferences';
 	import { appError } from '$lib/stores/error-store';
 	import { goToTime } from '$lib/player';
@@ -26,12 +26,7 @@
 	// Type the copy function
 	export const copy = (text: string): void => {
 		copyText(text);
-		toast.success('Event has been created', {
-			description: 'Sunday, December 03, 2023 at 9:00 AM',
-			action: {
-				label: 'Undo',
-				onClick: () => console.info('Undo')
-			},
+		toast.success('Lyrics copied to clipboard', {
 			position: 'top-right'
 		});
 	};
@@ -39,14 +34,32 @@
 	const scrollTo = (index: number): void => {
 		const element = document.getElementById(index.toString());
 		if (element) {
-			element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			// Use a more subtle scrolling behavior for better user experience
+			element.scrollIntoView({ 
+				behavior: 'smooth', 
+				block: 'center',
+				inline: 'center'
+			});
 		}
+	};
+
+	// Add a small buffer to prevent too frequent scrolling
+	let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+	const smoothScrollTo = (index: number): void => {
+		if (scrollTimeout) {
+			clearTimeout(scrollTimeout);
+		}
+		
+		scrollTimeout = setTimeout(() => {
+			scrollTo(index);
+			scrollTimeout = null;
+		}, 50); // Small delay for smoother experience
 	};
 
 	let lyricWithIndex: LyricWithIndex[] = [];
 	let lyrics: Lyric[] = [];
 	let mouseOverLyrics = false;
-	let scrollInterval: ReturnType<typeof setInterval> | undefined;
+	let lastScrolledTime = -1;
 
 	// Automatically calculate lyrics based on the synced lyrics store
 	$: {
@@ -78,36 +91,40 @@
 		}));
 	}
 
-	// Debounce function to delay execution of the scroll action
-	const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
-			clearTimeout(timer);
-			timer = setTimeout(() => {
-				func(...args);
-			}, delay);
-		};
-	};
+	// Watch for changes in currentLine and scroll to it immediately
+	$: if ($currentLine && $currentLine.time !== lastScrolledTime && !mouseOverLyrics) {
+		lastScrolledTime = $currentLine.time;
+		smoothScrollTo($currentLine.time);
+	}
 
-	const debouncedScrollTo = debounce(scrollTo, 200);
-
-	const startScrollInterval = (): void => {
-		if (scrollInterval) clearInterval(scrollInterval);
-		scrollInterval = setInterval(() => {
-			if (!mouseOverLyrics) {
-				debouncedScrollTo($currentLine.time);
-			}
-		}, 1000);
-	};
+	// Also watch playTime directly for more responsive scrolling
+	$: if ($playTime && !mouseOverLyrics) {
+		// Find the closest lyric time to the current play time
+		const closestLyric = lyrics.reduce((prev, curr) => {
+			return (Math.abs(curr.time - $playTime) < Math.abs(prev.time - $playTime)) ? curr : prev;
+		}, { time: 0, text: '' });
+		
+		if (closestLyric && closestLyric.time !== lastScrolledTime) {
+			lastScrolledTime = closestLyric.time;
+			smoothScrollTo(closestLyric.time);
+		}
+	}
 
 	onMount(() => {
-		scrollTo(0);
-		startScrollInterval();
+		smoothScrollTo(0);
 	});
 
+	// Clean up any pending timeouts
 	onDestroy(() => {
-		clearInterval(scrollInterval);
+		if (scrollTimeout) {
+			clearTimeout(scrollTimeout);
+		}
 	});
+
+	// Function to handle click on lyrics line
+	const handleLineClick = (time: number) => {
+		return () => goToTime(time);
+	};
 </script>
 
 <div class="h-screen min-w-full bg-[{$accentColor}]">
@@ -121,12 +138,14 @@
 		on:hoverend={(e) => {
 			mouseOverLyrics = false;
 			console.log('hover end');
-			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
 		}}
 	>
 		{#if $appError == null}
 			{#if $syncedLyrics == null}
-				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
+				<h1 class="text-center text-5xl font-extrabold">
+					<span class="block mb-4">🎵 No lyrics yet!</span>
+					<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
+				</h1>
 			{:else if $lyricsMode === 'multiple'}
 				<ScrollArea
 					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
@@ -136,11 +155,14 @@
 					{#each lyrics as line, i (i)}
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<p
-							class={`line-{i} leading-[4.25rem] transition-opacity duration-300 hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
-							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
+							class={`line-{i} leading-[4.25rem] transition-all duration-300 hover:opacity-100 md:leading-[5.25rem] xl:leading-[7.25rem]
+							${line.time == $currentLine.time 
+								? 'opacity-100 font-bold scale-105 text-[#ffffff]' 
+								: 'opacity-60'
+							}
 							`}
 							id={`${line.time}`}
-							on:click={goToTime(line.time)}
+							on:click={handleLineClick(line.time)}
 						>
 							{line.text}
 						</p>
@@ -156,14 +178,18 @@
 					{#if $currentLine.text}
 						{$currentLine.text}
 					{:else if $currentLine.text === ''}
-						-
+						<span class="opacity-60">🎶 ...</span>
 					{:else}
-						No lyrics found
+						<span class="block mb-4">🎵 No lyrics yet!</span>
+						<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
 					{/if}
 				</h1>
 			{/if}
 		{:else if $appError != null}
-			<h1 class="text-center text-5xl font-extrabold text-[{$textColor}]">{$appError}</h1>
+			<div class="text-center">
+				<h1 class="text-5xl font-extrabold text-[{$textColor}] mb-4">{$appError}</h1>
+				<p class="text-2xl opacity-80">Don't worry, we'll catch those lyrics next time! 🎯</p>
+			</div>
 		{/if}
 	</div>
 </div>

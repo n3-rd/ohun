@@ -26,12 +26,12 @@ export const getLyrics = async (artist: string, title: string, retries = 3) => {
 			);
 			
 			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+				throw new Error(`Oops! Our lyrics finder is having a bit of trouble (HTTP ${response.status}). Let's try again! 🎵`);
 			}
 			
 			const data = await response.json();
 			if (!data || !data[0]) {
-				throw new Error('No lyrics found');
+				throw new Error("Hmm... looks like this song is playing hide and seek with its lyrics! 🎭");
 			}
 
 			const lyrics = data[0].syncedLyrics;
@@ -48,7 +48,7 @@ export const getLyrics = async (artist: string, title: string, retries = 3) => {
 		} catch (error) {
 			if (i === retries - 1) {
 				console.error('Error fetching lyrics:', error);
-				appError.set(error.message || 'Error fetching lyrics');
+				appError.set(error.message || "Whoopsie! Our lyrics detector needs a coffee break. Try again in a moment! ☕");
 				return null;
 			}
 			// Wait before retrying

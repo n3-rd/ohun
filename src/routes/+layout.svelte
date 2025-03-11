@@ -49,13 +49,14 @@
 {:else}
 	<div class="flex h-screen items-center justify-center">
 		<div class="text-center">
-			<h1 class="font-bold text-2xl">Playerctl is not installed</h1>
-			<p class="text-sm">Please install playerctl to use this app</p>
+			<h1 class="font-bold text-2xl">🎵 One Small Thing Missing!</h1>
+			<p class="text-sm mt-2">We need a tiny helper called 'playerctl' to make the magic happen 🪄</p>
 			<button
 				on:click={() =>
 					openLink('https://github.com/altdesktop/playerctl?tab=readme-ov-file#installing')}
-				class="mt-4 rounded-md bg-[#1db954] px-4 py-2 text-white">how to install?</button
-			>
+				class="mt-4 rounded-md bg-[#1db954] px-4 py-2 text-white hover:bg-[#1ed760] transition-colors duration-200">
+				Show me how to install it! 🚀
+			</button>
 		</div>
 	</div>
 {/if}
