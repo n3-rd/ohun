@@ -14,7 +14,6 @@ import { Lyrics } from 'paroles';
 import { prominent } from 'color.js';
 import { getTextColor } from './ui';
 import { replaceSpecialChars } from './utils';
-import { notify } from './nofity';
 import { isLoading } from './stores/player-store';
 import { appError } from './stores/error-store';
 import { get } from 'svelte/store';
@@ -28,7 +27,7 @@ export const getCurrentPlaying = async () => {
 		currentPlayingSong.set(response);
 		
 		if (!response.artist || !response.title) {
-			throw new Error('Missing song metadata');
+			throw new Error('🎵 Hmm... this song seems a bit shy - we need both an artist and title to find its lyrics! 🎸');
 		}
 		
 		await Promise.all([
@@ -39,7 +38,7 @@ export const getCurrentPlaying = async () => {
 		
 	} catch (error) {
 		console.error('Error getting current song:', error);
-		appError.set(error.message);
+		appError.set(error instanceof Error ? error.message : "🎼 Oops! The music spirits are being mischievous. Let's try that again! 🎹");
 	} finally {
 		isLoading.set(false);
 	}
@@ -59,28 +58,43 @@ export const getPlayTime = async () => {
 const checkSongChange = async () => {
 	let currentSong: Song | null = null;
 	let previousSong: Song | null = null;
+	let activePlayer: string | null = null;
+
+	// Get the active player initially
+	try {
+		const response = await invoke<string>('get_active_player');
+		activePlayer = response;
+		console.log('Active player detected:', activePlayer);
+	} catch (error) {
+		console.error('Failed to get active player:', error);
+	}
 
 	setInterval(async () => {
-		const song = await invoke<Song>('get_current_playing_song');
+		try {
+			// Update active player periodically
+			const newActivePlayer = await invoke<string>('get_active_player');
+			if (newActivePlayer !== activePlayer) {
+				console.log('Active player changed from', activePlayer, 'to', newActivePlayer);
+				activePlayer = newActivePlayer;
+			}
+			
+			const song = await invoke<Song>('get_current_playing_song');
 
-		if (currentSong && song.title !== currentSong.title) {
-			previousSong = currentSong;
-		}
+			if (currentSong && song.title !== currentSong.title) {
+				previousSong = currentSong;
+			}
 
-		currentSong = song;
+			currentSong = song;
 
-		if (previousSong && currentSong.title !== previousSong.title) {
-			// Song has changed
-			await getCurrentPlaying();
-
-			// Removed notify for now
-			// const artist = currentSong.artist;
-			// const title = currentSong.title;
-
-			// notify(`Lyrics fetched`, `${title} by ${artist}`);
-
-			// Update previousSong after handling the song change
-			previousSong = currentSong;
+			if (previousSong && currentSong.title !== previousSong.title) {
+				// Song has changed
+				await getCurrentPlaying();
+				
+				// Update previousSong after handling the song change
+				previousSong = currentSong;
+			}
+		} catch (error) {
+			console.error('Error in checkSongChange:', error);
 		}
 	}, 1000); // Check every second
 };
@@ -95,9 +109,11 @@ const updateLyrics = (time: number) => {
 	});
 
 	if (lyrics) {
-		let sync = new Lyrics(lyrics);
-		let current = sync.atTime(time);
-		currentLine.set(current);
+		const sync = new Lyrics(lyrics);
+		const current = sync.atTime(time);
+		if (current) {
+			currentLine.set(current);
+		}
 	}
 };
 
@@ -180,11 +196,20 @@ export const getAccentColor = async () => {
 	albumArt.subscribe((value) => {
 		url = value;
 	});
-	let color = await prominent(url, { amount: 1, format: 'hex' });
-	accentColor.set(color);
-	let fontColor = getTextColor(color);
-	textColor.set(fontColor);
-	return color;
+	
+	if (!url) {
+		return '#000000'; // Default color if no album art
+	}
+	
+	const color = await prominent(url, { amount: 1, format: 'hex' });
+	if (color && typeof color[0] === 'string') {
+		accentColor.set(color[0]);
+		const fontColor = getTextColor(color[0]);
+		textColor.set(fontColor);
+		return color[0];
+	}
+	
+	return '#000000'; // Default color if prominent fails
 };
 
 export const goToTime = async (time: number) => {
@@ -193,12 +218,16 @@ export const goToTime = async (time: number) => {
 
 export const downloadLyrics = async () => {
 	// download lyrics to lrc file
-	let playInfo;
-	currentPlayingSong.subscribe((value) => {
-		playInfo = value;
-	});
+	const playInfo = get(currentPlayingSong);
+	
+	if (!playInfo) {
+		console.error('No song is currently playing');
+		return;
+	}
+	
 	const artist = playInfo.artist;
 	const title = playInfo.title;
+	
 	try {
 		const response = await fetch(
 			`https://lrclib.net/api/search?artist_name=${artist}&track_name=${title}`
@@ -207,9 +236,9 @@ export const downloadLyrics = async () => {
 			throw new Error('Failed to fetch lyrics');
 		}
 
-		let res = response.json();
+		const res = response.json();
 		res.then((data) => {
-			let lyrics = data[0].syncedLyrics;
+			const lyrics = data[0].syncedLyrics;
 			const blob = new Blob([lyrics], { type: 'text/plain' });
 			const url = URL.createObjectURL(blob);
 			const a = document.createElement('a');
@@ -225,17 +254,6 @@ export const downloadLyrics = async () => {
 
 checkSongChange().then(() => {
 	getCurrentPlaying().then(() => {
-		let playInfo;
-		currentPlayingSong.subscribe((value) => {
-			playInfo = value;
-		});
-		const artist = playInfo.artist;
-		const title = playInfo.title;
-
-		// console.log('starting notifier for', `${title} by ${artist}`);
-		// notify(`Lyrics fetched`, `${title} by ${artist}`);
-		// console.log('ending notifier');
-
 		setInterval(getPlayTime, 1000);
 	});
 });

@@ -126,7 +126,10 @@
 	>
 		{#if $appError == null}
 			{#if $syncedLyrics == null}
-				<h1 class="text-center text-5xl font-extrabold">No lyrics found</h1>
+				<h1 class="text-center text-5xl font-extrabold">
+					<span class="block mb-4">🎵 No lyrics yet!</span>
+					<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
+				</h1>
 			{:else if $lyricsMode === 'multiple'}
 				<ScrollArea
 					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
@@ -156,14 +159,18 @@
 					{#if $currentLine.text}
 						{$currentLine.text}
 					{:else if $currentLine.text === ''}
-						-
+						<span class="opacity-60">🎶 ...</span>
 					{:else}
-						No lyrics found
+						<span class="block mb-4">🎵 No lyrics yet!</span>
+						<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
 					{/if}
 				</h1>
 			{/if}
 		{:else if $appError != null}
-			<h1 class="text-center text-5xl font-extrabold text-[{$textColor}]">{$appError}</h1>
+			<div class="text-center">
+				<h1 class="text-5xl font-extrabold text-[{$textColor}] mb-4">{$appError}</h1>
+				<p class="text-2xl opacity-80">Don't worry, we'll catch those lyrics next time! 🎯</p>
+			</div>
 		{/if}
 	</div>
 </div>
