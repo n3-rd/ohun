@@ -9,7 +9,7 @@ import {
 } from './stores/player-store';
 import type { Song } from './types';
 import { getLyrics } from './lyrics';
-import { currentLine, syncedLyrics } from './stores/lyricsStore';
+import { currentLine, syncedLyrics, nextLine } from './stores/lyricsStore';
 import { Lyrics } from 'paroles';
 import { prominent } from 'color.js';
 import { getTextColor } from './ui';
@@ -33,7 +33,11 @@ export const getCurrentPlaying = async () => {
 		await Promise.all([
 			getLyrics(response.artist, response.title),
 			getPlayTime(),
-			getAlbumArt(response.artist, response.title, response.album)
+			getAlbumArt(
+				response.artist || '', 
+				response.title || '', 
+				response.album || ''
+			)
 		]);
 		
 	} catch (error) {
@@ -103,17 +107,43 @@ const checkSongChange = async () => {
 checkSongChange();
 
 const updateLyrics = (time: number) => {
-	let lyrics;
-	syncedLyrics.subscribe((value) => {
-		lyrics = value;
-	});
-
-	if (lyrics) {
+	try {
+		const lyrics = get(syncedLyrics);
+		
+		if (!lyrics) return;
+		
 		const sync = new Lyrics(lyrics);
 		const current = sync.atTime(time);
+		
 		if (current) {
 			currentLine.set(current);
+			
+			// Also try to predict the next line for smoother transitions
+			const nextTimeIndex = lyrics.split('\n')
+				.map(line => {
+					const match = line.match(/\[(.*?)\]/);
+					if (!match) return 0;
+					
+					const timeStr = match[1].trim();
+					const [minutes, seconds] = timeStr.split(':').map(Number);
+					return minutes * 60 + seconds;
+				})
+				.findIndex(lineTime => lineTime > time);
+				
+			if (nextTimeIndex > 0) {
+				// We found a future timestamp, which means we can prepare for it
+				// This helps the UI prepare for the next line
+				const nextLines = lyrics.split('\n');
+				if (nextLines[nextTimeIndex]) {
+					const nextLineText = nextLines[nextTimeIndex].replace(/\[.*?\]/, '').trim();
+					if (nextLineText) {
+						nextLine.set(nextLineText);
+					}
+				}
+			}
 		}
+	} catch (error) {
+		console.error('Error updating lyrics:', error);
 	}
 };
 
