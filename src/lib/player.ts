@@ -301,6 +301,7 @@ export const getAlbumArt = async (
 export const getAccentColor = async () => {
 	try {
 		const url = get(albumArt);
+		console.log('url', url);
 		
 		if (!url) {
 			// Default dark theme
@@ -309,25 +310,23 @@ export const getAccentColor = async () => {
 			return '#121212';
 		}
 		
-		const color = await prominent(url, { amount: 1, format: 'hex' });
+		const color = await prominent(url, { amount: 1, format: 'hex' }).catch((error) => {
+			console.error('Failed to get accent color:', error);
+			return '#121212';
+		});
+
+		// convert color to hex
+		const hexColor = color.toString();
+
 		
-		// Make sure we have a valid color
-		let finalColor = '#121212'; // Default fallback
 		
-		if (color && Array.isArray(color) && color.length > 0) {
-			if (typeof color[0] === 'string') {
-				finalColor = color[0];
-			} else if (color[0] && typeof color[0] === 'object') {
-				// Handle RGB object format
-				finalColor = '#121212'; // Fallback if we can't parse
-			}
-		}
 		
-		accentColor.set(finalColor);
-		const fontColor = getTextColor(finalColor);
+		
+		accentColor.set(hexColor);
+		const fontColor = getTextColor(hexColor);
 		textColor.set(fontColor);
 		
-		return finalColor;
+		return hexColor;
 	} catch (error) {
 		console.error('Error getting accent color:', error);
 		// Set default values
