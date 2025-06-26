@@ -110,10 +110,10 @@
 
 	const getStatusColor = (status: string) => {
 		switch (status) {
-			case 'Playing': return '#1db954';
-			case 'Paused': return '#ffa500';
-			case 'Stopped': return '#ff4444';
-			default: return '#888888';
+			case 'Playing': return '#10b981'; // emerald-500
+			case 'Paused': return '#f59e0b'; // amber-500
+			case 'Stopped': return '#ef4444'; // red-500
+			default: return '#6b7280'; // gray-500
 		}
 	};
 
@@ -127,7 +127,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div 
-		class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+		class="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
 		onclick={() => showPlayerSwitcher.set(false)}
 		role="button"
 		tabindex="-1"
@@ -136,8 +136,8 @@
 	<!-- Player Switcher Modal -->
 	<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
 		<div 
-			class="bg-black/20 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl border border-white/20 min-w-[400px] max-w-[500px]"
-			style="background-color: {$accentColor}20; color: {$textColor};"
+			class="bg-white/10 backdrop-blur-3xl rounded-2xl p-6 shadow-2xl border border-white/20 min-w-[400px] max-w-[500px] text-white"
+			style="backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);"
 		>
 			<!-- Header -->
 			<div class="flex items-center justify-between mb-6">
@@ -147,7 +147,7 @@
 				</div>
 				<div class="flex items-center gap-2">
 					<button
-						class="p-2 rounded-lg hover:bg-white/10 transition-colors"
+						class="p-2 rounded-lg hover:bg-white/20 transition-colors text-white/80 hover:text-white backdrop-blur-sm"
 						onclick={refreshPlayers}
 						disabled={isRefreshing}
 						title="Refresh players"
@@ -155,7 +155,7 @@
 						<RefreshCw size="18" class={isRefreshing ? 'animate-spin' : ''} />
 					</button>
 					<button
-						class="p-2 rounded-lg hover:bg-white/10 transition-colors"
+						class="p-2 rounded-lg hover:bg-white/20 transition-colors text-white/80 hover:text-white backdrop-blur-sm"
 						onclick={() => showPlayerSwitcher.set(false)}
 					>
 						<X size="18" />
@@ -166,15 +166,16 @@
 			<!-- Players List -->
 			<div class="space-y-3 max-h-[400px] overflow-y-auto">
 				{#if players.length === 0}
-					<div class="text-center py-8 opacity-70">
-						<Music size="48" class="mx-auto mb-3 opacity-50" />
-						<p class="text-lg font-medium">No media players detected</p>
-						<p class="text-sm mt-1">Try opening a music app and refresh</p>
+					<div class="text-center py-8 text-white/70">
+						<Music size="48" class="mx-auto mb-3 text-white/50" />
+						<p class="text-lg font-medium text-white">No media players detected</p>
+						<p class="text-sm mt-1 text-white/60">Try opening a music app and refresh</p>
 					</div>
 				{:else}
 					{#each players as player (player.name)}
 						<button
-							class="w-full p-4 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-lg transition-all duration-200 border border-white/10 hover:border-white/30 text-left group {activePlayer === player.name ? 'ring-2 ring-white/50 bg-white/25' : ''}"
+							class="w-full p-4 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md transition-all duration-200 border border-white/20 hover:border-white/40 text-left group {activePlayer === player.name ? 'ring-2 ring-white/60 bg-white/25 border-white/50' : ''}"
+							style="backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"
 							onclick={() => selectPlayer(player.name)}
 						>
 							<div class="flex items-center justify-between">
@@ -183,23 +184,23 @@
 										{getPlayerIcon(player.name)}
 									</div>
 									<div>
-										<h3 class="font-semibold text-lg group-hover:text-white transition-colors">
+										<h3 class="font-semibold text-lg text-white group-hover:text-white/90 transition-colors drop-shadow-sm">
 											{player.displayName}
 										</h3>
-										<p class="text-sm opacity-70 font-mono">
+										<p class="text-sm text-white/60 font-mono drop-shadow-sm">
 											{player.name}
 										</p>
 									</div>
 								</div>
 								<div class="flex items-center gap-3">
 									<div 
-										class="px-3 py-1 rounded-full text-xs font-medium border"
-										style="background-color: {getStatusColor(player.status)}20; border-color: {getStatusColor(player.status)}40; color: {getStatusColor(player.status)};"
+										class="px-3 py-1 rounded-full text-xs font-medium border shadow-lg backdrop-blur-sm"
+										style="background-color: {getStatusColor(player.status)}; border-color: {getStatusColor(player.status)}; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.7);"
 									>
 										{player.status}
 									</div>
 									{#if activePlayer === player.name}
-										<div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+										<div class="w-3 h-3 bg-white rounded-full animate-pulse shadow-lg ring-2 ring-white/50"></div>
 									{/if}
 								</div>
 							</div>
@@ -210,7 +211,7 @@
 
 			<!-- Footer -->
 			<div class="mt-6 pt-4 border-t border-white/20">
-				<p class="text-xs opacity-60 text-center">
+				<p class="text-xs text-white/60 text-center drop-shadow-sm">
 					Players are automatically detected. Make sure your media app is running.
 				</p>
 			</div>
