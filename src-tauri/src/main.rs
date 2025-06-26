@@ -4,7 +4,11 @@
 use serde::Serialize;
 use std::process::Command;
 use std::str;
+use std::sync::Mutex;
 use tauri_plugin_shell::ShellExt;
+
+// Global state to remember the last active player
+static LAST_ACTIVE_PLAYER: Mutex<Option<String>> = Mutex::new(None);
 
 #[cfg(target_os = "windows")]
 use windows::{
@@ -45,7 +49,14 @@ async fn command(app_handle: &tauri::AppHandle, command: &str) -> Result<String,
             .stdout
     };
 
-    String::from_utf8(output).map_err(|e| format!("Invalid UTF-8 output: {}", e))
+    let result = String::from_utf8(output).map_err(|e| format!("Invalid UTF-8 output: {}", e))?;
+    
+    // Check if the result looks like help text or error output
+    if result.contains("Usage:") || result.contains("Help Options:") || result.contains("Available Commands:") {
+        return Err("Command returned help text instead of expected output".to_string());
+    }
+    
+    Ok(result)
 }
 
 #[tauri::command]
@@ -221,6 +232,94 @@ async fn check_if_playerctl_exists() -> Result<bool, String> {
 }
 
 #[tauri::command]
+async fn get_player_status(app_handle: tauri::AppHandle, player: String) -> Result<String, String> {
+    #[cfg(target_os = "linux")]
+    {
+        let status = command(&app_handle, &format!("playerctl -p {} status", player)).await;
+        match status {
+            Ok(s) => {
+                let trimmed = s.trim();
+                // Check if the output looks like a valid status
+                match trimmed {
+                    "Playing" | "Paused" | "Stopped" => Ok(trimmed.to_string()),
+                    _ => {
+                        // If it's not a valid status (like help text or error), return Unknown
+                        if trimmed.contains("Usage:") || trimmed.contains("Help Options:") || trimmed.len() > 50 {
+                            Ok("Unknown".to_string())
+                        } else {
+                            Ok(trimmed.to_string())
+                        }
+                    }
+                }
+            },
+            Err(_) => Ok("Unknown".to_string())
+        }
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        // For Windows, we'll just return the status of the current session
+        let gsmtcsm = get_system_media_transport_controls_session_manager().await?;
+        let session = get_active_session(&gsmtcsm)?;
+        let playback_info = session.GetPlaybackInfo().map_err(|e| e.to_string())?;
+        let status = playback_info.PlaybackStatus().map_err(|e| e.to_string())?;
+        
+        let status_str = match status {
+            GlobalSystemMediaTransportControlsSessionPlaybackStatus::Playing => "Playing",
+            GlobalSystemMediaTransportControlsSessionPlaybackStatus::Paused => "Paused",
+            GlobalSystemMediaTransportControlsSessionPlaybackStatus::Stopped => "Stopped",
+            _ => "Unknown"
+        };
+        
+        Ok(status_str.to_string())
+    }
+}
+
+#[tauri::command]
+async fn get_available_players(app_handle: tauri::AppHandle) -> Result<Vec<String>, String> {
+    #[cfg(target_os = "linux")]
+    {
+        let output = command(&app_handle, "playerctl -l").await?.trim().to_string();
+        let all_players: Vec<String> = output.lines().map(|s| s.to_string()).collect();
+        
+        // Filter out players that don't have valid status
+        let mut valid_players = Vec::new();
+        for player in all_players {
+            // Skip extremely long or suspicious player names
+            if player.len() > 100 || player.contains("Usage:") || player.contains("COMMAND") {
+                continue;
+            }
+            
+            // Test if the player responds with a valid status
+            let status_result = command(&app_handle, &format!("playerctl -p {} status", player)).await;
+            if let Ok(status) = status_result {
+                let trimmed_status = status.trim();
+                // Only include players that return valid status or reasonable errors
+                if !trimmed_status.contains("Usage:") && 
+                   !trimmed_status.contains("Help Options:") &&
+                   !trimmed_status.contains("Available Commands:") &&
+                   trimmed_status.len() < 50 {
+                    valid_players.push(player);
+                }
+            }
+        }
+        
+        Ok(valid_players)
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        Ok(vec!["windows_media_player".to_string()])
+    }
+}
+
+#[tauri::command]
+async fn set_active_player(player: String) -> Result<(), String> {
+    *LAST_ACTIVE_PLAYER.lock().unwrap() = Some(player);
+    Ok(())
+}
+
+#[tauri::command]
 async fn get_active_player(app_handle: tauri::AppHandle) -> Result<String, String> {
     #[cfg(target_os = "linux")]
     {
@@ -231,16 +330,47 @@ async fn get_active_player(app_handle: tauri::AppHandle) -> Result<String, Strin
             return Err("No media players detected".to_string());
         }
 
+        let mut playing_players = Vec::new();
+        let mut paused_players = Vec::new();
+        let mut other_players = Vec::new();
+
+        // Categorize players by their status
         for player in &players {
             let status = command(&app_handle, &format!("playerctl -p {} status", player)).await;
             if let Ok(s) = status {
-                if s.trim() == "Playing" {
-                    return Ok(player.to_string());
+                match s.trim() {
+                    "Playing" => playing_players.push(player.to_string()),
+                    "Paused" => paused_players.push(player.to_string()),
+                    _ => other_players.push(player.to_string()),
                 }
+            } else {
+                other_players.push(player.to_string());
             }
         }
 
-        Ok(players[0].to_string())
+        // Check if the last active player is still available and has valid status
+        let last_player = LAST_ACTIVE_PLAYER.lock().unwrap().clone();
+        if let Some(ref last) = last_player {
+            if playing_players.contains(last) || paused_players.contains(last) {
+                return Ok(last.clone());
+            }
+        }
+
+        // Priority: Playing > Paused > Others > First available
+        let selected_player = if !playing_players.is_empty() {
+            playing_players[0].clone()
+        } else if !paused_players.is_empty() {
+            paused_players[0].clone()
+        } else if !other_players.is_empty() {
+            other_players[0].clone()
+        } else {
+            players[0].to_string()
+        };
+
+        // Update the last active player
+        *LAST_ACTIVE_PLAYER.lock().unwrap() = Some(selected_player.clone());
+        
+        Ok(selected_player)
     }
 
     #[cfg(target_os = "windows")]
@@ -264,6 +394,9 @@ fn main() {
             go_to_time,
             check_if_playerctl_exists,
             get_active_player,
+            set_active_player,
+            get_available_players,
+            get_player_status,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

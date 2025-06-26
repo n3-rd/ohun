@@ -2,6 +2,7 @@
 	import { textColor } from '$lib/stores/player-store';
 	import { AlignCenter, AlignJustify, Copy, Download } from 'lucide-svelte';
 	import Tip from './Tip.svelte';
+	import PlayerSwitcherButton from './PlayerSwitcherButton.svelte';
 	import { setMultiLineMode, setSingleLineMode } from '$lib/preferences';
 	import { copyText } from 'svelte-copy';
 	import { plainLyrics } from '$lib/stores/lyricsStore';
@@ -11,6 +12,10 @@
 </script>
 
 <div class="flex items-center gap-3" style="color: {$textColor};">
+	<PlayerSwitcherButton />
+	
+	<div class="h-4 w-[1px] bg-current opacity-20"></div>
+
 	<Tip text="Copy lyrics">
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"

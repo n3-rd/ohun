@@ -7,6 +7,7 @@ import {
 	textColor,
 	cachedAlbumArt
 } from './stores/player-store';
+import { availablePlayers, currentActivePlayer, type MediaPlayer } from './stores/player-manager-store';
 import type { Song } from './types';
 import { getLyrics } from './lyrics';
 import { currentLine, syncedLyrics, nextLine } from './stores/lyricsStore';
@@ -19,6 +20,45 @@ import { appError } from './stores/error-store';
 import { get } from 'svelte/store';
 
 let previousTime: number | null = null;
+
+export const initializePlayerManager = async () => {
+	try {
+		const playerNames: string[] = await invoke('get_available_players');
+		
+		const playersWithStatus = await Promise.all(
+			playerNames.map(async (name) => {
+				try {
+					const status = await invoke('get_player_status', { player: name });
+					return {
+						name,
+						displayName: formatPlayerName(name),
+						status: status || 'Unknown'
+					} as MediaPlayer;
+				} catch {
+					return {
+						name,
+						displayName: formatPlayerName(name),
+						status: 'Unknown'
+					} as MediaPlayer;
+				}
+			})
+		);
+
+		availablePlayers.set(playersWithStatus);
+	} catch (error) {
+		console.error('Failed to initialize player manager:', error);
+	}
+};
+
+const formatPlayerName = (name: string): string => {
+	return name
+		.split('.')
+		.pop()
+		?.replace(/[-_]/g, ' ')
+		.split(' ')
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ') || name;
+};
 
 export const getCurrentPlaying = async () => {
 	try {

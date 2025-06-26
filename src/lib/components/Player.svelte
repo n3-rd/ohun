@@ -7,6 +7,7 @@
 	import PlayerActions from './PlayerActions.svelte';
 	import Tip from './Tip.svelte';
 	import { writable } from 'svelte/store';
+	import { showPlayerSwitcher } from '$lib/stores/player-manager-store';
 
 	const playing = writable(false);
 	let isAlbumArtHovered = $state(false);
@@ -46,6 +47,12 @@
 				break;
 			case 'ArrowRight':
 				if (event.altKey) next();
+				break;
+			case 'KeyP':
+				if (event.ctrlKey || event.metaKey) {
+					event.preventDefault();
+					showPlayerSwitcher.set(true);
+				}
 				break;
 		}
 	};

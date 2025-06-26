@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Player from '$lib/components/Player.svelte';
+	import PlayerSwitcher from '$lib/components/PlayerSwitcher.svelte';
 	import Titlebar from '$lib/components/Titlebar.svelte';
 	import { onMount } from 'svelte';
 	import '../app.pcss';
 	import { fly } from 'svelte/transition';
-	import { getCurrentPlaying } from '$lib/player';
+	import { getCurrentPlaying, initializePlayerManager } from '$lib/player';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { accentColor, textColor } from '$lib/stores/player-store';
 	import { playerctlInstalled } from '$lib/stores/window-store';
@@ -27,12 +28,14 @@
 
 	onMount(() => {
 		getCurrentPlaying();
+		initializePlayerManager();
 		disableContextMenu();
 	});
 </script>
 
 {#if $playerctlInstalled}
 	<Toaster />
+	<PlayerSwitcher />
 
 	<Titlebar title="Ohun" />
 	{#key data.url}
