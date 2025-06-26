@@ -1,5 +1,5 @@
 import { appError } from './stores/error-store';
-import { plainLyrics, syncedLyrics } from './stores/lyricsStore';
+import { plainLyrics, syncedLyrics, lyricsLoading } from './stores/lyricsStore';
 import * as lockr from 'lockr';
 import { replaceSpecialChars } from './utils';
 import { getAccentColor } from './player';
@@ -7,6 +7,7 @@ import { accentColor } from './stores/player-store';
 
 export const getLyrics = async (artist: string, title: string, retries = 3) => {
 	appError.set(null);
+	lyricsLoading.set(true);
 	
 	for (let i = 0; i < retries; i++) {
 		try {
@@ -18,6 +19,7 @@ export const getLyrics = async (artist: string, title: string, retries = 3) => {
 				syncedLyrics.set(offlineLyrics);
 				plainLyrics.set(offlineLyrics);
 				accentColor.set(offlineAccent);
+				lyricsLoading.set(false);
 				return offlineLyrics;
 			}
 
@@ -31,7 +33,7 @@ export const getLyrics = async (artist: string, title: string, retries = 3) => {
 			
 			const data = await response.json();
 			if (!data || !data[0]) {
-				throw new Error("Hmm... looks like this song is playing hide and seek with its lyrics! 🎭");
+				throw new Error("Hmm... looks like this song is playing hide and seek with its lyrics! ");
 			}
 
 			const lyrics = data[0].syncedLyrics;
@@ -43,12 +45,14 @@ export const getLyrics = async (artist: string, title: string, retries = 3) => {
 			let lockerAccent = await getAccentColor();
 			lockr.set(`offline_${artist + title}accentColor`, lockerAccent);
 
+			lyricsLoading.set(false);
 			return lyrics;
 
 		} catch (error) {
 			if (i === retries - 1) {
 				console.error('Error fetching lyrics:', error);
 				appError.set(error.message || "Whoopsie! Our lyrics detector needs a coffee break. Try again in a moment! ☕");
+				lyricsLoading.set(false);
 				return null;
 			}
 			// Wait before retrying

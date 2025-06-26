@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentLine, plainLyrics, syncedLyrics } from '$lib/stores/lyricsStore';
+	import { currentLine, plainLyrics, syncedLyrics, lyricsLoading } from '$lib/stores/lyricsStore';
 	import { copyText } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
@@ -9,6 +9,7 @@
 	import { appError } from '$lib/stores/error-store';
 	import { goToTime } from '$lib/player';
 	import { createHover } from 'svelte-interactions';
+	import LyricsLoader from './LyricsLoader.svelte';
 
 	const { hoverAction } = createHover();
 
@@ -124,7 +125,9 @@
 			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
 		}}
 	>
-		{#if $appError == null}
+		<LyricsLoader />
+		
+		{#if $appError == null && !$lyricsLoading}
 			{#if $syncedLyrics == null}
 				<h1 class="text-center text-5xl font-extrabold">
 					<span class="block mb-4">🎵 No lyrics yet!</span>
@@ -166,7 +169,7 @@
 					{/if}
 				</h1>
 			{/if}
-		{:else if $appError != null}
+		{:else if $appError != null && !$lyricsLoading}
 			<div class="text-center">
 				<h1 class="text-5xl font-extrabold text-[{$textColor}] mb-4">{$appError}</h1>
 				<p class="text-2xl opacity-80">Don't worry, we'll catch those lyrics next time! 🎯</p>

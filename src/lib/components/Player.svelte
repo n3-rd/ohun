@@ -91,6 +91,12 @@
 	}
 </style>
 
+<div class="cover-preview h-56 w-56 bg-cover bg-center rounded-md absolute bottom-20 left-4"
+		style="background-image: url('{$albumArt}'); object-fit: cover;">
+	
+
+</div>
+
 <div class="fixed bottom-0 right-0 flex flex-col w-full">
 	<div
 		class="fixed bottom-0 right-0 flex h-16 w-full select-none items-center justify-between bg-white/30 px-2 backdrop-blur-sm transition-colors duration-300 ease-in-out"
