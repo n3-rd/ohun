@@ -14,7 +14,7 @@
 	<Tip text="Copy lyrics">
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			on:click={() => {
+			onclick={() => {
 				copyText($plainLyrics);
 				toast.success('Lyrics copied');
 			}}
@@ -26,7 +26,7 @@
 	<Tip text="Download lyrics">
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			on:click={() => {
+			onclick={() => {
 				downloadLyrics($currentPlayingSong.artist, $currentPlayingSong.title);
 				toast.success('Lyrics downloaded');
 			}}
@@ -35,12 +35,12 @@
 		</button>
 	</Tip>
 
-	<div class="h-4 w-[1px] bg-current opacity-20" />
+	<div class="h-4 w-[1px] bg-current opacity-20"></div>
 
 	<Tip text="Single line mode">
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			on:click={setSingleLineMode}
+			onclick={setSingleLineMode}
 		>
 			<AlignCenter size="15" />
 		</button>
@@ -49,7 +49,7 @@
 	<Tip text="Multi line mode">
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			on:click={setMultiLineMode}
+			onclick={setMultiLineMode}
 		>
 			<AlignJustify size="15" />
 		</button>

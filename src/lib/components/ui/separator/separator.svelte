@@ -5,10 +5,15 @@
 
 	type $$Props = SeparatorPrimitive.Props;
 
-	let className: $$Props['class'] = undefined;
-	export let orientation: $$Props['orientation'] = 'horizontal';
-	export let decorative: $$Props['decorative'] = undefined;
-	export { className as class };
+	interface Props {
+		class?: $$Props['class'];
+		orientation?: $$Props['orientation'];
+		decorative?: $$Props['decorative'];
+		[key: string]: any
+	}
+
+	let { class: className = undefined, orientation = 'horizontal', decorative = undefined, ...rest }: Props = $props();
+	
 </script>
 
 <SeparatorPrimitive.Root
@@ -19,6 +24,6 @@
 	)}
 	{orientation}
 	{decorative}
-	{...$$restProps}
+	{...rest}
 	style="color: {$textColor}"
 />

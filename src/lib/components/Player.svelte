@@ -9,6 +9,7 @@
 	import { writable } from 'svelte/store';
 
 	const playing = writable(false);
+	let isAlbumArtHovered = $state(false);
 
 	const updatePlayingState = async () => {
 		const isPlaying = await invoke('is_playing');
@@ -91,11 +92,15 @@
 	}
 </style>
 
-<div class="cover-preview h-56 w-56 bg-cover bg-center rounded-md absolute bottom-20 left-4"
+{#if isAlbumArtHovered}
+
+<div class="cover-preview h-56 w-56 bg-cover bg-center rounded-md absolute bottom-16 left-4"
 		style="background-image: url('{$albumArt}'); object-fit: cover;">
 	
 
 </div>
+
+{/if}
 
 <div class="fixed bottom-0 right-0 flex flex-col w-full">
 	<div
@@ -105,6 +110,8 @@
 			<div
 				class="album-art min-h-11 min-w-11 rounded-md bg-cover bg-center"
 				style="background-image: url('{$albumArt}'); object-fit: cover;"
+				onmouseenter={() => isAlbumArtHovered = true}
+				onmouseleave={() => isAlbumArtHovered = false}
 			></div>
 			<Tip
 				text="{$currentPlayingSong.title} - {$currentPlayingSong.artist} - {$currentPlayingSong.album}"
@@ -128,7 +135,7 @@
 				<button
 					class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 					style="color: {$textColor};"
-					on:click={previous}
+					onclick={previous}
 				>
 					<SkipBack size="15" />
 				</button>
@@ -138,7 +145,7 @@
 				<button
 					class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 					style="color: {$textColor};"
-					on:click={togglePlay}
+					onclick={togglePlay}
 				>
 					{#if $playing}
 						<Pause size="15" />
@@ -152,7 +159,7 @@
 				<button
 					class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 					style="color: {$textColor};"
-					on:click={next}
+					onclick={next}
 				>
 					<SkipForward size="15" />
 				</button>

@@ -27,7 +27,7 @@
 			<button
 				class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/20 transition-all duration-200 w-full"
 				style="color: {$textColor};"
-				on:click={() => {
+				onclick={() => {
 					copyText($plainLyrics);
 					toast.success('Lyrics copied to clipboard');
 				}}
@@ -39,7 +39,7 @@
 			<button
 				class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/20 transition-all duration-200 w-full"
 				style="color: {$textColor};"
-				on:click={() => {
+				onclick={() => {
 					downloadLyrics($currentPlayingSong.artist, $currentPlayingSong.title);
 					toast.success('Lyrics downloaded');
 				}}

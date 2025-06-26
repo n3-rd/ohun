@@ -7,7 +7,11 @@
 	import { openLink } from '$lib/utils';
 	import { onMount, onDestroy } from 'svelte';
 	
-	export let title = 'Stauri';
+	interface Props {
+		title?: string;
+	}
+
+	let { title = 'Stauri' }: Props = $props();
 	
 	const window = Window.getCurrent();
 	let unlistenResize: (() => void) | undefined;
@@ -110,7 +114,7 @@
 				<DropdownMenu.Group>
 					<DropdownMenu.Item class="cursor-pointer">
 						<button
-							on:click={() => openLink('https://github.com/n3-rd/ohun')}
+							onclick={() => openLink('https://github.com/n3-rd/ohun')}
 							class="flex w-full justify-between"
 						>
 							<div>Github</div>
@@ -119,7 +123,7 @@
 					</DropdownMenu.Item>
 					<DropdownMenu.Item class="cursor-pointer">
 						<button
-							on:click={() => openLink('https://www.buymeacoffee.com/n3rdyn3rd')}
+							onclick={() => openLink('https://www.buymeacoffee.com/n3rdyn3rd')}
 							class="flex w-full justify-between"
 						>
 							<div>Donate</div>
@@ -133,7 +137,7 @@
 		<button
 			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 			style="background-color: {$accentColor}; color: {$textColor};"
-			on:click={toggleAlwaysOnTop}
+			onclick={toggleAlwaysOnTop}
 			title="Always on top"
 		>
 			<Pin size="15" stroke-width="3" class={$windowAlwaysOnTop ? 'rotate-45' : ''} />
@@ -141,14 +145,14 @@
 		<button
 		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 		style="background-color: {$accentColor}; color: {$textColor};"
-		on:click={minimizeWindow}
+		onclick={minimizeWindow}
 	>
 		<Minus size="15" stroke-width="3" />
 	</button>
 	<button
 		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 		style="background-color: {$accentColor}; color: {$textColor};"
-		on:click={maximizeWindow}
+		onclick={maximizeWindow}
 	>
 		{#if $windowMaximized}
 			<Minimize2 size="15" stroke-width="3" />
@@ -159,7 +163,7 @@
 	<button
 		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
 		style="background-color: {$accentColor}; color: {$textColor};"
-		on:click={closeWindow}
+		onclick={closeWindow}
 	>
 		<X size="15" stroke-width="3" />
 	</button>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { currentLine, plainLyrics, syncedLyrics, lyricsLoading } from '$lib/stores/lyricsStore';
 	import { copyText } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
@@ -44,13 +46,13 @@
 		}
 	};
 
-	let lyricWithIndex: LyricWithIndex[] = [];
-	let lyrics: Lyric[] = [];
-	let mouseOverLyrics = false;
+	let lyricWithIndex: LyricWithIndex[] = $state([]);
+	let lyrics: Lyric[] = $state([]);
+	let mouseOverLyrics = $state(false);
 	let scrollInterval: ReturnType<typeof setInterval> | undefined;
 
 	// Automatically calculate lyrics based on the synced lyrics store
-	$: {
+	run(() => {
 		if ($syncedLyrics != null) {
 			lyrics = $syncedLyrics.split('\n').map((line) => {
 				let match = line.match(/\[(.*?)\](.*)/);
@@ -69,15 +71,15 @@
 				};
 			});
 		}
-	}
+	});
 
 	// Automatically calculate lyricWithIndex based on the plain lyrics store
-	$: {
+	run(() => {
 		lyricWithIndex = $plainLyrics.split('\n').map((line, index) => ({
 			text: line,
 			index
 		}));
-	}
+	});
 
 	// Debounce function to delay execution of the scroll action
 	const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
@@ -115,11 +117,11 @@
 	<div
 		class="flex h-[90vh] min-w-[98vw] items-center justify-center px-4"
 		use:hoverAction
-		on:hoverstart={(e) => {
+		onhoverstart={(e) => {
 			mouseOverLyrics = true;
 			console.log('hover');
 		}}
-		on:hoverend={(e) => {
+		onhoverend={(e) => {
 			mouseOverLyrics = false;
 			console.log('hover end');
 			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
@@ -138,26 +140,26 @@
 					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
 		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
 				>
-					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					{#each lyrics as line, i (i)}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
 						<p
 							class={`line-{i} leading-[4.25rem] transition-opacity duration-300 hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
 							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
 							`}
 							id={`${line.time}`}
-							on:click={goToTime(line.time)}
+							onclick={goToTime(line.time)}
 						>
 							{line.text}
 						</p>
 					{/each}
 				</ScrollArea>
 			{:else}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 				<h1
 					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl"
-					on:click={() => copyText($currentLine.text)}
+					onclick={() => copyText($currentLine.text)}
 				>
 					{#if $currentLine.text}
 						{$currentLine.text}
