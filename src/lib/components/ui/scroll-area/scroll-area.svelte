@@ -30,7 +30,7 @@
 </script>
 
 <ScrollAreaPrimitive.Root {...rest} class={cn('relative overflow-hidden', className)}>
-	<ScrollAreaPrimitive.Viewport class="h-full w-full rounded-[inherit]">
+	<ScrollAreaPrimitive.Viewport class="h-full w-full rounded-[inherit]" data-scroll-area-viewport>
 		<ScrollAreaPrimitive.Content>
 			{@render children?.()}
 		</ScrollAreaPrimitive.Content>

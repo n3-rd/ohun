@@ -41,15 +41,26 @@
 
 	const scrollTo = (index: number): void => {
 		const element = document.getElementById(index.toString());
-		if (element) {
-			element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		const scrollArea = document.querySelector('[data-scroll-area-viewport]');
+		
+		if (element && scrollArea) {
+			const elementRect = element.getBoundingClientRect();
+			const scrollAreaRect = scrollArea.getBoundingClientRect();
+			const scrollAreaTop = scrollArea.scrollTop;
+			
+			// Calculate the position to scroll to (center the element)
+			const targetScrollTop = scrollAreaTop + (elementRect.top - scrollAreaRect.top) - (scrollAreaRect.height / 2) + (elementRect.height / 2);
+			
+			scrollArea.scrollTo({
+				top: targetScrollTop,
+				behavior: 'smooth'
+			});
 		}
 	};
 
 	let lyricWithIndex: LyricWithIndex[] = $state([]);
 	let lyrics: Lyric[] = $state([]);
 	let mouseOverLyrics = $state(false);
-	let scrollInterval: ReturnType<typeof setInterval> | undefined;
 
 	// Automatically calculate lyrics based on the synced lyrics store
 	run(() => {
@@ -81,35 +92,15 @@
 		}));
 	});
 
-	// Debounce function to delay execution of the scroll action
-	const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
-			clearTimeout(timer);
-			timer = setTimeout(() => {
-				func(...args);
-			}, delay);
-		};
-	};
-
-	const debouncedScrollTo = debounce(scrollTo, 200);
-
-	const startScrollInterval = (): void => {
-		if (scrollInterval) clearInterval(scrollInterval);
-		scrollInterval = setInterval(() => {
-			if (!mouseOverLyrics) {
-				debouncedScrollTo($currentLine.time);
-			}
-		}, 1000);
-	};
+	// React to currentLine changes immediately
+	run(() => {
+		if (!mouseOverLyrics && $currentLine.time !== undefined) {
+			scrollTo($currentLine.time);
+		}
+	});
 
 	onMount(() => {
 		scrollTo(0);
-		startScrollInterval();
-	});
-
-	onDestroy(() => {
-		clearInterval(scrollInterval);
 	});
 </script>
 
@@ -124,7 +115,7 @@
 		onhoverend={(e) => {
 			mouseOverLyrics = false;
 			console.log('hover end');
-			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
+			scrollTo($currentLine.time); // Scroll immediately after hover ends
 		}}
 	>
 		<LyricsLoader />
