@@ -110,14 +110,8 @@ async fn get_system_media_transport_controls_session_manager() -> Result<GlobalS
 
 #[cfg(target_os = "windows")]
 fn get_active_session(manager: &GlobalSystemMediaTransportControlsSessionManager) -> Result<GlobalSystemMediaTransportControlsSession, String> {
-    let session = manager.GetCurrentSession()
-        .map_err(|_| "Unable to get current session".to_string())?;
-    
-    if let Some(session) = session {
-        Ok(session)
-    } else {
-        Err("No active media session found".to_string())
-    }
+    manager.GetCurrentSession()
+        .map_err(|_| "Unable to get current session".to_string())
 }
 
 #[tauri::command]
