@@ -51,8 +51,8 @@
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (event.target instanceof HTMLInputElement) return;
-		
-		switch(event.code) {
+
+		switch (event.code) {
 			case 'Space':
 				event.preventDefault();
 				togglePlay();
@@ -85,7 +85,7 @@
 	});
 
 	accentColor.subscribe((value) => {
-			accent = value;
+		accent = value;
 	});
 
 	let controlsColour = {
@@ -94,81 +94,81 @@
 	};
 </script>
 
+<div class="pointer-events-none fixed inset-x-0 bottom-8 z-50 flex w-full justify-center">
+	<div
+		class="pointer-events-auto relative flex h-20 w-[95%] max-w-4xl select-none items-center justify-between
+		rounded-3xl border border-white/20 bg-white/5 px-2 shadow-2xl backdrop-blur backdrop-saturate-150 transition-all hover:bg-white/10"
+	>
+		<div class="song-info flex w-[30%] items-center gap-4">
+			<div
+				class="album-art h-14 w-14 rounded-xl bg-cover bg-center shadow-lg transition-transform hover:scale-105"
+				style="background-image: url('{$albumArt}');"
+			/>
+			<Tip
+				text="{$currentPlayingSong.title} - {$currentPlayingSong.artist} - {$currentPlayingSong.album}"
+			>
+				<div class="metadata flex flex-col justify-center text-left">
+					<div class="song-title line-clamp-1 font-bold text-base tracking-wide text-white">
+						{$currentPlayingSong.title}
+					</div>
+					<div class="artist line-clamp-1 text-sm font-medium text-white/60">
+						{$currentPlayingSong.artist}
+					</div>
+				</div>
+			</Tip>
+		</div>
+
+		<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+			<div class="controls flex items-center gap-6">
+				<Tip text="Previous">
+					<button
+						class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-white/70 transition-all hover:bg-white/10 hover:text-white"
+						on:click={previous}
+					>
+						<SkipBack size="24" fill="currentColor" class="scale-75" />
+					</button>
+				</Tip>
+
+				<Tip text={$playing ? 'Pause' : 'Play'}>
+					<button
+						class="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-white text-black shadow-lg transition-all hover:scale-105 hover:shadow-white/20 active:scale-95"
+						on:click={togglePlay}
+					>
+						{#if $playing}
+							<Pause size="28" fill="currentColor" />
+						{:else}
+							<Play size="28" fill="currentColor" class="ml-1" />
+						{/if}
+					</button>
+				</Tip>
+
+				<Tip text="Next">
+					<button
+						class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-white/70 transition-all hover:bg-white/10 hover:text-white"
+						on:click={next}
+					>
+						<SkipForward size="24" fill="currentColor" class="scale-75" />
+					</button>
+				</Tip>
+			</div>
+		</div>
+
+		<div class="flex w-[30%] justify-end gap-2">
+			<PlayerActions />
+		</div>
+	</div>
+</div>
+
 <style lang="postcss">
 	button {
 		transition: transform 0.2s ease;
 	}
-	
+
 	button:hover {
 		transform: scale(1.1);
 	}
-	
+
 	button:active {
 		transform: scale(0.95);
 	}
 </style>
-
-	<div class="fixed bottom-8 inset-x-0 w-full flex justify-center pointer-events-none z-50">
-		<div
-			class="pointer-events-auto flex h-20 w-[95%] max-w-4xl select-none items-center justify-between 
-			rounded-3xl bg-black/20 px-6 backdrop-blur-4xl border border-white/10 shadow-2xl transition-all hover:bg-black/30"
-		>
-			<div class="song-info flex w-[30%] items-center gap-4">
-				<div
-					class="album-art h-14 w-14 rounded-xl bg-cover bg-center shadow-lg transition-transform hover:scale-105"
-					style="background-image: url('{$albumArt}');"
-				/>
-				<Tip
-					text="{$currentPlayingSong.title} - {$currentPlayingSong.artist} - {$currentPlayingSong.album}"
-				>
-					<div class="metadata flex flex-col justify-center text-left">
-						<div class="song-title line-clamp-1 font-bold text-base text-white tracking-wide">
-							{$currentPlayingSong.title}
-						</div>
-						<div class="artist line-clamp-1 text-sm text-white/60 font-medium">
-							{$currentPlayingSong.artist}
-						</div>
-					</div>
-				</Tip>
-			</div>
-
-			<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-				<div class="controls flex items-center gap-6">
-					<Tip text="Previous">
-						<button
-							class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all"
-							on:click={previous}
-						>
-							<SkipBack size="24" fill="currentColor" class="scale-75" />
-						</button>
-					</Tip>
-
-					<Tip text={$playing ? 'Pause' : 'Play'}>
-						<button
-							class="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-white text-black hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-white/20"
-							on:click={togglePlay}
-						>
-							{#if $playing}
-								<Pause size="28" fill="currentColor" />
-							{:else}
-								<Play size="28" fill="currentColor" class="ml-1" />
-							{/if}
-						</button>
-					</Tip>
-
-					<Tip text="Next">
-						<button
-							class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all"
-							on:click={next}
-						>
-							<SkipForward size="24" fill="currentColor" class="scale-75" />
-						</button>
-					</Tip>
-				</div>
-			</div>
-
-			<div class="flex w-[30%] justify-end gap-2">
-				<PlayerActions />
-			</div>
-		</div>
-	</div>

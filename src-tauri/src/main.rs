@@ -20,6 +20,7 @@ use windows::{
 
 struct AppState {
     previous_positions: Mutex<HashMap<usize, f64>>,
+    selected_player: Mutex<Option<String>>,
 }
 
 #[cfg(target_os = "linux")]
@@ -55,10 +56,13 @@ struct Metadata {
 }
 
 #[tauri::command]
-async fn get_current_playing_song(app_handle: tauri::AppHandle) -> Result<Metadata, String> {
+async fn get_current_playing_song(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<Metadata, String> {
     #[cfg(target_os = "linux")]
     {
-        return get_current_playing_song_linux(&app_handle).await;
+        return get_current_playing_song_linux(&app_handle, state).await;
     }
 
     #[cfg(target_os = "windows")]
@@ -68,7 +72,7 @@ async fn get_current_playing_song(app_handle: tauri::AppHandle) -> Result<Metada
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         let output = Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -104,9 +108,12 @@ async fn get_current_playing_song(app_handle: tauri::AppHandle) -> Result<Metada
 }
 
 #[cfg(target_os = "linux")]
-async fn get_current_playing_song_linux(app_handle: &tauri::AppHandle) -> Result<Metadata, String> {
+async fn get_current_playing_song_linux(
+    app_handle: &tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<Metadata, String> {
     // Get the active player first
-    let active_player = get_active_player(app_handle.clone()).await?;
+    let active_player = get_active_player(app_handle.clone(), state).await?;
 
     // Use the active player for all metadata commands
     let artist = command(
@@ -213,7 +220,7 @@ async fn get_current_audio_time(
     #[cfg(target_os = "linux")]
     {
         // Get the active player
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
 
         // Get position only for the active player
         let output = command(
@@ -248,7 +255,7 @@ async fn get_current_audio_time(
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         let output = Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -271,11 +278,14 @@ async fn get_current_audio_time(
 }
 
 #[tauri::command]
-async fn next_song(app_handle: tauri::AppHandle) -> Result<(), String> {
+async fn next_song(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
         // Get the active player
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         command(&app_handle, &format!("playerctl -p {} next", active_player)).await?;
         Ok(())
     }
@@ -296,7 +306,7 @@ async fn next_song(app_handle: tauri::AppHandle) -> Result<(), String> {
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -315,11 +325,14 @@ async fn next_song(app_handle: tauri::AppHandle) -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn previous_song(app_handle: tauri::AppHandle) -> Result<(), String> {
+async fn previous_song(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
         // Get the active player
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         command(
             &app_handle,
             &format!("playerctl -p {} previous", active_player),
@@ -344,7 +357,7 @@ async fn previous_song(app_handle: tauri::AppHandle) -> Result<(), String> {
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -363,11 +376,14 @@ async fn previous_song(app_handle: tauri::AppHandle) -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
+async fn toggle_play(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
         // Get the active player
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         command(
             &app_handle,
             &format!("playerctl -p {} play-pause", active_player),
@@ -392,7 +408,7 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -411,11 +427,14 @@ async fn toggle_play(app_handle: tauri::AppHandle) -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
+async fn is_playing(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<bool, String> {
     #[cfg(target_os = "linux")]
     {
         // Get the active player
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         let status = command(
             &app_handle,
             &format!("playerctl -p {} status", active_player),
@@ -437,7 +456,7 @@ async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         let output = Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -456,11 +475,15 @@ async fn is_playing(app_handle: tauri::AppHandle) -> Result<bool, String> {
 }
 
 #[tauri::command]
-async fn go_to_time(app_handle: tauri::AppHandle, time: f64) -> Result<(), String> {
+async fn go_to_time(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+    time: f64,
+) -> Result<(), String> {
     #[cfg(target_os = "linux")]
     {
         // Get the active player
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         command(
             &app_handle,
             &format!("playerctl -p {} position {}", active_player, time),
@@ -477,7 +500,7 @@ async fn go_to_time(app_handle: tauri::AppHandle, time: f64) -> Result<(), Strin
 
     #[cfg(target_os = "macos")]
     {
-        let active_player = get_active_player(app_handle.clone()).await?;
+        let active_player = get_active_player(app_handle.clone(), state).await?;
         Command::new("osascript")
             .arg("-e")
             .arg(format!(
@@ -520,7 +543,27 @@ async fn check_if_playerctl_exists() -> Result<bool, String> {
 }
 
 #[tauri::command]
-async fn get_active_player(app_handle: tauri::AppHandle) -> Result<String, String> {
+async fn get_active_player(
+    app_handle: tauri::AppHandle,
+    state: tauri::State<'_, AppState>,
+) -> Result<String, String> {
+    // Check if a player is manually selected
+    let selected = {
+        let store = state
+            .selected_player
+            .lock()
+            .map_err(|_| "Failed to lock state")?;
+        store.clone()
+    };
+
+    if let Some(player) = selected {
+        // Validate if the selected player is actually available
+        let available = get_available_players(app_handle.clone()).await?;
+        if available.contains(&player) {
+            return Ok(player);
+        }
+    }
+
     #[cfg(target_os = "linux")]
     {
         // First try to get the player that's currently playing
@@ -604,14 +647,75 @@ async fn get_active_player(app_handle: tauri::AppHandle) -> Result<String, Strin
     }
 }
 
+#[tauri::command]
+async fn set_active_player(
+    player: String,
+    state: tauri::State<'_, AppState>,
+) -> Result<(), String> {
+    let mut selected_player = state
+        .selected_player
+        .lock()
+        .map_err(|_| "Failed to lock state")?;
+    *selected_player = Some(player);
+    Ok(())
+}
+
+#[tauri::command]
+async fn get_available_players(app_handle: tauri::AppHandle) -> Result<Vec<String>, String> {
+    #[cfg(target_os = "macos")]
+    let _ = app_handle;
+
+    #[cfg(target_os = "linux")]
+    {
+        let status_output = command(&app_handle, "playerctl -l").await?;
+        let players: Vec<String> = status_output
+            .trim()
+            .lines()
+            .map(|s| s.to_string())
+            .collect();
+        Ok(players)
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        Ok(vec!["Generic Player".to_string()])
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        let mut available = Vec::new();
+        let players = vec!["Spotify", "Music", "Apple Music"];
+
+        for player in &players {
+            let running_output = Command::new("osascript")
+                .arg("-e")
+                .arg(format!("application \"{}\" is running", player))
+                .output()
+                .map_err(|e| e.to_string())?;
+
+            if String::from_utf8_lossy(&running_output.stdout).trim() == "true" {
+                available.push(player.to_string());
+            }
+        }
+        Ok(available)
+    }
+
+    #[cfg(not(any(target_os = "linux", target_os = "windows", target_os = "macos")))]
+    {
+        Ok(vec![])
+    }
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_os::init())
         .manage(AppState {
             previous_positions: Mutex::new(HashMap::new()),
+            selected_player: Mutex::new(None),
         })
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_liquid_glass::init())
         .invoke_handler(tauri::generate_handler![
             get_current_playing_song,
             get_current_audio_time,
@@ -621,7 +725,9 @@ fn main() {
             is_playing,
             go_to_time,
             check_if_playerctl_exists,
-            get_active_player
+            get_active_player,
+            set_active_player,
+            get_available_players
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

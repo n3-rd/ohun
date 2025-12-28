@@ -67,15 +67,19 @@
 				"resizable": true,
 				"title": "ohun",
 				"width": 800,
-				"decorations": false,
+				"transparent": true,
+				"decorations": true,
 				"minWidth": 500,
 				"minHeight": 400,
-				"titleBarStyle": "Overlay"
+				"titleBarStyle": "Overlay",
+				"hiddenTitle": true
 			}
 		],
 		"security": {
 			"csp": null,
-			"capabilities": ["migrated"]
+			"capabilities": [
+				"migrated"
+			]
 		}
 	}
 }

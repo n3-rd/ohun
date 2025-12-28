@@ -11,6 +11,9 @@ importers:
       '@babichjacob/svelte-localstorage':
         specifier: ^1.0.1
         version: 1.0.1
+      '@svelte-put/clickoutside':
+        specifier: ^4.0.0
+        version: 4.0.0(svelte@4.2.13)
       '@tauri-apps/api':
         specifier: ^2.1.1
         version: 2.1.1
@@ -475,6 +478,11 @@ packages:
     resolution: {integrity: sha512-wQGI+LY/Py20zdUPq+XCem7JcPOyzIJBm3dli+56DJsQOHbnXZFEwgmnC6el1TPAfC8lBT3m+z69RmLykNUbew==}
     cpu: [x64]
     os: [win32]
+
+  '@svelte-put/clickoutside@4.0.0':
+    resolution: {integrity: sha512-36lLICc+RB6t/Kw0L6fZKU/y/yAAx3P+SsI2BtYM1GUBaYytSFHBWMw1c3TQEWj7Y8SgY6H3JsfEd2flbNWhqA==}
+    peerDependencies:
+      svelte: ^5.1.0
 
   '@sveltejs/adapter-auto@3.2.0':
     resolution: {integrity: sha512-She5nKT47kwHE18v9NMe6pbJcvULr82u0V3yZ0ej3n1laWKGgkgdEABE9/ak5iDPs93LqsBkuIo51kkwCLBjJA==}
@@ -2462,6 +2470,10 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.14.1':
     optional: true
+
+  '@svelte-put/clickoutside@4.0.0(svelte@4.2.13)':
+    dependencies:
+      svelte: 4.2.13
 
   '@sveltejs/adapter-auto@3.2.0(@sveltejs/kit@2.5.5(@sveltejs/vite-plugin-svelte@3.1.0(svelte@4.2.13)(vite@5.2.8))(svelte@4.2.13)(vite@5.2.8))':
     dependencies:

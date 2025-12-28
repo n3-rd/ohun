@@ -18,12 +18,44 @@ import { isLoading } from './stores/player-store';
 import { appError } from './stores/error-store';
 import { requestCancellation } from './utils/request-cancellation';
 import { retryWithBackoff, isNetworkError, isTimeoutError } from './utils/retry';
-import { get } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 let previousTime: number | null = null;
 let songChangeInterval: ReturnType<typeof setInterval> | null = null;
 let playTimeInterval: ReturnType<typeof setInterval> | null = null;
 let currentSongKey = '';
+
+export const availablePlayers = writable<string[]>([]);
+export const activePlayer = writable<string>('');
+
+export const getAvailablePlayers = async (): Promise<void> => {
+	try {
+		const players = await invoke<string[]>('get_available_players');
+		availablePlayers.set(players);
+	} catch (error) {
+		console.error('Failed to get available players:', error);
+	}
+};
+
+export const setActivePlayer = async (player: string): Promise<void> => {
+	try {
+		await invoke('set_active_player', { player });
+		activePlayer.set(player);
+		// Immediately refresh state
+		await getCurrentPlaying();
+	} catch (error) {
+		console.error('Failed to set active player:', error);
+	}
+};
+
+export const getActivePlayer = async (): Promise<void> => {
+	try {
+		const player = await invoke<string>('get_active_player');
+		activePlayer.set(player);
+	} catch (error) {
+		console.error('Failed to get active player:', error);
+	}
+};
 
 // Ensure default colors are set
 const ensureDefaultColors = () => {
@@ -171,14 +203,16 @@ const checkSongChange = (): void => {
 		try {
 			// Update active player periodically (less frequently)
 			if (Math.random() < 0.1) {
+				await getAvailablePlayers();
+				await getActivePlayer();
 				// Only check 10% of the time to reduce load
 				try {
 					const newActivePlayer = await invoke<string>('get_active_player');
-					if (newActivePlayer !== activePlayer) {
-						console.log('Active player changed from', activePlayer, 'to', newActivePlayer);
-						activePlayer = newActivePlayer;
-						appError.clear();
-					}
+					// if (newActivePlayer !== activePlayer) {
+					// 	console.log('Active player changed from', activePlayer, 'to', newActivePlayer);
+					// 	activePlayer = newActivePlayer;
+					// 	appError.clear();
+					// }
 				} catch (error) {
 					// Silently fail - not critical
 					console.debug('Failed to update active player:', error);
@@ -544,3 +578,5 @@ export const downloadLyrics = async (): Promise<void> => {
 		});
 	}
 };
+
+

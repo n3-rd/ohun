@@ -4,7 +4,7 @@
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { onMount, onDestroy } from 'svelte';
-	import { accentColor, textColor } from '$lib/stores/player-store';
+	import { accentColor, textColor, isLoading } from '$lib/stores/player-store';
 	import { lyricsMode } from '$lib/preferences';
 	import { appError } from '$lib/stores/error-store';
 	import { goToTime } from '$lib/player';
@@ -52,7 +52,8 @@
 	// Automatically calculate lyrics based on the synced lyrics store
 	$: {
 		if ($syncedLyrics != null && typeof $syncedLyrics === 'string') {
-			lyrics = $syncedLyrics.split('\n')
+			lyrics = $syncedLyrics
+				.split('\n')
 				.map((line) => {
 					const match = line.match(/\[(.*?)\](.*)/);
 					const time = match ? match[1].trim() : '';
@@ -92,31 +93,13 @@
 		}
 	}
 
-	// Debounce function to delay execution of the scroll action
-	const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
-			clearTimeout(timer);
-			timer = setTimeout(() => {
-				func(...args);
-			}, delay);
-		};
-	};
-
-	const debouncedScrollTo = debounce(scrollTo, 200);
-
-	const startScrollInterval = (): void => {
-		if (scrollInterval) clearInterval(scrollInterval);
-		scrollInterval = setInterval(() => {
-			if (!mouseOverLyrics) {
-				debouncedScrollTo($currentLine.time);
-			}
-		}, 1000);
-	};
+	// Reactie scrolling
+	$: if (!mouseOverLyrics && $currentLine) {
+		scrollTo($currentLine.time);
+	}
 
 	onMount(() => {
 		scrollTo(0);
-		startScrollInterval();
 	});
 
 	onDestroy(() => {
@@ -124,30 +107,44 @@
 	});
 </script>
 
-	<div class="h-[90vh] w-full flex items-center justify-center">
-		{#if !$appError}
-			{#if $syncedLyrics == null}
-				<h1 class="text-center text-4xl font-bold tracking-tight text-white/90 drop-shadow-md">
-					<span class="block mb-6 scale-110">🎵 No lyrics yet!</span>
-					<span class="text-2xl block font-medium opacity-70">This song is playing hard to get... 🙈</span>
-				</h1>
-			{:else if $lyricsMode === 'multiple'}
-				<ScrollArea
-					class="w-full h-[85vh] px-8 text-center scroll-smooth"
+<div class="flex h-[90vh] w-full items-center justify-center">
+	{#if !$appError}
+		{#if $isLoading}
+			<div class="flex flex-col items-center justify-center space-y-4">
+				<div
+					class="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-white"
+				></div>
+				<p class="animate-pulse text-lg font-medium text-white/70">Processing...</p>
+			</div>
+		{:else if $syncedLyrics == null}
+			<h1 class="text-center font-bold text-4xl tracking-tight text-white/90 drop-shadow-md">
+				<span class="mb-6 block scale-110">🎵 No lyrics yet!</span>
+				<span class="block text-2xl font-medium opacity-70"
+					>This song is playing hard to get... 🙈</span
 				>
-					<div class="py-[40vh] space-y-8">
+			</h1>
+		{:else if $lyricsMode === 'multiple'}
+			<div
+				class="h-[85vh] w-full"
+				on:mouseenter={() => (mouseOverLyrics = true)}
+				on:mouseleave={() => (mouseOverLyrics = false)}
+				role="application"
+			>
+				<ScrollArea class="h-full w-full scroll-smooth px-8 text-center">
+					<div class="space-y-8 py-[40vh]">
 						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 						{#each lyrics as line, i (i)}
 							<!-- svelte-ignore a11y-click-events-have-key-events -->
 							<p
 								class={`
-									cursor-pointer transition-all duration-500 ease-out origin-center
-									text-3xl md:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight
-									${line.time == $currentLine.time 
-										? 'opacity-100 scale-100 blur-0 text-white drop-shadow-lg py-4' 
-										: 'opacity-40 scale-95 blur-[1px] text-white/80 hover:opacity-70 hover:scale-[0.97] hover:blur-0 py-2'
-									}
-								`}
+										origin-center cursor-pointer text-3xl font-extrabold leading-tight
+										tracking-tight transition-all duration-200 ease-out md:text-5xl xl:text-6xl
+										${
+											line.time == $currentLine.time
+												? 'scale-100 py-8 text-white opacity-100 blur-0 drop-shadow-lg'
+												: 'scale-95 py-4 text-white/80 opacity-40 blur-[1px] hover:scale-[0.97] hover:opacity-70 hover:blur-0'
+										}
+									`}
 								id={`${line.time}`}
 								on:click={() => goToTime(line.time).catch(console.error)}
 							>
@@ -156,43 +153,46 @@
 						{/each}
 					</div>
 				</ScrollArea>
-			{:else}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-				<h1
-					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl transition-all duration-300 hover:scale-105 active:scale-95 drop-shadow-xl text-white"
-					on:click={() => copyText($currentLine.text)}
-				>
-					{#if $currentLine.text}
-						{$currentLine.text}
-					{:else if $currentLine.text === ''}
-						<span class="opacity-50 blur-sm animate-pulse">🎶 ...</span>
-					{:else}
-						<span class="block mb-4">🎵 No lyrics yet!</span>
-						<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
-					{/if}
-				</h1>
-			{/if}
-		{:else if $appError}
-			<div class="text-center bg-black/30 p-8 rounded-3xl backdrop-blur-md border border-white/10 shadow-2xl">
-				<h1 class="text-4xl font-bold text-white mb-4">{$appError.message}</h1>
-				{#if $appError.recoverable}
-					<p class="text-xl text-white/70 mb-6">Don't worry, we'll catch those lyrics next time! 🎯</p>
-					{#if $appError.retryable}
-						<button
-							class="px-8 py-3 rounded-full bg-white text-black font-bold hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg"
-							on:click={() => {
-								appError.clear();
-								// Trigger a retry by getting current playing again
-								import('$lib/player').then(({ getCurrentPlaying }) => getCurrentPlaying());
-							}}
-						>
-							Retry 🔄
-						</button>
-					{/if}
-				{:else}
-					<p class="text-xl text-white/70">This error cannot be recovered automatically.</p>
-				{/if}
 			</div>
+		{:else}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<h1
+				class="cursor-copy text-center text-5xl font-extrabold leading-relaxed text-white drop-shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 lg:text-7xl"
+				on:click={() => copyText($currentLine.text)}
+			>
+				{#if $currentLine.text}
+					{$currentLine.text}
+				{:else if $currentLine.text === ''}
+					<span class="animate-pulse opacity-50 blur-sm">🎶 ...</span>
+				{:else}
+					<span class="mb-4 block">🎵 No lyrics yet!</span>
+					<span class="block text-2xl opacity-80">This song is playing hard to get... 🙈</span>
+				{/if}
+			</h1>
 		{/if}
-	</div>
+	{:else if $appError}
+		<div class="rounded-3xl p-8 text-center">
+			<h1 class="mb-4 font-bold text-4xl text-white">{$appError.message}</h1>
+			{#if $appError.recoverable}
+				<p class="mb-6 text-xl text-white/70">
+					Don't worry, we'll catch those lyrics next time! 🎯
+				</p>
+				{#if $appError.retryable}
+					<button
+						class="rounded-full bg-white px-8 py-3 font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+						on:click={() => {
+							appError.clear();
+							// Trigger a retry by getting current playing again
+							import('$lib/player').then(({ getCurrentPlaying }) => getCurrentPlaying());
+						}}
+					>
+						Retry 🔄
+					</button>
+				{/if}
+			{:else}
+				<p class="text-xl text-white/70">This error cannot be recovered automatically.</p>
+			{/if}
+		</div>
+	{/if}
+</div>
