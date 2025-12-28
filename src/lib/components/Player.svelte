@@ -11,23 +11,40 @@
 	const playing = writable(false);
 
 	const updatePlayingState = async () => {
-		const isPlaying = await invoke('is_playing');
+		try {
+			const isPlaying = await invoke<boolean>('is_playing');
 			playing.set(isPlaying);
+		} catch (error) {
+			console.error('Error updating playing state:', error);
+			// Don't disrupt UI for minor errors
+		}
 	};
 
 	const next = async () => {
-		await invoke('next_song');
-		await updatePlayingState();
+		try {
+			await invoke('next_song');
+			await updatePlayingState();
+		} catch (error) {
+			console.error('Error skipping to next song:', error);
+		}
 	};
 
 	const previous = async () => {
-		await invoke('previous_song');
-		await updatePlayingState();
+		try {
+			await invoke('previous_song');
+			await updatePlayingState();
+		} catch (error) {
+			console.error('Error skipping to previous song:', error);
+		}
 	};
 
 	const togglePlay = async () => {
-		await invoke('toggle_play');
-		await updatePlayingState();
+		try {
+			await invoke('toggle_play');
+			await updatePlayingState();
+		} catch (error) {
+			console.error('Error toggling play/pause:', error);
+		}
 	};
 
 	let interval: number;
