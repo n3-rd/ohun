@@ -61,9 +61,15 @@ export const flyAndScale = (
 export function openLink(url: string) {
 	open(url);
 }
-export const checkPlayerCtl = async () => {
-	const response = await invoke('check_if_playerctl_exists');
-	console.log(response);
+export const checkPlayerCtl = async (): Promise<boolean> => {
+	try {
+		const response = await invoke<boolean>('check_if_playerctl_exists');
+		console.log('playerctl exists:', response);
+		return response;
+	} catch (error) {
+		console.error('Error checking playerctl:', error);
+		return false;
+	}
 };
 
 export const replaceSpecialChars = (str: string) => {
@@ -83,7 +89,7 @@ export function debounce<T extends (...args: any[]) => any>(
 	wait: number
 ): (...args: Parameters<T>) => void {
 	let timeout: NodeJS.Timeout;
-	
+
 	return (...args: Parameters<T>) => {
 		clearTimeout(timeout);
 		timeout = setTimeout(() => func(...args), wait);
@@ -91,13 +97,18 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 export async function isWindows(): Promise<boolean> {
-	return await platform() === 'win32';
+	return await platform() === 'windows';
+}
+
+export async function isMacOS(): Promise<boolean> {
+	return await platform() === 'macos';
 }
 
 export async function checkMediaControl() {
 	const isWin = await isWindows();
-	if (isWin) {
-		// Windows uses built-in Media Session API
+	const isMac = await isMacOS();
+	if (isWin || isMac) {
+		// Windows and MacOS use built-in/native APIs
 		return true;
 	} else {
 		// Linux uses playerctl
