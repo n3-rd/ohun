@@ -6,7 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import { getCurrentPlaying } from '$lib/player';
 	import { Toaster } from '$lib/components/ui/sonner';
-	import { accentColor, textColor } from '$lib/stores/player-store';
+	import { accentColor, textColor, albumArt } from '$lib/stores/player-store';
 	import { playerctlInstalled } from '$lib/stores/window-store';
 	import { openLink } from '$lib/utils';
 	if (!import.meta.env.DEV) {
@@ -34,17 +34,31 @@
 {#if $playerctlInstalled}
 	<Toaster />
 
+	<div class="fixed inset-0 z-[-1] transition-all duration-700 ease-in-out">
+		{#if $albumArt}
+			<div
+				class="absolute inset-0 bg-cover bg-center transition-all duration-700"
+				style="background-image: url('{$albumArt}'); filter: blur(40px) brightness(0.4) saturate(1.5);"
+			/>
+		{:else}
+			<div
+				class="absolute inset-0 transition-all duration-700"
+				style="background-color: {$accentColor};"
+			/>
+		{/if}
+		<div class="absolute inset-0 bg-black/20 backdrop-blur-3xl" />
+	</div>
+
 	<Titlebar title="Ohun" />
-	{#key data.url}
-		<div
-			in:fly={{ x: -200, duration: 300, delay: 300 }}
-			out:fly={{ x: 200, duration: 300 }}
-			class="select-none px-2 pt-10 pb-16"
-			style="background-color: {$accentColor}; color: {$textColor};"
-		>
-			<slot />
-		</div>
-	{/key}
+	
+	<div
+		class="relative z-10 select-none pb-24 pt-10"
+		in:fly={{ x: -20, duration: 500, delay: 100 }}
+		out:fly={{ x: 20, duration: 300 }}
+		style="color: {$textColor};"
+	>
+		<slot />
+	</div>
 	<Player />
 {:else}
 	<div class="flex h-screen items-center justify-center">

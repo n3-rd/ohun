@@ -86,24 +86,22 @@
 
 <div
 	data-tauri-drag-region
-	class="z-100 fixed flex w-screen select-none justify-between rounded-t-xl bg-transparent px-2 text-gray-700"
+	class="z-50 fixed flex w-screen select-none justify-between rounded-t-xl bg-transparent px-2 text-gray-700"
 >
 	<div
-		class="app-title cursor-default p-2 font-semibold uppercase dark:text-white"
-		style="color: {$textColor};"
+		class="app-title cursor-default p-2 font-semibold uppercase text-white/80 tracking-widest text-sm"
 		data-tauri-drag-region
 	>
 		{title}
 	</div>
 
-	<ul class="flex items-center gap-3">
+	<ul class="flex items-center gap-2">
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				<button
-					class="mx-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-					style="background-color: {$accentColor}; color: {$textColor};"
+					class="mx-4 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"
 				>
-					<MenuIcon size="15" stroke-width="3" />
+					<MenuIcon size="16" />
 				</button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
@@ -131,37 +129,33 @@
 		</DropdownMenu.Root>
 
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-			style="background-color: {$accentColor}; color: {$textColor};"
+			class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"
 			on:click={toggleAlwaysOnTop}
 			title="Always on top"
 		>
-			<Pin size="15" stroke-width="3" class={$windowAlwaysOnTop ? 'rotate-45' : ''} />
+			<Pin size="14" class={$windowAlwaysOnTop ? 'rotate-45 text-green-400' : ''} />
 		</button>
 		<button
-		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-		style="background-color: {$accentColor}; color: {$textColor};"
-		on:click={minimizeWindow}
-	>
-		<Minus size="15" stroke-width="3" />
-	</button>
-	<button
-		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-		style="background-color: {$accentColor}; color: {$textColor};"
-		on:click={maximizeWindow}
-	>
-		{#if $windowMaximized}
-			<Minimize2 size="15" stroke-width="3" />
-		{:else}
-			<Maximize2 size="15" stroke-width="3" />
-		{/if}
-	</button>
-	<button
-		class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
-		style="background-color: {$accentColor}; color: {$textColor};"
-		on:click={closeWindow}
-	>
-		<X size="15" stroke-width="3" />
-	</button>
+			class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"
+			on:click={minimizeWindow}
+		>
+			<Minus size="16" />
+		</button>
+		<button
+			class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"
+			on:click={maximizeWindow}
+		>
+			{#if $windowMaximized}
+				<Minimize2 size="14" />
+			{:else}
+				<Maximize2 size="14" />
+			{/if}
+		</button>
+		<button
+			class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+			on:click={closeWindow}
+		>
+			<X size="16" />
+		</button>
 	</ul>
 </div>

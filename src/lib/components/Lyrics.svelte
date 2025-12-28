@@ -124,56 +124,49 @@
 	});
 </script>
 
-<div class="h-screen min-w-full bg-[{$accentColor}]">
-	<div
-		class="flex h-[90vh] min-w-[98vw] items-center justify-center px-4"
-		use:hoverAction
-		on:hoverstart={(e) => {
-			mouseOverLyrics = true;
-			console.log('hover');
-		}}
-		on:hoverend={(e) => {
-			mouseOverLyrics = false;
-			console.log('hover end');
-			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
-		}}
-	>
+	<div class="h-[90vh] w-full flex items-center justify-center">
 		{#if !$appError}
 			{#if $syncedLyrics == null}
-				<h1 class="text-center text-5xl font-extrabold">
-					<span class="block mb-4">🎵 No lyrics yet!</span>
-					<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
+				<h1 class="text-center text-4xl font-bold tracking-tight text-white/90 drop-shadow-md">
+					<span class="block mb-6 scale-110">🎵 No lyrics yet!</span>
+					<span class="text-2xl block font-medium opacity-70">This song is playing hard to get... 🙈</span>
 				</h1>
 			{:else if $lyricsMode === 'multiple'}
 				<ScrollArea
-					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
-		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
+					class="w-full h-[85vh] px-8 text-center scroll-smooth"
 				>
-					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-					{#each lyrics as line, i (i)}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<p
-							class={`line-{i} leading-[4.25rem] transition-opacity duration-300 hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
-							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
-							`}
-							id={`${line.time}`}
-							on:click={() => goToTime(line.time).catch(console.error)}
-						>
-							{line.text}
-						</p>
-					{/each}
+					<div class="py-[40vh] space-y-8">
+						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+						{#each lyrics as line, i (i)}
+							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<p
+								class={`
+									cursor-pointer transition-all duration-500 ease-out origin-center
+									text-3xl md:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight
+									${line.time == $currentLine.time 
+										? 'opacity-100 scale-100 blur-0 text-white drop-shadow-lg py-4' 
+										: 'opacity-40 scale-95 blur-[1px] text-white/80 hover:opacity-70 hover:scale-[0.97] hover:blur-0 py-2'
+									}
+								`}
+								id={`${line.time}`}
+								on:click={() => goToTime(line.time).catch(console.error)}
+							>
+								{line.text}
+							</p>
+						{/each}
+					</div>
 				</ScrollArea>
 			{:else}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 				<h1
-					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl"
+					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl transition-all duration-300 hover:scale-105 active:scale-95 drop-shadow-xl text-white"
 					on:click={() => copyText($currentLine.text)}
 				>
 					{#if $currentLine.text}
 						{$currentLine.text}
 					{:else if $currentLine.text === ''}
-						<span class="opacity-60">🎶 ...</span>
+						<span class="opacity-50 blur-sm animate-pulse">🎶 ...</span>
 					{:else}
 						<span class="block mb-4">🎵 No lyrics yet!</span>
 						<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
@@ -181,13 +174,13 @@
 				</h1>
 			{/if}
 		{:else if $appError}
-			<div class="text-center">
-				<h1 class="text-5xl font-extrabold text-[{$textColor}] mb-4">{$appError.message}</h1>
+			<div class="text-center bg-black/30 p-8 rounded-3xl backdrop-blur-md border border-white/10 shadow-2xl">
+				<h1 class="text-4xl font-bold text-white mb-4">{$appError.message}</h1>
 				{#if $appError.recoverable}
-					<p class="text-2xl opacity-80 mb-4">Don't worry, we'll catch those lyrics next time! 🎯</p>
+					<p class="text-xl text-white/70 mb-6">Don't worry, we'll catch those lyrics next time! 🎯</p>
 					{#if $appError.retryable}
 						<button
-							class="px-6 py-3 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-[{$textColor}] font-semibold"
+							class="px-8 py-3 rounded-full bg-white text-black font-bold hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg"
 							on:click={() => {
 								appError.clear();
 								// Trigger a retry by getting current playing again
@@ -198,9 +191,8 @@
 						</button>
 					{/if}
 				{:else}
-					<p class="text-2xl opacity-80">This error cannot be recovered automatically.</p>
+					<p class="text-xl text-white/70">This error cannot be recovered automatically.</p>
 				{/if}
 			</div>
 		{/if}
 	</div>
-</div>

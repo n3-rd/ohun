@@ -10,48 +10,48 @@
 	import { currentPlayingSong } from '$lib/stores/player-store';
 </script>
 
-<div class="flex items-center gap-3" style="color: {$textColor};">
+<div class="flex items-center gap-4 text-white">
 	<Tip text="Copy lyrics">
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-white/10 transition-all"
 			on:click={() => {
 				copyText($plainLyrics);
 				toast.success('Lyrics copied');
 			}}
 		>
-			<Copy size="15" />
+			<Copy size="18" />
 		</button>
 	</Tip>
 
 	<Tip text="Download lyrics">
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-white/10 transition-all"
 			on:click={() => {
-				downloadLyrics($currentPlayingSong.artist, $currentPlayingSong.title);
+				downloadLyrics();
 				toast.success('Lyrics downloaded');
 			}}
 		>
-			<Download size="15" />
+			<Download size="18" />
 		</button>
 	</Tip>
 
-	<div class="h-4 w-[1px] bg-current opacity-20" />
+	<div class="h-6 w-[1px] bg-white/20" />
 
 	<Tip text="Single line mode">
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-white/10 transition-all"
 			on:click={setSingleLineMode}
 		>
-			<AlignCenter size="15" />
+			<AlignCenter size="18" />
 		</button>
 	</Tip>
 
 	<Tip text="Multi line mode">
 		<button
-			class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:opacity-70"
+			class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-white/10 transition-all"
 			on:click={setMultiLineMode}
 		>
-			<AlignJustify size="15" />
+			<AlignJustify size="18" />
 		</button>
 	</Tip>
 </div>
