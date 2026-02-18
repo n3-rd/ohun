@@ -39,6 +39,12 @@ And of course Ohun itself is open source with a [repository](https://github.com/
 
 Download any release you want [here](https://github.com/n3-rd/ohun/releases/).
 
+**macOS:** If macOS says the app is damaged and won’t open (Gatekeeper / quarantine), run:
+
+```bash
+xattr -cr /Applications/ohun.app
+```
+
 ## Development
 
 Want to contribute? Great!
