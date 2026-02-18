@@ -105,12 +105,12 @@ export const getLyrics = async (artist: string, title: string, retries = 3): Pro
 				if (!response.ok) {
 					if (response.status === 404) {
 						throw new Error(
-							"Hmm... looks like this song is playing hide and seek with its lyrics! 🎭"
+							'No lyrics found for this track'
 						);
 					}
 					if (response.status >= 500) {
 						throw new Error(
-							`Oops! Our lyrics finder is having a bit of trouble (HTTP ${response.status}). Let's try again! 🎵`
+							`Lyrics service unavailable (HTTP ${response.status})`
 						);
 					}
 					throw new Error(
@@ -122,7 +122,7 @@ export const getLyrics = async (artist: string, title: string, retries = 3): Pro
 
 				if (!isValidLyricsData(data)) {
 					throw new Error(
-						"Hmm... looks like this song is playing hide and seek with its lyrics! 🎭"
+						'No lyrics found for this track'
 					);
 				}
 
@@ -131,7 +131,7 @@ export const getLyrics = async (artist: string, title: string, retries = 3): Pro
 
 				if (!synced || typeof synced !== 'string' || synced.trim().length === 0) {
 					throw new Error(
-						"Hmm... looks like this song is playing hide and seek with its lyrics! 🎭"
+						'No lyrics found for this track'
 					);
 				}
 
@@ -184,7 +184,7 @@ export const getLyrics = async (artist: string, title: string, retries = 3): Pro
 		requestCancellation.cancel(requestKey);
 
 		// Handle different error types
-		let errorMessage = "Whoopsie! Our lyrics detector needs a coffee break. Try again in a moment! ☕";
+		let errorMessage = 'Failed to fetch lyrics. Try again shortly.';
 		let severity: 'error' | 'warning' | 'info' = 'error';
 		let recoverable = true;
 
@@ -194,11 +194,11 @@ export const getLyrics = async (artist: string, title: string, retries = 3): Pro
 				return null;
 			}
 
-			if (error.message.includes('hide and seek') || error.message.includes('404')) {
-				errorMessage = "Hmm... looks like this song is playing hide and seek with its lyrics! 🎭";
+			if (error.message.includes('No lyrics found') || error.message.includes('404')) {
+				errorMessage = 'No lyrics found for this track';
 				severity = 'info';
 			} else if (error.message.includes('HTTP 5')) {
-				errorMessage = "Oops! Our lyrics finder is having a bit of trouble. Let's try again! 🎵";
+				errorMessage = 'Lyrics service unavailable. Try again shortly.';
 				severity = 'warning';
 			} else {
 				errorMessage = error.message || errorMessage;

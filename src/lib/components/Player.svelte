@@ -101,21 +101,29 @@
 	>
 		<div class="song-info flex w-[30%] items-center gap-4">
 			<div
-				class="album-art h-14 w-14 rounded-xl bg-cover bg-center shadow-lg transition-transform hover:scale-105"
+				class="album-art h-14 w-14 shrink-0 rounded-xl bg-cover bg-center shadow-lg transition-transform hover:scale-105"
 				style="background-image: url('{$albumArt}');"
 			/>
-			<Tip
-				text="{$currentPlayingSong.title} - {$currentPlayingSong.artist} - {$currentPlayingSong.album}"
-			>
-				<div class="metadata flex flex-col justify-center text-left">
-					<div class="song-title line-clamp-1 font-bold text-base tracking-wide text-white">
-						{$currentPlayingSong.title}
+			{#if $currentPlayingSong.title}
+				<Tip
+					text="{$currentPlayingSong.title} - {$currentPlayingSong.artist}{$currentPlayingSong.album ? ` - ${$currentPlayingSong.album}` : ''}"
+				>
+					<div class="metadata flex flex-col justify-center text-left">
+						<div class="song-title line-clamp-1 font-bold text-base tracking-wide text-white">
+							{$currentPlayingSong.title}
+						</div>
+						<div class="artist line-clamp-1 text-sm font-medium text-white/60">
+							{$currentPlayingSong.artist}
+						</div>
 					</div>
-					<div class="artist line-clamp-1 text-sm font-medium text-white/60">
-						{$currentPlayingSong.artist}
+				</Tip>
+			{:else}
+				<div class="metadata flex flex-col justify-center text-left">
+					<div class="song-title text-sm font-medium text-white/40">
+						Not playing
 					</div>
 				</div>
-			</Tip>
+			{/if}
 		</div>
 
 		<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">

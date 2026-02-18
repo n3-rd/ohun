@@ -18,6 +18,8 @@ import { isLoading } from './stores/player-store';
 import { appError } from './stores/error-store';
 import { requestCancellation } from './utils/request-cancellation';
 import { retryWithBackoff, isNetworkError, isTimeoutError } from './utils/retry';
+
+export const PROXY_ENABLED = false;
 import { get, writable } from 'svelte/store';
 
 let previousTime: number | null = null;
@@ -98,12 +100,12 @@ export const getCurrentPlaying = async (): Promise<void> => {
 		// Validate response
 		if (!response || (!response.artist && !response.title)) {
 			throw new Error(
-				'🎵 Hmm... this song seems a bit shy - we need both an artist and title to find its lyrics! 🎸'
+				'Missing song metadata — artist and title are required'
 			);
 		}
 
 		if (!response.artist || !response.title) {
-			throw new Error('🎵 Missing song information. Please make sure your media player shows artist and title! 🎸');
+			throw new Error('Incomplete song info. Make sure your media player exposes artist and title.');
 		}
 
 		currentPlayingSong.set(response);
@@ -136,7 +138,7 @@ export const getCurrentPlaying = async (): Promise<void> => {
 		ensureDefaultColors();
 
 		const errorMessage =
-			error instanceof Error ? error.message : '🎼 Oops! The music spirits are being mischievous. Let\'s try that again! 🎹';
+			error instanceof Error ? error.message : 'Something went wrong. Try again.';
 
 		appError.setError(errorMessage, {
 			severity: 'error',
@@ -324,6 +326,9 @@ export const cleanup = (): void => {
 	requestCancellation.cancelAll();
 };
 
+/** Lead time in seconds so lyrics scroll/highlight slightly before the beat (better sync feel). */
+const LYRICS_LEAD_SECONDS = 0.5;
+
 const updateLyrics = (time: number): void => {
 	try {
 		const lyrics = get(syncedLyrics);
@@ -331,7 +336,8 @@ const updateLyrics = (time: number): void => {
 		if (!lyrics || time < 0) return;
 
 		const sync = new Lyrics(lyrics);
-		const current = sync.atTime(time);
+		const ledTime = time + LYRICS_LEAD_SECONDS;
+		const current = sync.atTime(ledTime);
 
 		if (current) {
 			currentLine.set(current);
@@ -351,7 +357,7 @@ const updateLyrics = (time: number): void => {
 					if (isNaN(minutes) || isNaN(seconds)) return false;
 
 					const lineTime = minutes * 60 + seconds;
-					return lineTime > time;
+					return lineTime > ledTime;
 				});
 
 				if (nextTimeIndex > 0 && nextTimeIndex < lyricsLines.length) {
@@ -408,65 +414,52 @@ export const getAlbumArt = async (
 			return get(albumArt);
 		}
 
-		let url: string;
-		if (!album || album !== title) {
-			const cleanArtist = replaceSpecialChars(artist);
-			const cleanTitle = replaceSpecialChars(title);
-			url = `https://corsproxy.io/?${encodeURIComponent(
-				`https://api.deezer.com/search?q=artist:"${cleanArtist}" track:"${cleanTitle}"`
-			)}`;
+		const targetUrl =
+			!album || album !== title
+				? `https://api.deezer.com/search?q=artist:"${replaceSpecialChars(artist)}" track:"${replaceSpecialChars(title)}"`
+				: `https://api.deezer.com/search?q=album:"${replaceSpecialChars(album)}" artist:"${replaceSpecialChars(artist)}"`;
+
+		let data: { data?: Array<{ album?: { cover_medium?: string } }> };
+		if (PROXY_ENABLED) {
+			const res = await fetch(targetUrl, { signal });
+			if (!res.ok) throw new Error(`Failed to fetch album art: ${res.status}`);
+			data = await res.json();
 		} else {
-			const cleanAlbum = replaceSpecialChars(album);
-			const cleanArtist = replaceSpecialChars(artist);
-			url = `https://corsproxy.io/?${encodeURIComponent(
-				`https://api.deezer.com/search?q=album:"${cleanAlbum}" artist:"${cleanArtist}"`
-			)}`;
+			const raw = await invoke<string>('fetch_url', { url: targetUrl });
+			data = JSON.parse(raw);
 		}
 
-		const response = await fetch(url, { signal });
-		if (!response.ok) {
-			throw new Error(`Failed to fetch album art: ${response.status} ${response.statusText}`);
-		}
-
-		const data = await response.json();
 		const art = data?.data?.[0]?.album?.cover_medium;
 
 		if (art && !signal.aborted) {
-			// Cache the image data as base64
 			try {
-				const imgResponse = await fetch(art, { signal });
-				if (!imgResponse.ok) throw new Error('Failed to fetch image');
-
-				const blob = await imgResponse.blob();
-				const reader = new FileReader();
-
-				const base64Promise = new Promise<string>((resolve, reject) => {
-					reader.onloadend = () => {
-						if (reader.result) {
-							resolve(reader.result as string);
-						} else {
-							reject(new Error('Failed to read image'));
-						}
-					};
-					reader.onerror = () => reject(new Error('Failed to read image'));
-				});
-
-				reader.readAsDataURL(blob);
-				const base64Data = await base64Promise;
+				let base64Data: string;
+				if (PROXY_ENABLED) {
+					const imgResponse = await fetch(art, { signal });
+					if (!imgResponse.ok) throw new Error('Failed to fetch image');
+					const blob = await imgResponse.blob();
+					base64Data = await new Promise<string>((resolve, reject) => {
+						const reader = new FileReader();
+						reader.onloadend = () =>
+							reader.result ? resolve(reader.result as string) : reject(new Error('Failed'));
+						reader.onerror = () => reject(new Error('Failed'));
+						reader.readAsDataURL(blob);
+					});
+				} else {
+					base64Data = await invoke<string>('fetch_image_base64', { url: art });
+				}
 
 				if (!signal.aborted) {
-					// Update cache
 					cachedAlbumArt.update((cache) => ({
 						...cache,
 						[cacheKey]: base64Data
 					}));
-
 					albumArt.set(base64Data);
 				}
 			} catch (error) {
 				console.error('Failed to cache album art:', error);
 				if (!signal.aborted) {
-					albumArt.set(art); // Fallback to URL if caching fails
+					albumArt.set(art);
 				}
 			}
 		}

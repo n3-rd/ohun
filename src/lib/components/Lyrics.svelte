@@ -114,15 +114,16 @@
 				<div
 					class="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-white"
 				></div>
-				<p class="animate-pulse text-lg font-medium text-white/70">Processing...</p>
+				<p class="animate-pulse text-lg font-medium text-white/70">Fetching lyrics...</p>
 			</div>
 		{:else if $syncedLyrics == null}
-			<h1 class="text-center font-bold text-4xl tracking-tight text-white/90 drop-shadow-md">
-				<span class="mb-6 block scale-110">🎵 No lyrics yet!</span>
-				<span class="block text-2xl font-medium opacity-70"
-					>This song is playing hard to get... 🙈</span
-				>
-			</h1>
+			<div class="flex flex-col items-center justify-center gap-3 text-center">
+				<div class="mb-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+				</div>
+				<h1 class="text-2xl font-bold tracking-tight text-white/90">No lyrics available</h1>
+				<p class="max-w-xs text-base text-white/50">Lyrics weren't found for this track</p>
+			</div>
 		{:else if $lyricsMode === 'multiple'}
 			<div
 				class="h-[85vh] w-full"
@@ -164,34 +165,35 @@
 				{#if $currentLine.text}
 					{$currentLine.text}
 				{:else if $currentLine.text === ''}
-					<span class="animate-pulse opacity-50 blur-sm">🎶 ...</span>
+					<span class="animate-pulse text-white/30">...</span>
 				{:else}
-					<span class="mb-4 block">🎵 No lyrics yet!</span>
-					<span class="block text-2xl opacity-80">This song is playing hard to get... 🙈</span>
+					<span class="mb-4 block text-white/60">No lyrics available</span>
 				{/if}
 			</h1>
 		{/if}
 	{:else if $appError}
-		<div class="rounded-3xl p-8 text-center">
-			<h1 class="mb-4 font-bold text-4xl text-white">{$appError.message}</h1>
+		<div class="flex flex-col items-center justify-center gap-4 rounded-3xl p-8 text-center">
+			<div class="mb-1 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+			</div>
+			<h1 class="text-2xl font-bold tracking-tight text-white/90">{$appError.message}</h1>
 			{#if $appError.recoverable}
-				<p class="mb-6 text-xl text-white/70">
-					Don't worry, we'll catch those lyrics next time! 🎯
+				<p class="max-w-sm text-base text-white/50">
+					This might be temporary. You can try again or wait for the next track.
 				</p>
 				{#if $appError.retryable}
 					<button
-						class="rounded-full bg-white px-8 py-3 font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+						class="mt-2 rounded-full bg-white/10 px-6 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all duration-200 hover:bg-white/20 active:scale-95"
 						on:click={() => {
 							appError.clear();
-							// Trigger a retry by getting current playing again
 							import('$lib/player').then(({ getCurrentPlaying }) => getCurrentPlaying());
 						}}
 					>
-						Retry 🔄
+						Retry
 					</button>
 				{/if}
 			{:else}
-				<p class="text-xl text-white/70">This error cannot be recovered automatically.</p>
+				<p class="max-w-sm text-base text-white/50">This error cannot be recovered automatically.</p>
 			{/if}
 		</div>
 	{/if}

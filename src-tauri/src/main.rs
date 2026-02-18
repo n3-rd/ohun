@@ -706,6 +706,27 @@ async fn get_available_players(app_handle: tauri::AppHandle) -> Result<Vec<Strin
     }
 }
 
+#[tauri::command]
+async fn fetch_url(url: String) -> Result<String, String> {
+    let response = reqwest::get(&url).await.map_err(|e| e.to_string())?;
+    response.text().await.map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn fetch_image_base64(url: String) -> Result<String, String> {
+    let response = reqwest::get(&url).await.map_err(|e| e.to_string())?;
+    let content_type = response
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("image/jpeg")
+        .to_string();
+    let bytes = response.bytes().await.map_err(|e| e.to_string())?;
+    use base64::Engine;
+    let b64 = base64::engine::general_purpose::STANDARD.encode(&bytes);
+    Ok(format!("data:{};base64,{}", content_type, b64))
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_os::init())
@@ -714,8 +735,8 @@ fn main() {
             selected_player: Mutex::new(None),
         })
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_liquid_glass::init())
+		.plugin(tauri_plugin_notification::init())
+		.plugin(tauri_plugin_liquid_glass::init())
         .invoke_handler(tauri::generate_handler![
             get_current_playing_song,
             get_current_audio_time,
@@ -727,7 +748,9 @@ fn main() {
             check_if_playerctl_exists,
             get_active_player,
             set_active_player,
-            get_available_players
+            get_available_players,
+            fetch_url,
+            fetch_image_base64
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
