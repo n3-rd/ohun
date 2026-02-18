@@ -41,6 +41,7 @@
 	"type": "module",
 	"dependencies": {
 		"@babichjacob/svelte-localstorage": "^1.0.1",
+		"@svelte-put/clickoutside": "^4.0.0",
 		"@tauri-apps/api": "^2.1.1",
 		"@tauri-apps/plugin-notification": "2.0.0-rc.0",
 		"@tauri-apps/plugin-os": "^2.2.0",

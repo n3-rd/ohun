@@ -4,7 +4,7 @@
 	import { toast } from 'svelte-sonner';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 	import { onMount, onDestroy } from 'svelte';
-	import { accentColor, textColor } from '$lib/stores/player-store';
+	import { accentColor, textColor, isLoading } from '$lib/stores/player-store';
 	import { lyricsMode } from '$lib/preferences';
 	import { appError } from '$lib/stores/error-store';
 	import { goToTime } from '$lib/player';
@@ -36,8 +36,9 @@
 		});
 	};
 
-	const scrollTo = (index: number): void => {
-		const element = document.getElementById(index.toString());
+	const scrollTo = (time: number): void => {
+		// Find the lyric element with matching time
+		const element = document.getElementById(time.toString());
 		if (element) {
 			element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		}
@@ -50,59 +51,55 @@
 
 	// Automatically calculate lyrics based on the synced lyrics store
 	$: {
-		if ($syncedLyrics != null) {
-			lyrics = $syncedLyrics.split('\n').map((line) => {
-				let match = line.match(/\[(.*?)\](.*)/);
-				let time = match ? match[1].trim() : '';
-				let text = match ? match[2].trim() : '';
+		if ($syncedLyrics != null && typeof $syncedLyrics === 'string') {
+			lyrics = $syncedLyrics
+				.split('\n')
+				.map((line) => {
+					const match = line.match(/\[(.*?)\](.*)/);
+					const time = match ? match[1].trim() : '';
+					const text = match ? match[2].trim() : '';
 
-				let timeInSeconds = 0;
-				if (time) {
-					const [minutes, seconds] = time.split(':').map(Number);
-					timeInSeconds = minutes * 60 + seconds;
-				}
+					let timeInSeconds = 0;
+					if (time) {
+						const timeParts = time.split(':');
+						if (timeParts.length === 2) {
+							const [minutes, seconds] = timeParts.map(Number);
+							if (!isNaN(minutes) && !isNaN(seconds)) {
+								timeInSeconds = minutes * 60 + seconds;
+							}
+						}
+					}
 
-				return {
-					time: timeInSeconds,
-					text
-				};
-			});
+					return {
+						time: timeInSeconds,
+						text
+					};
+				})
+				.filter((line) => line.text.length > 0); // Filter out empty lines
+		} else {
+			lyrics = [];
 		}
 	}
 
 	// Automatically calculate lyricWithIndex based on the plain lyrics store
 	$: {
-		lyricWithIndex = $plainLyrics.split('\n').map((line, index) => ({
-			text: line,
-			index
-		}));
+		if ($plainLyrics && typeof $plainLyrics === 'string') {
+			lyricWithIndex = $plainLyrics.split('\n').map((line, index) => ({
+				text: line.trim(),
+				index
+			}));
+		} else {
+			lyricWithIndex = [];
+		}
 	}
 
-	// Debounce function to delay execution of the scroll action
-	const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
-			clearTimeout(timer);
-			timer = setTimeout(() => {
-				func(...args);
-			}, delay);
-		};
-	};
-
-	const debouncedScrollTo = debounce(scrollTo, 200);
-
-	const startScrollInterval = (): void => {
-		if (scrollInterval) clearInterval(scrollInterval);
-		scrollInterval = setInterval(() => {
-			if (!mouseOverLyrics) {
-				debouncedScrollTo($currentLine.time);
-			}
-		}, 1000);
-	};
+	// Reactie scrolling
+	$: if (!mouseOverLyrics && $currentLine) {
+		scrollTo($currentLine.time);
+	}
 
 	onMount(() => {
 		scrollTo(0);
-		startScrollInterval();
 	});
 
 	onDestroy(() => {
@@ -110,67 +107,94 @@
 	});
 </script>
 
-<div class="h-screen min-w-full bg-[{$accentColor}]">
-	<div
-		class="flex h-[90vh] min-w-[98vw] items-center justify-center px-4"
-		use:hoverAction
-		on:hoverstart={(e) => {
-			mouseOverLyrics = true;
-			console.log('hover');
-		}}
-		on:hoverend={(e) => {
-			mouseOverLyrics = false;
-			console.log('hover end');
-			debouncedScrollTo($currentLine.time); // Scroll immediately after hover ends
-		}}
-	>
-		{#if $appError == null}
-			{#if $syncedLyrics == null}
-				<h1 class="text-center text-5xl font-extrabold">
-					<span class="block mb-4">🎵 No lyrics yet!</span>
-					<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
-				</h1>
-			{:else if $lyricsMode === 'multiple'}
-				<ScrollArea
-					class="sm:text-1xl mx-12 mb-12 h-[80vh] w-full
-		  cursor-copy whitespace-pre-wrap text-center text-2xl font-extrabold leading-[4.25rem] md:text-3xl md:leading-[5.25rem] xl:text-6xl xl:leading-[7.25rem]"
-				>
-					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-					{#each lyrics as line, i (i)}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<p
-							class={`line-{i} leading-[4.25rem] transition-opacity duration-300 hover:opacity-80 md:leading-[5.25rem] xl:leading-[7.25rem]
-							${line.time == $currentLine.time ? 'opacity-95' : 'opacity-60'}
-							`}
-							id={`${line.time}`}
-							on:click={goToTime(line.time)}
-						>
-							{line.text}
-						</p>
-					{/each}
-				</ScrollArea>
-			{:else}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-				<h1
-					class="cursor-copy text-center text-5xl font-extrabold leading-relaxed lg:text-7xl"
-					on:click={() => copyText($currentLine.text)}
-				>
-					{#if $currentLine.text}
-						{$currentLine.text}
-					{:else if $currentLine.text === ''}
-						<span class="opacity-60">🎶 ...</span>
-					{:else}
-						<span class="block mb-4">🎵 No lyrics yet!</span>
-						<span class="text-2xl block opacity-80">This song is playing hard to get... 🙈</span>
-					{/if}
-				</h1>
-			{/if}
-		{:else if $appError != null}
-			<div class="text-center">
-				<h1 class="text-5xl font-extrabold text-[{$textColor}] mb-4">{$appError}</h1>
-				<p class="text-2xl opacity-80">Don't worry, we'll catch those lyrics next time! 🎯</p>
+<div class="flex h-[90vh] w-full items-center justify-center">
+	{#if !$appError}
+		{#if $isLoading}
+			<div class="flex flex-col items-center justify-center space-y-4">
+				<div
+					class="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-white"
+				></div>
+				<p class="animate-pulse text-lg font-medium text-white/70">Fetching lyrics...</p>
 			</div>
+		{:else if $syncedLyrics == null}
+			<div class="flex flex-col items-center justify-center gap-3 text-center">
+				<div class="mb-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+				</div>
+				<h1 class="text-2xl font-bold tracking-tight text-white/90">No lyrics available</h1>
+				<p class="max-w-xs text-base text-white/50">Lyrics weren't found for this track</p>
+			</div>
+		{:else if $lyricsMode === 'multiple'}
+			<div
+				class="h-[85vh] w-full"
+				on:mouseenter={() => (mouseOverLyrics = true)}
+				on:mouseleave={() => (mouseOverLyrics = false)}
+				role="application"
+			>
+				<ScrollArea class="h-full w-full scroll-smooth px-8 text-center">
+					<div class="space-y-8 py-[40vh]">
+						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+						{#each lyrics as line, i (i)}
+							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<p
+								class={`
+										origin-center cursor-pointer text-3xl font-extrabold leading-tight
+										tracking-tight transition-all duration-200 ease-out md:text-5xl xl:text-6xl
+										${
+											line.time == $currentLine.time
+												? 'scale-100 py-8 text-white opacity-100 blur-0 drop-shadow-lg'
+												: 'scale-95 py-4 text-white/80 opacity-40 blur-[1px] hover:scale-[0.97] hover:opacity-70 hover:blur-0'
+										}
+									`}
+								id={`${line.time}`}
+								on:click={() => goToTime(line.time).catch(console.error)}
+							>
+								{line.text}
+							</p>
+						{/each}
+					</div>
+				</ScrollArea>
+			</div>
+		{:else}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<h1
+				class="cursor-copy text-center text-5xl font-extrabold leading-relaxed text-white drop-shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 lg:text-7xl"
+				on:click={() => copyText($currentLine.text)}
+			>
+				{#if $currentLine.text}
+					{$currentLine.text}
+				{:else if $currentLine.text === ''}
+					<span class="animate-pulse text-white/30">...</span>
+				{:else}
+					<span class="mb-4 block text-white/60">No lyrics available</span>
+				{/if}
+			</h1>
 		{/if}
-	</div>
+	{:else if $appError}
+		<div class="flex flex-col items-center justify-center gap-4 rounded-3xl p-8 text-center">
+			<div class="mb-1 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+			</div>
+			<h1 class="text-2xl font-bold tracking-tight text-white/90">{$appError.message}</h1>
+			{#if $appError.recoverable}
+				<p class="max-w-sm text-base text-white/50">
+					This might be temporary. You can try again or wait for the next track.
+				</p>
+				{#if $appError.retryable}
+					<button
+						class="mt-2 rounded-full bg-white/10 px-6 py-2.5 text-sm font-semibold text-white backdrop-blur transition-all duration-200 hover:bg-white/20 active:scale-95"
+						on:click={() => {
+							appError.clear();
+							import('$lib/player').then(({ getCurrentPlaying }) => getCurrentPlaying());
+						}}
+					>
+						Retry
+					</button>
+				{/if}
+			{:else}
+				<p class="max-w-sm text-base text-white/50">This error cannot be recovered automatically.</p>
+			{/if}
+		</div>
+	{/if}
 </div>

@@ -7,7 +7,7 @@ license = ""
 repository = ""
 default-run = "app"
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.77"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -28,6 +28,9 @@ windows = { version = "0.48", features = [
     "Foundation",
 ] }
 tauri-plugin-os = "2.0.0-alpha.2"
+tauri-plugin-liquid-glass = "0.1.6"
+reqwest = { version = "0.11", features = ["json"] }
+base64 = "0.22"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
