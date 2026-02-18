@@ -11,6 +11,8 @@
 		"category": "Music",
 		"copyright": "n3rd",
 		"targets": [
+			"dmg",
+			"app",
 			"deb",
 			"rpm",
 			"msi",
