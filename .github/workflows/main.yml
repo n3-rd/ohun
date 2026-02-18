@@ -31,6 +31,7 @@ jobs:
 
       - name: Set release version
         id: version
+        shell: bash
         run: |
           if [ -n "${{ github.event.inputs.version }}" ]; then
             echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
