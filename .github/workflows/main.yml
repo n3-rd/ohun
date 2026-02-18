@@ -2,6 +2,11 @@ name: 'publish'
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (tag name, e.g. v3 or v2.0.4)'
+        required: true
+        type: string
   push:
     branches:
       - release
@@ -23,6 +28,16 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set release version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            v=$(python3 -c "import json; print(json.load(open('src-tauri/tauri.conf.json'))['version'])")
+            echo "version=v${v}" >> $GITHUB_OUTPUT
+          fi
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
@@ -98,8 +113,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__
-          releaseName: 'App v__VERSION__'
+          tagName: ${{ steps.version.outputs.version }}
+          releaseName: 'App ${{ steps.version.outputs.version }}'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
