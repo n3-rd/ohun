@@ -110,7 +110,9 @@ jobs:
           Remove-Item src-tauri/binaries/dummy.c
           Remove-Item src-tauri/binaries/dummy.obj -ErrorAction SilentlyContinue
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: Build Tauri (Linux / Windows)
+        if: matrix.platform != 'macos-latest'
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -120,3 +122,31 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: --target ${{ matrix.target }}
+
+      - name: Build Tauri (macOS)
+        if: matrix.platform == 'macos-latest'
+        run: pnpm tauri build --target ${{ matrix.target }}
+
+      - name: Ad-hoc sign macOS app
+        if: matrix.platform == 'macos-latest'
+        run: bash scripts/sign-mac.sh
+
+      - name: Recreate DMG with signed app
+        if: matrix.platform == 'macos-latest'
+        run: |
+          BUNDLE_DIR="src-tauri/target/release/bundle/macos"
+          cd "$BUNDLE_DIR"
+          rm -f ohun.dmg
+          hdiutil create -volname "ohun" -srcfolder ohun.app -ov -format UDZO ohun.dmg
+
+      - name: Upload macOS release
+        if: matrix.platform == 'macos-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: 'App ${{ steps.version.outputs.version }}'
+          body: 'See the assets to download this version and install.'
+          draft: true
+          files: src-tauri/target/release/bundle/macos/ohun.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
