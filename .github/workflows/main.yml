@@ -134,19 +134,20 @@ jobs:
       - name: Recreate DMG with signed app
         if: matrix.platform == 'macos-latest'
         run: |
-          BUNDLE_DIR="src-tauri/target/release/bundle/macos"
+          BUNDLE_DIR=$(find src-tauri/target -path "*/release/bundle/macos" -type d | head -1)
           cd "$BUNDLE_DIR"
           rm -f ohun.dmg
           hdiutil create -volname "ohun" -srcfolder ohun.app -ov -format UDZO ohun.dmg
+          echo "DMG_PATH=$BUNDLE_DIR/ohun.dmg" >> $GITHUB_ENV
 
       - name: Upload macOS release
         if: matrix.platform == 'macos-latest'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.version }}
-          release_name: 'App ${{ steps.version.outputs.version }}'
+          name: 'App ${{ steps.version.outputs.version }}'
           body: 'See the assets to download this version and install.'
           draft: true
-          files: src-tauri/target/release/bundle/macos/ohun.dmg
+          files: ${{ env.DMG_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
