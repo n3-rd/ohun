@@ -7,8 +7,10 @@
 	import PlayerActions from './PlayerActions.svelte';
 	import Tip from './Tip.svelte';
 	import { writable } from 'svelte/store';
+	import { fade } from 'svelte/transition';
 
 	const playing = writable(false);
+	let showArtDialog = false;
 
 	const updatePlayingState = async () => {
 		try {
@@ -77,6 +79,10 @@
 		window.removeEventListener('keydown', handleKeydown);
 	});
 
+	function handleDialogKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape') showArtDialog = false;
+	}
+
 	let textColour;
 	let accent;
 
@@ -100,9 +106,11 @@
 		rounded-3xl border border-white/20 bg-white/5 px-2 shadow-2xl backdrop-blur backdrop-saturate-150 transition-all hover:bg-white/10"
 	>
 		<div class="song-info flex w-[30%] items-center gap-4">
-			<div
-				class="album-art h-14 w-14 shrink-0 rounded-xl bg-cover bg-center shadow-lg transition-transform hover:scale-105"
+			<button
+				type="button"
+				class="album-art h-14 w-14 shrink-0 cursor-pointer rounded-xl bg-cover bg-center shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50"
 				style="background-image: url('{$albumArt}');"
+				on:click={() => (showArtDialog = true)}
 			/>
 			{#if $currentPlayingSong.title}
 				<Tip
@@ -166,6 +174,29 @@
 		</div>
 	</div>
 </div>
+
+<svelte:window on:keydown={handleDialogKeydown} />
+
+{#if showArtDialog}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<div
+		class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Album art"
+		on:click={() => (showArtDialog = false)}
+		transition:fade={{ duration: 150 }}
+	>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<div
+			class="max-h-[90vh] max-w-[90vw] rounded-2xl shadow-2xl ring-1 ring-white/10"
+			style="background-image: url('{$albumArt}'); background-size: contain; background-position: center; background-repeat: no-repeat; aspect-ratio: 1; min-width: 280px; min-height: 280px;"
+			on:click|stopPropagation
+		/>
+	</div>
+{/if}
 
 <style lang="postcss">
 	button {

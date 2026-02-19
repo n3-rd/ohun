@@ -59,7 +59,7 @@
 		]
 	},
 	"productName": "ohun",
-	"version": "2.0.4",
+	"version": "3.0.0",
 	"identifier": "com.n3rd.ohun",
 	"app": {
 		"windows": [
@@ -71,8 +71,8 @@
 				"width": 800,
 				"transparent": true,
 				"decorations": true,
-				"minWidth": 500,
-				"minHeight": 400,
+				"minWidth": 800,
+				"minHeight": 600,
 				"titleBarStyle": "Overlay",
 				"hiddenTitle": true
 			}

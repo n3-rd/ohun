@@ -107,7 +107,7 @@
 	});
 </script>
 
-<div class="flex h-[90vh] w-full items-center justify-center">
+<div class="flex h-[90vh] w-full items-center justify-center px-4">
 	{#if !$appError}
 		{#if $isLoading}
 			<div class="flex flex-col items-center justify-center space-y-4">
@@ -138,12 +138,13 @@
 							<!-- svelte-ignore a11y-click-events-have-key-events -->
 							<p
 								class={`
-										origin-center cursor-pointer text-3xl font-extrabold leading-tight
-										tracking-tight transition-all duration-200 ease-out md:text-5xl xl:text-6xl
+										origin-center cursor-pointer text-2xl font-extrabold leading-tight
+										tracking-tight transition-[transform,opacity,filter] duration-200 ease-out md:text-5xl xl:text-6xl
+										py-8
 										${
 											line.time == $currentLine.time
-												? 'scale-100 py-8 text-white opacity-100 blur-0 drop-shadow-lg'
-												: 'scale-95 py-4 text-white/80 opacity-40 blur-[1px] hover:scale-[0.97] hover:opacity-70 hover:blur-0'
+												? 'scale-100 text-white opacity-100 blur-0 drop-shadow-lg'
+												: 'scale-95 text-white/80 opacity-40 blur-[1px] hover:scale-[0.97] hover:opacity-70 hover:blur-0'
 										}
 									`}
 								id={`${line.time}`}
