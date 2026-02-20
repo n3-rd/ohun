@@ -1,0 +1,101 @@
+# Updates the Homebrew tap when a new release is published.
+# Requires: create a repo "homebrew-ohun" and add secret HOMEBREW_TAP_TOKEN (PAT with repo scope).
+
+name: homebrew-tap
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 3.0.0 or v3.0.0)"
+        required: true
+        type: string
+
+jobs:
+  update-cask:
+    runs-on: macos-latest
+    steps:
+      - name: Resolve version and release
+        id: release
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+            VERSION="${VERSION#v}"
+            echo "version=${VERSION}" >> $GITHUB_OUTPUT
+            echo "tag=v${VERSION}" >> $GITHUB_OUTPUT
+          else
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+            echo "version=${VERSION}" >> $GITHUB_OUTPUT
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get macOS asset
+        id: asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ASSETS=$(gh release view ${{ steps.release.outputs.tag }} --repo ${{ github.repository }} --json assets -q '.assets[].name')
+          # Prefer aarch64 .app.tar.gz, then any .app.tar.gz or .dmg for mac
+          NAME=$(echo "$ASSETS" | grep -E 'aarch64\.app\.tar\.gz|arm64.*\.app\.tar\.gz|\.app\.tar\.gz|.*darwin.*\.(app\.tar\.gz|dmg)' | head -1)
+          if [ -z "$NAME" ]; then
+            NAME=$(echo "$ASSETS" | grep -E '\.app\.tar\.gz|\.dmg' | head -1)
+          fi
+          if [ -z "$NAME" ]; then
+            echo "::error::No macOS asset found in release. Assets: $ASSETS"
+            exit 1
+          fi
+          echo "name=${NAME}" >> $GITHUB_OUTPUT
+          URL=$(gh release view ${{ steps.release.outputs.tag }} --repo ${{ github.repository }} --json assets -q '.assets[] | select(.name=="'"$NAME"'") | .url')
+          # gh gives API URL; download URL is different
+          echo "url=https://github.com/${{ github.repository }}/releases/download/${{ steps.release.outputs.tag }}/${NAME}" >> $GITHUB_OUTPUT
+
+      - name: Download and compute SHA256
+        id: sha
+        run: |
+          curl -sL "${{ steps.asset.outputs.url }}" -o asset
+          SHA=$(shasum -a 256 asset | cut -d' ' -f1)
+          echo "sha256=${SHA}" >> $GITHUB_OUTPUT
+
+      - name: Clone tap repo
+        env:
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO }}
+        run: |
+          REPO="${TAP_REPO:-n3-rd/homebrew-ohun}"
+          git clone "https://${TAP_TOKEN}@github.com/${REPO}.git" tap
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update cask
+        run: |
+          CDIR="tap/Casks"
+          CASK="${CDIR}/ohun.rb"
+          VERSION="${{ steps.release.outputs.version }}"
+          SHA="${{ steps.sha.outputs.sha256 }}"
+          ASSET_NAME="${{ steps.asset.outputs.name }}"
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ steps.release.outputs.tag }}/${ASSET_NAME}"
+
+          # Update version line
+          sed -i.bak "s/^  version \".*\"/  version \"${VERSION}\"/" "$CASK"
+          # Update sha256 line
+          sed -i.bak "s/^  sha256 \".*\"/  sha256 \"${SHA}\"/" "$CASK"
+          # Update url line so it points to the actual asset (livecheck still works via latest release)
+          sed -i.bak "s|^  url \".*\"|  url \"${DOWNLOAD_URL}\"|" "$CASK"
+          rm -f "${CASK}.bak"
+
+      - name: Commit and push
+        run: |
+          cd tap
+          if git diff --quiet Casks/ohun.rb; then
+            echo "No cask changes."
+            exit 0
+          fi
+          git add Casks/ohun.rb
+          git commit -m "ohun ${VERSION}"
+          git push
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
