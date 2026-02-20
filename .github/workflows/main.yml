@@ -63,6 +63,7 @@ jobs:
           version: 8.15.7
 
       - name: Sync version to package.json, tauri.conf.json, and Cargo.toml
+        shell: bash
         run: |
           V="${{ steps.version.outputs.version }}"
           node scripts/sync-version.mjs "${V#v}"
