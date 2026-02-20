@@ -1,5 +1,5 @@
 # Updates the Homebrew tap when a new release is published.
-# Requires: create a repo "homebrew-ohun" and add secret HOMEBREW_TAP_TOKEN (PAT with repo scope).
+# Requires: repo n3-rd/homebrew-tap and secret HOMEBREW_TAP_TOKEN (PAT with repo scope).
 
 name: homebrew-tap
 
@@ -73,7 +73,7 @@ jobs:
           TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO }}
         run: |
-          REPO="${TAP_REPO:-n3-rd/homebrew-ohun}"
+          REPO="${TAP_REPO:-n3-rd/homebrew-tap}"
           git clone "https://${TAP_TOKEN}@github.com/${REPO}.git" tap
           cd tap
           git config user.name "github-actions[bot]"
@@ -81,7 +81,7 @@ jobs:
 
       - name: Update cask
         run: |
-          CDIR="tap/Casks"
+          CDIR="tap/homebrew-tap/Casks"
           CASK="${CDIR}/ohun.rb"
           VERSION="${{ steps.release.outputs.version }}"
           SHA="${{ steps.sha.outputs.sha256 }}"
@@ -99,11 +99,11 @@ jobs:
       - name: Commit and push
         run: |
           cd tap
-          if git diff --quiet Casks/ohun.rb; then
+          if git diff --quiet homebrew-tap/Casks/ohun.rb; then
             echo "No cask changes."
             exit 0
           fi
-          git add Casks/ohun.rb
+          git add homebrew-tap/Casks/ohun.rb
           git commit -m "ohun ${VERSION}"
           git push
         env:
