@@ -97,6 +97,10 @@ jobs:
           rm -f "${CASK}.bak"
 
       - name: Commit and push
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO }}
         run: |
           cd tap
           if git diff --quiet homebrew-tap/Casks/ohun.rb; then
@@ -105,6 +109,5 @@ jobs:
           fi
           git add homebrew-tap/Casks/ohun.rb
           git commit -m "ohun ${VERSION}"
-          git push
-        env:
-          VERSION: ${{ steps.release.outputs.version }}
+          REPO="${TAP_REPO:-n3-rd/homebrew-tap}"
+          git push "https://x-access-token:${TAP_TOKEN}@github.com/${REPO}.git" HEAD:main
