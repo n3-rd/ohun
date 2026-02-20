@@ -25,7 +25,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             INPUT_VERSION="${{ github.event.inputs.version }}"
             if [ -z "$INPUT_VERSION" ]; then
-              TAG=$(gh release view latest --repo ${{ github.repository }} --json tagName -q .tagName)
+              TAG=$(gh release list --repo ${{ github.repository }} --limit 1 --json tagName -q '.[0].tagName')
               [ -z "$TAG" ] && { echo "::error::No latest release found"; exit 1; }
             else
               TAG="${INPUT_VERSION#v}"
