@@ -81,7 +81,7 @@ jobs:
 
       - name: Update cask
         run: |
-          CDIR="tap/homebrew-tap/Casks"
+          CDIR="tap/Casks"
           CASK="${CDIR}/ohun.rb"
           VERSION="${{ steps.release.outputs.version }}"
           SHA="${{ steps.sha.outputs.sha256 }}"
@@ -103,11 +103,11 @@ jobs:
           TAP_REPO: ${{ vars.HOMEBREW_TAP_REPO }}
         run: |
           cd tap
-          if git diff --quiet homebrew-tap/Casks/ohun.rb; then
+          if git diff --quiet Casks/ohun.rb; then
             echo "No cask changes."
             exit 0
           fi
-          git add homebrew-tap/Casks/ohun.rb
+          git add Casks/ohun.rb
           git commit -m "ohun ${VERSION}"
           REPO="${TAP_REPO:-n3-rd/homebrew-tap}"
           git push "https://x-access-token:${TAP_TOKEN}@github.com/${REPO}.git" HEAD:main
