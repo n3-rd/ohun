@@ -50,7 +50,7 @@
 			"exceptionDomain": "",
 			"frameworks": [],
 			"providerShortName": null,
-			"signingIdentity": "null"
+			"signingIdentity": null
 		},
 		"resources": [],
 		"shortDescription": "Get synchronized song lyrics.",

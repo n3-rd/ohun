@@ -3,6 +3,7 @@
 	"version": "2.0.4",
 	"private": true,
 	"scripts": {
+		"sync-version": "node scripts/sync-version.mjs",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
