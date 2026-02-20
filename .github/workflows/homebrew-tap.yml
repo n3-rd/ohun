@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version (e.g. 3.0.0 or v3.0.0)"
-        required: true
+        description: "Release version (optional; defaults to latest release)"
+        required: false
         type: string
 
 jobs:
@@ -19,17 +19,26 @@ jobs:
     steps:
       - name: Resolve version and release
         id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION="${{ github.event.inputs.version }}"
-            VERSION="${VERSION#v}"
+            INPUT_VERSION="${{ github.event.inputs.version }}"
+            if [ -z "$INPUT_VERSION" ]; then
+              TAG=$(gh release view latest --repo ${{ github.repository }} --json tagName -q .tagName)
+              [ -z "$TAG" ] && { echo "::error::No latest release found"; exit 1; }
+            else
+              TAG="${INPUT_VERSION#v}"
+              TAG="v${TAG}"
+            fi
+            VERSION="${TAG#v}"
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "tag=v${VERSION}" >> $GITHUB_OUTPUT
+            echo "tag=${TAG}" >> $GITHUB_OUTPUT
           else
-            VERSION="${{ github.event.release.tag_name }}"
-            VERSION="${VERSION#v}"
+            TAG="${{ github.event.release.tag_name }}"
+            VERSION="${TAG#v}"
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+            echo "tag=${TAG}" >> $GITHUB_OUTPUT
           fi
 
       - name: Get macOS asset
